@@ -1,6 +1,6 @@
 export interface ElementProps {
   tag: keyof HTMLElementTagNameMap;
-  attributes: {
+  attributes?: {
     [name: string]: string;
   };
 }
