@@ -17,7 +17,19 @@ createRouter([
       },
       {
         path: '/page1',
-        component: (page) => (page.innerHTML = `<h1>page1</h1>`),
+        component: (page) => {
+          page.innerHTML = `
+            <h1>page1</h1>
+            <div id='outlet'></div>`;
+        },
+        children: [
+          {
+            path: '/item',
+            component: (page) => {
+              page.innerHTML = `<h3>item!</h3>`;
+            },
+          },
+        ],
       },
     ],
   },

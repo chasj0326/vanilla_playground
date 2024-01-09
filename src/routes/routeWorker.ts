@@ -9,19 +9,19 @@ const routeWorker = (routes: Route[]) => {
   return { render, match };
 };
 
-const matchRouteToPath = (route: string, path: string) => {
+const matchPathToUrl = (path: string, url: string) => {
   const params: { [key: string]: string } = {};
-  if (path === route) return { isMatched: true, params };
+  if (path === url) return { isMatched: true, params };
 
-  const routeSegment = route.split('/');
   const pathSegment = path.split('/');
+  const urlSegment = url.split('/');
 
   const isMatched =
-    routeSegment.length === pathSegment.length &&
-    routeSegment.every((seg, i) => {
-      if (seg === pathSegment[i]) return true;
+    pathSegment.length === urlSegment.length &&
+    pathSegment.every((seg, i) => {
+      if (seg === urlSegment[i]) return true;
       else if (seg.startsWith(':')) {
-        params[seg.slice(1)] = pathSegment[i];
+        params[seg.slice(1)] = urlSegment[i];
         return true;
       }
       return false;
@@ -29,7 +29,7 @@ const matchRouteToPath = (route: string, path: string) => {
   return { isMatched, params };
 };
 
-export const findMatchingRoutes = (routes: Route[], path: string) => {
+export const findMatchingRoutes = (routes: Route[], url: string) => {
   const routeFromRoot: Route[] = [];
 
   const findRoute = (
@@ -37,14 +37,14 @@ export const findMatchingRoutes = (routes: Route[], path: string) => {
     current: string
   ): (Route & { params: { [key: string]: string } }) | null => {
     for (const route of routes) {
-      const routePath = (current + route.path).replace('//', '/');
-      const { isMatched, params } = matchRouteToPath(routePath, path);
+      const path = (current + route.path).replace('//', '/');
+      const { isMatched, params } = matchPathToUrl(path, url);
 
       if (isMatched) {
         return { ...route, params };
       }
       if (route.children) {
-        const childRoute = findRoute(route.children, routePath);
+        const childRoute = findRoute(route.children, path);
 
         if (childRoute) {
           routeFromRoot.push(route);
@@ -67,19 +67,21 @@ const getOutletElement = (depth: number) => {
 
 export const renderRoute = (
   routes: Route[],
-  nextRoute: string,
-  prevRoute?: string
+  nextPath: string, // 이동해야 하는 주소
+  prevPath?: string // 현재 주소
 ) => {
+  // '/list/item1' => [{} , {} ..] => [{'/item1'}, {'/list'}, {'/'}]
   const { routes: prevRoutes } = findMatchingRoutes(
     routes,
-    prevRoute ?? '/'
-  );
-  const { routes: nextRoutes } = findMatchingRoutes(
-    routes,
-    nextRoute
+    prevPath ?? '/'
   );
 
-  let renderStart = !prevRoute || nextRoute === '/';
+  // '/list/item2' => [{'/item2'}, {'/list'}, {'/'}]
+  const { routes: nextRoutes } = findMatchingRoutes(routes, nextPath);
+
+  // !prevRoute => 처음부터 렌더링
+  // 가야하는 주소가 홈이다.. 그렇다는 것은 처음부터 해야한다..
+  let renderStart = !prevPath || nextPath === '/';
   let depth = 0;
 
   while (nextRoutes.length) {
