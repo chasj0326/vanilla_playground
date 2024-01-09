@@ -8,7 +8,7 @@ interface ComponentProps<State> {
   initialState: State;
 }
 
-class Component<State> {
+class Component<State = null> {
   $element;
   state;
 

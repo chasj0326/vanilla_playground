@@ -1,22 +1,27 @@
 import { Route } from './routes';
-import { findRoute, renderRoute } from './routeHelper';
+import routeWorker from './routeWorker';
 
 class Router {
-  routes: Route[];
+  routes;
+  render;
+  match;
 
   constructor(routes: Route[]) {
     this.routes = routes;
+
+    const worker = routeWorker(this.routes);
+    this.render = worker.render;
+    this.match = worker.match;
+
     this.init();
   }
 
   init() {
-    const currentPath = window.location.pathname;
-
-    renderRoute(this.routes, currentPath);
+    this.render(window.location.pathname);
 
     window.addEventListener('navigate', (event) => {
       const { path } = (event as CustomEvent).detail;
-      renderRoute(this.routes, path, window.location.pathname);
+      this.render(path, window.location.pathname);
       window.history.pushState({}, '', path);
     });
   }

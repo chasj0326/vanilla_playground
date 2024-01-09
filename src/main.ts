@@ -1,45 +1,24 @@
-import App from './App';
-import CountPage from './components/Counter';
+import HomePage from './pages/HomePage';
+import CountPage from './pages/CountPage';
 import createRouter from './routes/Router';
 import './style.css';
+
+const homePage = new HomePage();
+const countPage = new CountPage();
 
 createRouter([
   {
     path: '/',
-    component: () => {
-      console.log('/app');
-    },
+    component: homePage.render,
     children: [
       {
         path: '/count',
-        component: () => {
-          console.log('/count');
-        },
-        children: [
-          {
-            path: '/child',
-            component: () => console.log('/count/child'),
-          },
-        ],
+        component: countPage.render,
       },
       {
-        path: '/count/hello',
-        component: () => {
-          console.log('/count/hello');
-        },
-      },
-      {
-        path: '/post/:id',
-        component: () => {
-          console.log('/post/:id');
-        },
+        path: '/page1',
+        component: (page) => (page.innerHTML = `<h1>page1</h1>`),
       },
     ],
-  },
-  {
-    path: '/test',
-    component: () => {
-      console.log('/test');
-    },
   },
 ]);
