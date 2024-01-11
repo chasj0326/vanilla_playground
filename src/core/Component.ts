@@ -5,19 +5,15 @@ import createDOMElement, {
 interface ComponentProps<State> {
   parent: HTMLElement;
   element: ElementProps;
-  initialState: State;
+  state: State;
 }
 
 class Component<State = null> {
   $element;
   state;
 
-  constructor({
-    parent,
-    element,
-    initialState,
-  }: ComponentProps<State>) {
-    this.state = initialState;
+  constructor({ parent, element, state }: ComponentProps<State>) {
+    this.state = state;
     this.$element = createDOMElement(element);
     parent.append(this.$element);
 

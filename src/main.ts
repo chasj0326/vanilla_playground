@@ -20,6 +20,10 @@ createRouter([
         component: aboutPage.render,
       },
       {
+        path: '/count',
+        component: countPage.render,
+      },
+      {
         path: '/list',
         component: listPage.render,
         children: [

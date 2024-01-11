@@ -1,3 +1,7 @@
+import createDOMElement, {
+  ElementProps,
+} from '../utils/createDOMElement';
+
 const getOutletElement = (depth: number) => {
   const selector = Array(depth).fill('#outlet').join(' ') || '#app';
   return document.querySelector<HTMLElement>(selector);
@@ -18,4 +22,14 @@ export const paintOutletElement = (
   if ($outlet) {
     paint($outlet);
   }
+};
+
+export const outlet = (element?: ElementProps) => {
+  const tag = element?.tag ?? 'div';
+  const attributes = element?.attributes ?? {};
+
+  return createDOMElement({
+    tag,
+    attributes: { id: 'outlet', ...attributes },
+  }).outerHTML;
 };

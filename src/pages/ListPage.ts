@@ -1,5 +1,6 @@
 import Page from '../core/Page';
 import NavBar from '../components/NavBar';
+import { outlet } from '../routes/domUtils';
 
 class ListPage extends Page {
   render($page: HTMLElement) {
@@ -9,7 +10,7 @@ class ListPage extends Page {
         <div class="nav">
         <!-- Navbar Component -->
         </div>
-        <div id='outlet'></div>
+        ${outlet()}
       </div>
     `;
 
@@ -19,7 +20,7 @@ class ListPage extends Page {
       element: {
         tag: 'div',
       },
-      initialState: [
+      state: [
         { name: 'item1', path: '/list/item1' },
         { name: 'item2', path: '/list/item2' },
       ],

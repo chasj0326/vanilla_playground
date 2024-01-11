@@ -29,7 +29,7 @@ class CountPage extends Page {
       element: {
         tag: 'button',
       },
-      initialState: 0,
+      state: 0,
     });
   }
 }
