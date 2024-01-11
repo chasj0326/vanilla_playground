@@ -1,5 +1,5 @@
 const getOutletElement = (depth: number) => {
-  const selector = Array(depth).fill('#outlet').join(' > ') || '#app';
+  const selector = Array(depth).fill('#outlet').join(' ') || '#app';
   return document.querySelector<HTMLElement>(selector);
 };
 

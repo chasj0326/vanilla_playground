@@ -1,15 +1,14 @@
 import Page from '../core/Page';
 import NavBar from '../components/NavBar';
 
-class HomePage extends Page {
+class ListPage extends Page {
   render($page: HTMLElement) {
     $page.innerHTML = `
       <div>
-        <h2>Home 페이지 입니다.</h2>
+        <h2>List 페이지 입니다.</h2>
         <div class="nav">
         <!-- Navbar Component -->
         </div>
-        <hr/>
         <div id='outlet'></div>
       </div>
     `;
@@ -21,12 +20,11 @@ class HomePage extends Page {
         tag: 'div',
       },
       initialState: [
-        { name: 'home', path: '/' },
-        { name: 'list', path: '/list' },
-        { name: 'about', path: '/about' },
+        { name: 'item1', path: '/list/item1' },
+        { name: 'item2', path: '/list/item2' },
       ],
     });
   }
 }
 
-export default HomePage;
+export default ListPage;
