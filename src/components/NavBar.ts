@@ -1,10 +1,9 @@
 import Component from '../core/Component';
 import { navigate } from '../routes/Router';
 
-class NavBar extends Component<
-  { name: string; path: string }[],
-  null
-> {
+type NavBarProps = { name: string; path: string }[];
+
+class NavBar extends Component<NavBarProps> {
   props = [];
 
   template(): string {

@@ -3,7 +3,9 @@ import createDOMElement, {
 } from '../utils/createDOMElement';
 
 const getOutletElement = (depth: number) => {
-  const selector = Array(depth).fill('#outlet').join(' ') || '#app';
+  const selector = Array(depth + 1)
+    .fill('#outlet')
+    .join(' ');
   return document.querySelector<HTMLElement>(selector);
 };
 

@@ -4,8 +4,12 @@ import createRouter from './routes/Router';
 import './style.css';
 import AboutPage from './pages/AboutPage';
 import ListPage from './pages/ListPage';
+import App from './App';
 
-const router = createRouter([
+const $app = document.querySelector<HTMLElement>('#app');
+new App({ target: $app! });
+
+export const router = createRouter([
   {
     path: '/',
     component: (target) => new HomePage({ target }),
@@ -39,5 +43,3 @@ const router = createRouter([
     ],
   },
 ]);
-
-export default router;
