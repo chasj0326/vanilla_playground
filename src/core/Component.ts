@@ -1,31 +1,43 @@
-import createDOMElement, {
-  ElementProps,
-} from '../utils/createDOMElement';
-
-interface ComponentProps<State> {
-  parent: HTMLElement;
-  element: ElementProps;
-  state: State;
+interface ComponentProps<Props, State> {
+  target: HTMLElement;
+  state?: State;
+  props?: Props;
 }
 
-class Component<State = null> {
-  $element;
+class Component<Props = null, State = null> {
+  $target;
+  props;
   state;
 
-  constructor({ parent, element, state }: ComponentProps<State>) {
+  constructor({
+    target,
+    props,
+    state,
+  }: ComponentProps<Props, State>) {
+    this.$target = target;
+    this.props = props;
     this.state = state;
-    this.$element = createDOMElement(element);
-    parent.append(this.$element);
 
     this.render();
     this.setEvent();
   }
 
-  render() {}
+  template() {
+    return ``;
+  }
+
+  mounted() {}
+
+  render() {
+    this.$target.innerHTML = this.template();
+    this.mounted();
+  }
+
   setState(nextState: State) {
     this.state = nextState;
     this.render();
   }
+
   setEvent() {}
 }
 

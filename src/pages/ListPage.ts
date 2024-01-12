@@ -1,10 +1,10 @@
-import Page from '../core/Page';
+import Component from '../core/Component';
 import NavBar from '../components/NavBar';
 import { outlet } from '../routes/domUtils';
 
-class ListPage extends Page {
-  render($page: HTMLElement) {
-    $page.innerHTML = `
+class ListPage extends Component {
+  template(): string {
+    return `
       <div>
         <h2>List 페이지 입니다.</h2>
         <div class="nav">
@@ -13,14 +13,13 @@ class ListPage extends Page {
         ${outlet()}
       </div>
     `;
+  }
 
-    const $nav = $page.querySelector<HTMLElement>('.nav')!;
+  mounted(): void {
+    const $nav = this.$target.querySelector<HTMLElement>('.nav')!;
     new NavBar({
-      parent: $nav,
-      element: {
-        tag: 'div',
-      },
-      state: [
+      target: $nav,
+      props: [
         { name: 'item1', path: '/list/item1' },
         { name: 'item2', path: '/list/item2' },
       ],

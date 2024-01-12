@@ -1,10 +1,8 @@
-import Page from '../core/Page';
+import Component from '../core/Component';
 
-class AboutPage extends Page {
-  render($page: HTMLElement): void {
-    $page.innerHTML = `
-        <h3>About 페이지 입니다.</h3>
-    `;
+class AboutPage extends Component {
+  template(): string {
+    return `<h3>About 페이지 입니다.</h3>`;
   }
 }
 

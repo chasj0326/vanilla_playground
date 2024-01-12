@@ -5,27 +5,22 @@ import './style.css';
 import AboutPage from './pages/AboutPage';
 import ListPage from './pages/ListPage';
 
-const homePage = new HomePage();
-const countPage = new CountPage();
-const aboutPage = new AboutPage();
-const listPage = new ListPage();
-
-createRouter([
+const router = createRouter([
   {
     path: '/',
-    component: homePage.render,
+    component: (target) => new HomePage({ target }),
     children: [
       {
         path: '/about',
-        component: aboutPage.render,
+        component: (target) => new AboutPage({ target }),
       },
       {
         path: '/count',
-        component: countPage.render,
+        component: (target) => new CountPage({ target }),
       },
       {
         path: '/list',
-        component: listPage.render,
+        component: (target) => new ListPage({ target }),
         children: [
           {
             path: '/item1',
@@ -44,3 +39,5 @@ createRouter([
     ],
   },
 ]);
+
+export default router;

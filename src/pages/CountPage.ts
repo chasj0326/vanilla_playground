@@ -1,11 +1,11 @@
-import Page from '../core/Page';
 import viteLogo from '/vite.svg';
 import typescriptLogo from '/typescript.svg';
 import Counter from '../components/Counter';
+import Component from '../core/Component';
 
-class CountPage extends Page {
-  render($page: HTMLElement) {
-    $page.innerHTML = `
+class CountPage extends Component {
+  template(): string {
+    return `
       <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src="${viteLogo}" class="logo" alt="Vite logo" />
@@ -22,13 +22,12 @@ class CountPage extends Page {
         </p>
       </div>
     `;
+  }
 
-    const $card = $page.querySelector<HTMLElement>('.card')!;
+  mounted(): void {
+    const $card = this.$target.querySelector<HTMLElement>('.card')!;
     new Counter({
-      parent: $card,
-      element: {
-        tag: 'button',
-      },
+      target: $card,
       state: 0,
     });
   }
