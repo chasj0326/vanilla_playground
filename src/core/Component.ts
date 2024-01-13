@@ -1,10 +1,10 @@
-interface ComponentProps<Props, State> {
+interface ComponentProps<Props = any, State = any> {
   target: HTMLElement;
   state?: State;
   props?: Props;
 }
 
-class Component<Props = null, State = null> {
+class Component<Props = any, State = any> {
   $target;
   props;
   state;
@@ -18,6 +18,7 @@ class Component<Props = null, State = null> {
     this.props = props;
     this.state = state;
 
+    this.created();
     this.render();
     this.setEvent();
   }
@@ -25,6 +26,8 @@ class Component<Props = null, State = null> {
   template() {
     return ``;
   }
+
+  created() {}
 
   mounted() {}
 
@@ -39,6 +42,24 @@ class Component<Props = null, State = null> {
   }
 
   setEvent() {}
+
+  addComponent<T extends new (args: any) => Component>(
+    ComponentClass: T,
+    params: Omit<ConstructorParameters<T>[0], 'target'> & {
+      selector?: string;
+    }
+  ) {
+    const $container = this.$target.querySelector<HTMLElement>(
+      params.selector ?? `.${ComponentClass.name.toLowerCase()}`
+    );
+
+    if ($container === null) return;
+
+    return new ComponentClass({
+      target: $container,
+      ...params,
+    });
+  }
 }
 
 export default Component;

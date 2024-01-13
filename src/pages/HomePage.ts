@@ -3,10 +3,10 @@ import { outlet } from '../routes/domUtils';
 import Component from '../core/Component';
 
 class HomePage extends Component {
-  template(): string {
+  template() {
     return `
       <div>
-        <div class="nav">
+        <div class="navbar">
         </div>
         <hr/>
         ${outlet()}
@@ -14,10 +14,8 @@ class HomePage extends Component {
   `;
   }
 
-  mounted(): void {
-    const $nav = this.$target.querySelector<HTMLElement>('.nav')!;
-    new NavBar({
-      target: $nav,
+  mounted() {
+    this.addComponent(NavBar, {
       props: {
         contents: [
           { name: 'home', path: '/' },

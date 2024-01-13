@@ -14,8 +14,7 @@ class CountPage extends Component {
           <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
         </a>
         <h1>Vite + TypeScript</h1>
-        <div class="card">
-        <!-- Counter component -->
+        <div class="counter">
         </div>
         <p class="read-the-docs">
           Click on the Vite and TypeScript logos to learn more
@@ -25,9 +24,8 @@ class CountPage extends Component {
   }
 
   mounted(): void {
-    const $card = this.$target.querySelector<HTMLElement>('.card')!;
-    new Counter({
-      target: $card,
+    this.addComponent(Counter, {
+      selector: '.counter1',
       state: 0,
     });
   }
