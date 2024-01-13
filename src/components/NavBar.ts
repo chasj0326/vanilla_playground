@@ -1,16 +1,22 @@
 import Component from '../core/Component';
 import { navigate } from '../routes/Router';
 
-type NavBarProps = { name: string; path: string }[];
+interface NavBarProps {
+  tag?: keyof HTMLElementTagNameMap;
+  contents: { name: string; path: string }[];
+}
 
 class NavBar extends Component<NavBarProps> {
-  props = [];
+  props = {} as NavBarProps;
 
   template(): string {
+    const navType = this.props.tag ?? 'button';
+
     return `
-    ${this.props
+    ${this.props.contents
       .map(
-        ({ name, path }) => `<button id='${path}'>${name}</button>`
+        ({ name, path }) =>
+          `<${navType} id='${path}'>${name}</${navType}>`
       )
       .join('')}
   `;

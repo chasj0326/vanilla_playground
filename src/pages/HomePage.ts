@@ -19,12 +19,14 @@ class HomePage extends Component {
     const $nav = this.$target.querySelector<HTMLElement>('.nav')!;
     new NavBar({
       target: $nav,
-      props: [
-        { name: 'home', path: '/' },
-        { name: 'list', path: '/list' },
-        { name: 'about', path: '/about' },
-        { name: 'count', path: '/count' },
-      ],
+      props: {
+        contents: [
+          { name: 'home', path: '/' },
+          { name: 'list', path: '/list' },
+          { name: 'post', path: '/post' },
+          { name: 'count', path: '/count' },
+        ],
+      },
     });
   }
 }

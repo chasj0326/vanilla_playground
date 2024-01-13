@@ -2,9 +2,10 @@ import HomePage from './pages/HomePage';
 import CountPage from './pages/CountPage';
 import createRouter from './routes/Router';
 import './style.css';
-import AboutPage from './pages/AboutPage';
+import PostPage from './pages/PostPage';
 import ListPage from './pages/ListPage';
 import App from './App';
+import DetailPage from './pages/DetailPage';
 
 const $app = document.querySelector<HTMLElement>('#app');
 new App({ target: $app! });
@@ -12,12 +13,10 @@ new App({ target: $app! });
 export const router = createRouter([
   {
     path: '/',
-    component: (target) => new HomePage({ target }),
+    component: (target) => {
+      new HomePage({ target });
+    },
     children: [
-      {
-        path: '/about',
-        component: (target) => new AboutPage({ target }),
-      },
       {
         path: '/count',
         component: (target) => new CountPage({ target }),
@@ -41,5 +40,17 @@ export const router = createRouter([
         ],
       },
     ],
+  },
+  {
+    path: '/post',
+    component: (target) => {
+      new PostPage({ target });
+    },
+  },
+  {
+    path: 'post/:id',
+    component: (target) => {
+      new DetailPage({ target });
+    },
   },
 ]);

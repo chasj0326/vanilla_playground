@@ -19,10 +19,12 @@ class ListPage extends Component {
     const $nav = this.$target.querySelector<HTMLElement>('.nav')!;
     new NavBar({
       target: $nav,
-      props: [
-        { name: 'item1', path: '/list/item1' },
-        { name: 'item2', path: '/list/item2' },
-      ],
+      props: {
+        contents: [
+          { name: 'item1', path: '/list/item1' },
+          { name: 'item2', path: '/list/item2' },
+        ],
+      },
     });
   }
 }
