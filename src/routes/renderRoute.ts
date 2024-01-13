@@ -22,7 +22,8 @@ export const renderRoute = (
     const prevRoute = prevRoutes.pop();
 
     if (
-      (renderStart || nextRoute?.path !== prevRoute?.path) &&
+      (renderStart ||
+        JSON.stringify(nextRoute) !== JSON.stringify(prevRoute)) &&
       nextRoute
     ) {
       renderStart = true;

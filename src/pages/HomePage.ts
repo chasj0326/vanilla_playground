@@ -19,7 +19,6 @@ class HomePage extends Component {
       props: {
         contents: [
           { name: 'home', path: '/' },
-          { name: 'list', path: '/list' },
           { name: 'about', path: '/about' },
           { name: 'count', path: '/count' },
           { name: 'post', path: '/post' },

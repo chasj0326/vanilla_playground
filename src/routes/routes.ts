@@ -1,16 +1,15 @@
+import Component from '../core/Component';
+
 export interface Params {
   [key: string]: string;
 }
 
 export interface Route {
   path: string;
-  component: (page: HTMLElement) => void;
+  component: typeof Component;
   children?: Route[];
 }
 
-export interface RouteWithParams {
-  path: string;
-  component: (page: HTMLElement) => void;
-  children?: Route[];
+export type RouteWithParams = Route & {
   params: Params;
-}
+};

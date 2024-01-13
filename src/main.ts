@@ -14,43 +14,25 @@ new App({ target: $app! });
 export const router = createRouter([
   {
     path: '/',
-    component: (target) => {
-      new HomePage({ target });
-    },
+    component: HomePage,
     children: [
       {
         path: '/count',
-        component: (target) => new CountPage({ target }),
+        component: CountPage,
       },
       {
         path: '/about',
-        component: (target) => new AboutPage({ target }),
-      },
-      {
-        path: '/list',
-        component: (target) => new ListPage({ target }),
-        children: [
-          {
-            path: '/item1',
-            component: (page) => {
-              page.innerHTML = `<p>item1 페이지 입니다</p>`;
-            },
-          },
-          {
-            path: '/item2',
-            component: (page) => {
-              page.innerHTML = `<p>item2 페이지 입니다</p>`;
-            },
-          },
-        ],
+        component: AboutPage,
       },
       {
         path: '/post',
-        component: (target) => new PostPage({ target }),
-      },
-      {
-        path: '/post/:id',
-        component: (target) => new DetailPage({ target }),
+        component: PostPage,
+        children: [
+          {
+            path: '/:id',
+            component: DetailPage,
+          },
+        ],
       },
     ],
   },

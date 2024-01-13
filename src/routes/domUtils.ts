@@ -1,3 +1,4 @@
+import Component from '../core/Component';
 import createDOMElement, {
   ElementProps,
 } from '../utils/createDOMElement';
@@ -18,20 +19,33 @@ export const removeOutletElement = (depth: number) => {
 
 export const paintOutletElement = (
   depth: number,
-  paint: (outlet: HTMLElement) => void
+  component: typeof Component
 ) => {
   const $outlet = getOutletElement(depth);
   if ($outlet) {
-    paint($outlet);
+    new component({
+      target: $outlet,
+    });
   }
 };
 
-export const outlet = (element?: ElementProps) => {
-  const tag = element?.tag ?? 'div';
-  const attributes = element?.attributes ?? {};
+export const outlet = (
+  element?: keyof HTMLElementTagNameMap | ElementProps
+) => {
+  const elementProps: ElementProps = {
+    tag: 'div',
+    attributes: {},
+  };
+
+  if (typeof element === 'string') {
+    elementProps.tag = element;
+  } else if (element?.tag) {
+    elementProps.tag = element.tag;
+    elementProps.attributes = element?.attributes ?? {};
+  }
 
   return createDOMElement({
-    tag,
-    attributes: { id: 'outlet', ...attributes },
+    tag: elementProps.tag,
+    attributes: { id: 'outlet', ...elementProps.attributes },
   }).outerHTML;
 };

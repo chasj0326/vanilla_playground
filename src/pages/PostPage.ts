@@ -1,9 +1,13 @@
 import NavBar from '../components/NavBar';
 import Component from '../core/Component';
+import { outlet } from '../routes/domUtils';
 
 class PostPage extends Component {
   template(): string {
-    return `<ul></ul>`;
+    return `
+      <ul></ul>
+      ${outlet('p')}
+    `;
   }
   mounted(): void {
     new NavBar({

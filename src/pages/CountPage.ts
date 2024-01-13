@@ -25,7 +25,6 @@ class CountPage extends Component {
 
   mounted(): void {
     this.addComponent(Counter, {
-      selector: '.counter1',
       state: 0,
     });
   }
