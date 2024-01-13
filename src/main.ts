@@ -2,9 +2,10 @@ import HomePage from './pages/HomePage';
 import CountPage from './pages/CountPage';
 import createRouter from './routes/Router';
 import './style.css';
-import PostPage from './pages/PostPage';
 import ListPage from './pages/ListPage';
 import App from './App';
+import AboutPage from './pages/AboutPage';
+import PostPage from './pages/PostPage';
 import DetailPage from './pages/DetailPage';
 
 const $app = document.querySelector<HTMLElement>('#app');
@@ -20,6 +21,10 @@ export const router = createRouter([
       {
         path: '/count',
         component: (target) => new CountPage({ target }),
+      },
+      {
+        path: '/about',
+        component: (target) => new AboutPage({ target }),
       },
       {
         path: '/list',
@@ -39,18 +44,16 @@ export const router = createRouter([
           },
         ],
       },
+      {
+        path: '/post',
+        component: (target) => new PostPage({ target }),
+      },
+      {
+        path: '/post/:id',
+        component: (target) => new DetailPage({ target }),
+      },
     ],
   },
-  {
-    path: '/post',
-    component: (target) => {
-      new PostPage({ target });
-    },
-  },
-  {
-    path: 'post/:id',
-    component: (target) => {
-      new DetailPage({ target });
-    },
-  },
 ]);
+
+router.init();

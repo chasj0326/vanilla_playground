@@ -6,7 +6,6 @@ class HomePage extends Component {
   template(): string {
     return `
       <div>
-        <h2>Home 페이지 입니다.</h2>
         <div class="nav">
         </div>
         <hr/>
@@ -23,8 +22,9 @@ class HomePage extends Component {
         contents: [
           { name: 'home', path: '/' },
           { name: 'list', path: '/list' },
-          { name: 'post', path: '/post' },
+          { name: 'about', path: '/about' },
           { name: 'count', path: '/count' },
+          { name: 'post', path: '/post' },
         ],
       },
     });

@@ -12,17 +12,15 @@ class Router {
     const worker = routeWorker(this.routes);
     this.render = worker.render;
     this.match = worker.match;
-
-    this.init();
   }
 
   init() {
     this.render(window.location.pathname);
 
     window.addEventListener('navigate', (event) => {
-      const { path } = (event as CustomEvent).detail;
-      this.render(path, window.location.pathname);
+      const { path, prevPath } = (event as CustomEvent).detail;
       window.history.pushState({}, '', path);
+      this.render(path, prevPath);
     });
   }
 }
@@ -31,7 +29,7 @@ const createRouter = (routes: Route[]) => new Router(routes);
 
 export const navigate = (path: string) => {
   const navigateEvent = new CustomEvent('navigate', {
-    detail: { path },
+    detail: { path, prevPath: window.location.pathname },
   });
   window.dispatchEvent(navigateEvent);
 };
