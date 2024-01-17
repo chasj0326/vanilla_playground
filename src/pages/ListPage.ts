@@ -7,18 +7,14 @@ class ListPage extends Component {
     return `
       <div>
         <h2>List 페이지 입니다.</h2>
-        <div class="nav">
-        <!-- Navbar Component -->
-        </div>
+        <div class="navbar"></div>
         ${outlet()}
       </div>
     `;
   }
 
   mounted(): void {
-    const $nav = this.$target.querySelector<HTMLElement>('.nav')!;
-    new NavBar({
-      target: $nav,
+    this.addComponent(NavBar, {
       props: {
         contents: [
           { name: 'item1', path: '/list/item1' },

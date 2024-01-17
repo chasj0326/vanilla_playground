@@ -9,9 +9,9 @@ class PostPage extends Component {
       ${outlet('p')}
     `;
   }
-  mounted(): void {
-    new NavBar({
-      target: this.$target.querySelector('ul')!,
+  mounted() {
+    this.addComponent(NavBar, {
+      selector: 'ul',
       props: {
         tag: 'li',
         contents: Array.from({ length: 5 }, (_, i) => ({
