@@ -1,20 +1,14 @@
 import Component from '../core/Component';
 
-class Counter extends Component<null, number> {
-  state = 0;
-
-  template(): string {
-    return `<button>count = ${this.state}</button>`;
-  }
-
-  increaseCount() {
-    this.setState(this.state + 1);
+class Counter extends Component<number> {
+  render() {
+    this.$element.innerHTML = `count is ${this.state}`;
   }
 
   setEvent() {
-    this.$target.addEventListener('click', () =>
-      this.increaseCount()
-    );
+    this.$element.addEventListener('click', () => {
+      this.setState(this.state + 1);
+    });
   }
 }
 
