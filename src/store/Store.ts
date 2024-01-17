@@ -22,8 +22,8 @@ class Store {
     this.channel = {};
   }
 
-  subscribe(key: keyof Data, func: VoidFunction) {
-    this.channel[key].push(func);
+  subscribe(keyList: (keyof Data)[], func: VoidFunction) {
+    keyList.forEach((key) => this.channel[key].push(func));
   }
 
   #notify(key: keyof Data) {
@@ -36,27 +36,31 @@ class Store {
     return this.data[key].value;
   }
 
-  setData(key: keyof Data, value: any) {
-    const oldValue = this.data[key].value;
+  setData<T>(key: keyof Data) {
+    return (value: T) => {
+      const oldValue = this.data[key].value;
 
-    if (typeof value === 'function') {
-      this.data[key].value = value(this.data[key].value);
-    } else {
-      this.data[key].value = value;
-    }
+      if (typeof value === 'function') {
+        this.data[key].value = value(this.data[key].value);
+      } else {
+        this.data[key].value = value;
+      }
 
-    if (!isSameValue(oldValue, value)) {
-      this.#notify(key);
-    }
+      if (!isSameValue(oldValue, value)) {
+        this.#notify(key);
+      }
+    };
   }
 
   resetData(key: keyof Data) {
-    const oldValue = this.data[key].value;
-    this.data[key].value = this.data[key].default;
+    return () => {
+      const oldValue = this.data[key].value;
+      this.data[key].value = this.data[key].default;
 
-    if (!isSameValue(oldValue, this.data[key].default)) {
-      this.#notify(key);
-    }
+      if (!isSameValue(oldValue, this.data[key].default)) {
+        this.#notify(key);
+      }
+    };
   }
 
   addData<T>({

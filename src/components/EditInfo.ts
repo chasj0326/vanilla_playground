@@ -1,5 +1,5 @@
 import Component from '../core/Component';
-import { store, name, age } from '../data';
+import { store, userInfo, UserInfo } from '../data';
 
 class EditInfo extends Component {
   template(): string {
@@ -15,23 +15,34 @@ class EditInfo extends Component {
   }
   setEvent(): void {
     const $input = this.$target.querySelector('input');
+    // const setName = store.setData(name);
+    // const setAge = store.setData(age);
+    // const resetName = store.resetData(name);
+    // const resetAge = store.resetData(age);
+    const setUserInfo = store.setData(userInfo);
+    const resetUserInfo = store.resetData(userInfo);
 
     if ($input) {
       $input.addEventListener('input', (e) => {
         const newName = (e.target as HTMLInputElement).value;
-        store.setData(name, newName);
+        setUserInfo((prev: UserInfo) => ({ ...prev, name: newName }));
       });
     }
 
     this.$target.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
       if (target.id === 'increase') {
-        store.setData(age, (prev: number) => prev + 1);
+        setUserInfo((prev: UserInfo) => ({
+          ...prev,
+          age: prev.age + 1,
+        }));
       } else if (target.id === 'decrease') {
-        store.setData(age, (prev: number) => prev - 1);
+        setUserInfo((prev: UserInfo) => ({
+          ...prev,
+          age: prev.age - 1,
+        }));
       } else if (target.id === 'reset') {
-        store.resetData(age);
-        store.resetData(name);
+        resetUserInfo();
       }
     });
   }

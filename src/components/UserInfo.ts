@@ -1,19 +1,17 @@
 import Component from '../core/Component';
-import { store, name, age } from '../data';
+import { store, userInfo } from '../data';
 
 class UserInfo extends Component {
   created() {
-    store.subscribe(name, () => this.render());
-    store.subscribe(age, () => this.render());
+    store.subscribe([userInfo], () => this.render());
   }
 
   template() {
-    const nameValue = store.getData(name);
-    const ageValue = store.getData(age);
+    const { name, age } = store.getData(userInfo);
 
     return `
-      <p>name : ${nameValue}</p>
-      <p>age : ${ageValue}</p>
+      <p>name : ${name}</p>
+      <p>age : ${age}</p>
     `;
   }
 }
