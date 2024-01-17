@@ -45,19 +45,18 @@ class Component<Props = any, State = any> {
 
   addComponent<T extends new (args: any) => Component>(
     ComponentClass: T,
-    params: Omit<ConstructorParameters<T>[0], 'target'> & {
+    params?: Omit<ConstructorParameters<T>[0], 'target'> & {
       selector?: string;
     }
   ) {
     const $container = this.$target.querySelector<HTMLElement>(
-      params.selector ?? `.${ComponentClass.name.toLowerCase()}`
+      params?.selector ?? `.${ComponentClass.name.toLowerCase()}`
     );
 
     if ($container === null) return;
-
     return new ComponentClass({
       target: $container,
-      ...params,
+      ...(params ?? {}),
     });
   }
 }

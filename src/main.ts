@@ -6,9 +6,15 @@ import App from './App';
 import AboutPage from './pages/AboutPage';
 import PostPage from './pages/PostPage';
 import DetailPage from './pages/DetailPage';
+import Store from './store/Store';
 
 const $app = document.querySelector<HTMLElement>('#app');
 new App({ target: $app! });
+
+export const store = new Store({
+  name: 'chacha',
+  age: 25,
+});
 
 export const router = createRouter([
   {
