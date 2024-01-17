@@ -1,36 +1,65 @@
-import createDOMElement, {
-  ElementProps,
-} from '../utils/createDOMElement';
-
-interface ComponentProps<State> {
-  parent: HTMLElement;
-  element: ElementProps;
-  initialState: State;
+interface ComponentProps<Props = any, State = any> {
+  target: HTMLElement;
+  state?: State;
+  props?: Props;
 }
 
-class Component<State> {
-  $element;
+class Component<Props = any, State = any> {
+  $target;
+  props;
   state;
 
   constructor({
-    parent,
-    element,
-    initialState,
-  }: ComponentProps<State>) {
-    this.state = initialState;
-    this.$element = createDOMElement(element);
-    parent.append(this.$element);
+    target,
+    props,
+    state,
+  }: ComponentProps<Props, State>) {
+    this.$target = target;
+    this.props = props;
+    this.state = state;
 
+    this.created();
     this.render();
     this.setEvent();
   }
 
-  render() {}
+  template() {
+    return ``;
+  }
+
+  created() {}
+
+  mounted() {}
+
+  render() {
+    this.$target.innerHTML = this.template();
+    this.mounted();
+  }
+
   setState(nextState: State) {
     this.state = nextState;
     this.render();
   }
+
   setEvent() {}
+
+  addComponent<T extends new (args: any) => Component>(
+    ComponentClass: T,
+    params: Omit<ConstructorParameters<T>[0], 'target'> & {
+      selector?: string;
+    }
+  ) {
+    const $container = this.$target.querySelector<HTMLElement>(
+      params.selector ?? `.${ComponentClass.name.toLowerCase()}`
+    );
+
+    if ($container === null) return;
+
+    return new ComponentClass({
+      target: $container,
+      ...params,
+    });
+  }
 }
 
 export default Component;
