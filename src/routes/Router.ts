@@ -18,18 +18,18 @@ class Router {
     this.render(window.location.pathname);
 
     window.addEventListener('navigate', (event) => {
-      const { path, prevPath } = (event as CustomEvent).detail;
-      window.history.pushState({}, '', path);
-      this.render(path, prevPath);
+      const { url, prevUrl } = (event as CustomEvent).detail;
+      window.history.pushState({}, '', url);
+      this.render(url, prevUrl);
     });
   }
 }
 
 const createRouter = (routes: Route[]) => new Router(routes);
 
-export const navigate = (path: string) => {
+export const navigate = (url: string) => {
   const navigateEvent = new CustomEvent('navigate', {
-    detail: { path, prevPath: window.location.pathname },
+    detail: { url, prevUrl: window.location.pathname },
   });
   window.dispatchEvent(navigateEvent);
 };
