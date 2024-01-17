@@ -1,49 +1,74 @@
 interface Data {
-  [key: string]: any;
+  [key: string]: {
+    default: any;
+    value: any;
+  };
 }
-// { age: 10, name: 'ddd' }
 
 interface Channel {
   [key: string]: VoidFunction[];
 }
-// { age: [render, render,...], name: [render, render...] }
+
+const isSameValue = <T>(oldValue: T, newValue: T) => {
+  return JSON.stringify(oldValue) === JSON.stringify(newValue);
+};
 
 class Store {
   data: Data;
   channel: Channel;
 
-  constructor(initialData: Data) {
-    this.data = initialData;
-    this.channel = Object.keys(initialData).reduce((acc, key) => {
-      acc[key] = [];
-      return acc;
-    }, {} as Channel);
+  constructor() {
+    this.data = {};
+    this.channel = {};
   }
 
   subscribe(key: keyof Data, func: VoidFunction) {
-    if (!(key in this.channel)) {
-      console.error(`${key} not in store`);
-    }
     this.channel[key].push(func);
   }
 
-  notify(key: keyof Data) {
+  #notify(key: keyof Data) {
     this.channel[key].forEach((fn) => {
       fn();
     });
   }
 
-  get(key: keyof Data) {
-    return this.data[key];
+  getData(key: keyof Data) {
+    return this.data[key].value;
   }
 
-  set(key: keyof Data, value: any) {
+  setData(key: keyof Data, value: any) {
+    const oldValue = this.data[key].value;
+
     if (typeof value === 'function') {
-      this.data[key] = value(this.data[key]);
+      this.data[key].value = value(this.data[key].value);
     } else {
-      this.data[key] = value;
+      this.data[key].value = value;
     }
-    this.notify(key);
+
+    if (!isSameValue(oldValue, value)) {
+      this.#notify(key);
+    }
+  }
+
+  resetData(key: keyof Data) {
+    const oldValue = this.data[key].value;
+    this.data[key].value = this.data[key].default;
+
+    if (!isSameValue(oldValue, this.data[key].default)) {
+      this.#notify(key);
+    }
+  }
+
+  addData<T>({
+    key,
+    default: defaultValue,
+  }: {
+    key: string;
+    default: T;
+  }) {
+    this.data[key] = { default: defaultValue, value: defaultValue };
+    this.channel[key] = [];
+    return key;
   }
 }
 
