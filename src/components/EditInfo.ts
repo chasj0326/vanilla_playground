@@ -1,5 +1,5 @@
 import Component from '../core/Component';
-import { store, userInfo, UserInfo } from '../data';
+import { store, userInfo, UserInfo } from '../store';
 
 class EditInfo extends Component {
   template(): string {
@@ -15,10 +15,6 @@ class EditInfo extends Component {
   }
   setEvent(): void {
     const $input = this.$target.querySelector('input');
-    // const setName = store.setData(name);
-    // const setAge = store.setData(age);
-    // const resetName = store.resetData(name);
-    // const resetAge = store.resetData(age);
     const setUserInfo = store.setData(userInfo);
     const resetUserInfo = store.resetData(userInfo);
 
@@ -30,19 +26,29 @@ class EditInfo extends Component {
     }
 
     this.$target.addEventListener('click', (e) => {
-      const target = e.target as HTMLElement;
-      if (target.id === 'increase') {
-        setUserInfo((prev: UserInfo) => ({
-          ...prev,
-          age: prev.age + 1,
-        }));
-      } else if (target.id === 'decrease') {
-        setUserInfo((prev: UserInfo) => ({
-          ...prev,
-          age: prev.age - 1,
-        }));
-      } else if (target.id === 'reset') {
-        resetUserInfo();
+      switch ((e.target as HTMLElement).id) {
+        case 'increase':
+          setUserInfo((prev: UserInfo) => ({
+            ...prev,
+            age: prev.age + 1,
+          }));
+          setUserInfo((prev: UserInfo) => ({
+            ...prev,
+            age: prev.age - 1,
+          }));
+          setUserInfo((prev: UserInfo) => ({
+            ...prev,
+            age: prev.age + 1,
+          }));
+          break;
+        case 'decrease':
+          setUserInfo((prev: UserInfo) => ({
+            ...prev,
+            age: prev.age - 1,
+          }));
+          break;
+        case 'reset':
+          resetUserInfo();
       }
     });
   }

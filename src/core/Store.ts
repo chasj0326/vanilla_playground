@@ -16,6 +16,7 @@ const isSameValue = <T>(oldValue: T, newValue: T) => {
 class Store {
   data: Data;
   channel: Channel;
+  updateQueue: Set<keyof Data> = new Set();
 
   constructor() {
     this.data = {};
@@ -27,9 +28,17 @@ class Store {
   }
 
   #notify(key: keyof Data) {
+    console.log(key);
     this.channel[key].forEach((fn) => {
       fn();
     });
+  }
+
+  async flushUpdateQueue() {
+    for (const key of this.updateQueue) {
+      this.#notify(key);
+    }
+    this.updateQueue.clear();
   }
 
   getData(key: keyof Data) {
@@ -47,7 +56,8 @@ class Store {
       }
 
       if (!isSameValue(oldValue, value)) {
-        this.#notify(key);
+        this.updateQueue.add(key);
+        Promise.resolve().then(() => this.flushUpdateQueue());
       }
     };
   }
@@ -58,7 +68,8 @@ class Store {
       this.data[key].value = this.data[key].default;
 
       if (!isSameValue(oldValue, this.data[key].default)) {
-        this.#notify(key);
+        this.updateQueue.add(key);
+        Promise.resolve().then(() => this.flushUpdateQueue());
       }
     };
   }
@@ -77,14 +88,3 @@ class Store {
 }
 
 export default Store;
-
-// const age = store.add('age', 20);
-
-// component1
-// const age = getData(age); // 이 컴포넌트!
-// <div>${age}</div>
-
-// component2
-// const setAge = setData(age);
-// setAge(25);
-// component1 렌더링

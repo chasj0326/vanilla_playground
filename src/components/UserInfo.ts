@@ -1,5 +1,5 @@
 import Component from '../core/Component';
-import { store, userInfo } from '../data';
+import { store, userInfo } from '../store';
 
 class UserInfo extends Component {
   created() {
