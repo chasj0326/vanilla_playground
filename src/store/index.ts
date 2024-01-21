@@ -15,4 +15,7 @@ export const userInfo = store.addData<UserInfo>({
   },
 });
 
-// 'user-info'
+export const postItems = store.addData<number[]>({
+  key: 'post-item',
+  default: [1, 2, 3, 4, 5],
+});

@@ -1,12 +1,12 @@
 interface Data {
-  [key: string]: {
+  [key: symbol]: {
     default: any;
     value: any;
   };
 }
 
 interface Channel {
-  [key: string]: VoidFunction[];
+  [key: symbol]: VoidFunction[];
 }
 
 const isSameValue = <T>(oldValue: T, newValue: T) => {
@@ -23,12 +23,22 @@ class Store {
     this.channel = {};
   }
 
+  validateKey(keyList: (keyof Data)[]) {
+    if (
+      !keyList.every((key) => key in this.channel && key in this.data)
+    ) {
+      throw new Error('Invalid Key in Data');
+    }
+  }
+
   subscribe(keyList: (keyof Data)[], func: VoidFunction) {
-    keyList.forEach((key) => this.channel[key].push(func));
+    this.validateKey(keyList);
+    for (const key of keyList) {
+      this.channel[key].push(func);
+    }
   }
 
   #notify(key: keyof Data) {
-    console.log(key);
     this.channel[key].forEach((fn) => {
       fn();
     });
@@ -41,16 +51,36 @@ class Store {
     this.updateQueue.clear();
   }
 
-  getData(key: keyof Data) {
-    return this.data[key].value;
+  addData<T>({
+    key,
+    default: defaultValue,
+  }: {
+    key: string;
+    default: T;
+  }) {
+    const uniqueKey = Symbol(key);
+    this.data[uniqueKey] = {
+      default: defaultValue,
+      value: defaultValue,
+    };
+    this.channel[uniqueKey] = [];
+    return uniqueKey;
   }
 
-  setData<T>(key: keyof Data) {
-    return (value: T) => {
+  getData<T = any>(key: keyof Data) {
+    this.validateKey([key]);
+    return this.data[key].value as T;
+  }
+
+  setData<T = any>(key: keyof Data) {
+    this.validateKey([key]);
+    return (value: T | ((x: T) => void)) => {
       const oldValue = this.data[key].value;
 
       if (typeof value === 'function') {
-        this.data[key].value = value(this.data[key].value);
+        this.data[key].value = (value as (x: T) => void)(
+          this.data[key].value
+        );
       } else {
         this.data[key].value = value;
       }
@@ -62,7 +92,12 @@ class Store {
     };
   }
 
+  useData<T>(key: keyof Data) {
+    return [this.getData<T>(key), this.setData<T>(key)] as const;
+  }
+
   resetData(key: keyof Data) {
+    this.validateKey([key]);
     return () => {
       const oldValue = this.data[key].value;
       this.data[key].value = this.data[key].default;
@@ -72,18 +107,6 @@ class Store {
         Promise.resolve().then(() => this.flushUpdateQueue());
       }
     };
-  }
-
-  addData<T>({
-    key,
-    default: defaultValue,
-  }: {
-    key: string;
-    default: T;
-  }) {
-    this.data[key] = { default: defaultValue, value: defaultValue };
-    this.channel[key] = [];
-    return key;
   }
 }
 

@@ -15,7 +15,7 @@ class EditInfo extends Component {
   }
   setEvent(): void {
     const $input = this.$target.querySelector('input');
-    const setUserInfo = store.setData(userInfo);
+    const setUserInfo = store.setData<UserInfo>(userInfo);
     const resetUserInfo = store.resetData(userInfo);
 
     if ($input) {
@@ -28,21 +28,21 @@ class EditInfo extends Component {
     this.$target.addEventListener('click', (e) => {
       switch ((e.target as HTMLElement).id) {
         case 'increase':
-          setUserInfo((prev: UserInfo) => ({
+          setUserInfo((prev) => ({
             ...prev,
             age: prev.age + 1,
           }));
-          setUserInfo((prev: UserInfo) => ({
+          setUserInfo((prev) => ({
             ...prev,
             age: prev.age - 1,
           }));
-          setUserInfo((prev: UserInfo) => ({
+          setUserInfo((prev) => ({
             ...prev,
             age: prev.age + 1,
           }));
           break;
         case 'decrease':
-          setUserInfo((prev: UserInfo) => ({
+          setUserInfo((prev) => ({
             ...prev,
             age: prev.age - 1,
           }));
