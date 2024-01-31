@@ -21,7 +21,7 @@ const matchPathToUrl = (path: string, url: string) => {
 };
 
 export const findMatchingRoutes = (routes: Route[], url: string) => {
-  const routeFromRoot: Route[] = [];
+  const routeFromRoot: RouteWithParams[] = [];
 
   const findRoute = (
     routes: Route[],
@@ -38,7 +38,7 @@ export const findMatchingRoutes = (routes: Route[], url: string) => {
         const childRoute = findRoute(route.children, path);
 
         if (childRoute) {
-          routeFromRoot.push(route);
+          routeFromRoot.push({ ...route, params: {} });
           return childRoute;
         }
       }

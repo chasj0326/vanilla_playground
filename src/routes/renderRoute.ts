@@ -31,9 +31,9 @@ export const renderRoute = (
     }
     depth += 1;
   }
+
   while (prevRoutes.length) {
     prevRoutes.pop();
-
     removeOutletElement(depth);
     depth += 1;
   }

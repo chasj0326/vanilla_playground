@@ -21,7 +21,7 @@ export const paintOutletElement = (
   depth: number,
   component: typeof Component
 ) => {
-  const $outlet = getOutletElement(depth);
+  const $outlet = getOutletElement(depth)!;
   if ($outlet) {
     new component({
       target: $outlet,

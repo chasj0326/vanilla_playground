@@ -5,12 +5,19 @@ class Router {
   routes;
   render;
   match;
+  prevUrl;
 
   constructor(routes: Route[]) {
     this.routes = routes;
 
     const worker = routeWorker(this.routes);
-    this.render = worker.render;
+
+    this.prevUrl = '';
+
+    this.render = (url: string) => {
+      worker.render(url, this.prevUrl);
+      this.prevUrl = url;
+    };
     this.match = worker.match;
   }
 
@@ -18,9 +25,13 @@ class Router {
     this.render(window.location.pathname);
 
     window.addEventListener('navigate', (event) => {
-      const { url, prevUrl } = (event as CustomEvent).detail;
+      const { url } = (event as CustomEvent).detail;
       window.history.pushState({}, '', url);
-      this.render(url, prevUrl);
+      this.render(url);
+    });
+
+    window.addEventListener('popstate', () => {
+      this.render(window.location.pathname);
     });
   }
 }
@@ -29,7 +40,7 @@ const createRouter = (routes: Route[]) => new Router(routes);
 
 export const navigate = (url: string) => {
   const navigateEvent = new CustomEvent('navigate', {
-    detail: { url, prevUrl: window.location.pathname },
+    detail: { url },
   });
   window.dispatchEvent(navigateEvent);
 };
