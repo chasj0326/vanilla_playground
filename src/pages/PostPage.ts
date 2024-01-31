@@ -28,7 +28,6 @@ class Button extends Component {
 
 class PostPage extends Component {
   template(): string {
-    console.log('render post again');
     return `
       <ul></ul>
       <div class="button"></div>
