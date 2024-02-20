@@ -6,7 +6,8 @@ const routeWorker = (routes: Route[]) => {
   const render = (nextRoute: string, prevRoute?: string) =>
     renderRoute(routes, nextRoute, prevRoute);
 
-  const match = (path: string) => findMatchingRoutes(routes, path);
+  const match = (path: string) =>
+    findMatchingRoutes(routes, path).match;
 
   return { render, match };
 };
