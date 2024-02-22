@@ -44,3 +44,5 @@ const makeRequest = async <T = any, S = any>(
     onEnd && onEnd();
   }
 };
+
+export default makeRequest;

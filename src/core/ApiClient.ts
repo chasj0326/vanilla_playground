@@ -22,30 +22,40 @@ class ApiClient {
     }
   }
 
-  async get(endpoint: string, options?: RequestInit) {
+  async get(endpoint: string, body?: any, options?: RequestInit) {
     return this.request(endpoint, {
       ...options,
+      body: JSON.stringify(body),
       method: 'GET',
     });
   }
-  async post(endpoint: string, options?: RequestInit) {
+
+  async post(endpoint: string, body?: any, options?: RequestInit) {
     return this.request(endpoint, {
       ...options,
+      body: JSON.stringify(body),
       method: 'POST',
     });
   }
-  async put(endpoint: string, options?: RequestInit) {
+
+  async put(endpoint: string, body?: any, options?: RequestInit) {
     return this.request(endpoint, {
       ...options,
+      body: JSON.stringify(body),
       method: 'PUT',
     });
   }
-  async delete(endpoint: string, options?: RequestInit) {
+
+  async delete(endpoint: string, body?: any, options?: RequestInit) {
     return this.request(endpoint, {
       ...options,
+      body: JSON.stringify(body),
       method: 'DELETE',
     });
   }
 }
 
-export default ApiClient;
+const createApi = (baseUrl: string, options: RequestInit) =>
+  new ApiClient(baseUrl, options);
+
+export default createApi;
