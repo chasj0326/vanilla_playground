@@ -1,5 +1,5 @@
 export interface LeafDocument {
-  id: number;
+  id: string;
   title: string;
   documents: LeafDocument[];
 }
@@ -7,7 +7,7 @@ export interface LeafDocument {
 export interface RootDocuments extends Array<LeafDocument> {}
 
 export interface DocumentContent {
-  id: number;
+  id: string;
   title: string;
   content: string;
   createdAt: string;

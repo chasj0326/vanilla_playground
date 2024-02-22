@@ -3,7 +3,7 @@ import { rootDocuments } from '../mocks/data';
 import { navigate } from '../routes/Router';
 import { RootDocuments } from '../types/document';
 
-class Directory extends Component<null, number> {
+class Directory extends Component<null, string> {
   template() {
     const documentId = this.state;
 
@@ -15,8 +15,8 @@ class Directory extends Component<null, number> {
        <ul>${rootDocuments
          .map(({ id, title, documents }) => {
            const titleEl =
-             ' '.repeat(depth) +
-             (id === documentId ? `<b>${title}</b>` : title);
+             id === documentId ? `<b>${title}</b>` : title;
+
            return `
             <li id='${id}'>${titleEl}</li>
             ${renderDocument(documents, depth + 1)}
@@ -38,7 +38,7 @@ class Directory extends Component<null, number> {
   mounted() {
     this.addEvent('click', ({ tagName, id }) => {
       if (tagName === 'LI' && id) {
-        this.setState(Number(id));
+        this.setState(id);
         navigate(`/${id}`);
       }
     });
