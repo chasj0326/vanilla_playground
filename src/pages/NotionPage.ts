@@ -3,8 +3,7 @@ import { outlet } from '../routes/domUtils';
 import Directory from '../components/Directory';
 
 class NotionPage extends Component {
-  template(): string {
-    console.log('notion page rendering');
+  template() {
     return `
     <div style='display: flex; padding: 20px; gap: 20px;'>
       <nav class='directory'></nav>
@@ -13,7 +12,7 @@ class NotionPage extends Component {
     `;
   }
 
-  mounted(): void {
+  rendered(): void {
     this.addComponent(Directory);
   }
 }

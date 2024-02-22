@@ -4,8 +4,7 @@ import { navigate } from '../routes/Router';
 import { RootDocuments } from '../types/document';
 
 class Directory extends Component<null, number> {
-  template(): string {
-    console.log('directory rendering');
+  template() {
     const documentId = this.state;
 
     const renderDocument = (
@@ -36,13 +35,11 @@ class Directory extends Component<null, number> {
     `;
   }
 
-  setEvent(): void {
-    this.$target.addEventListener('click', (ev) => {
-      const targetElement = ev.target as HTMLElement;
-
-      if (targetElement.tagName === 'LI' && targetElement.id) {
-        this.setState(Number(targetElement.id));
-        navigate(`/${Number(targetElement.id)}`);
+  mounted() {
+    this.addEvent('click', ({ tagName, id }) => {
+      if (tagName === 'LI' && id) {
+        this.setState(Number(id));
+        navigate(`/${id}`);
       }
     });
   }

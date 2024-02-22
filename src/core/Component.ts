@@ -20,7 +20,7 @@ class Component<Props = any, State = any> {
 
     this.created();
     this.render();
-    this.setEvent();
+    this.mounted();
   }
 
   template() {
@@ -31,17 +31,17 @@ class Component<Props = any, State = any> {
 
   mounted() {}
 
+  rendered() {}
+
   render() {
     this.$target.innerHTML = this.template();
-    this.mounted();
+    this.rendered();
   }
 
   setState(nextState: State) {
     this.state = nextState;
     this.render();
   }
-
-  setEvent() {}
 
   addComponent<T extends new (args: any) => Component>(
     ComponentClass: T,
@@ -57,6 +57,16 @@ class Component<Props = any, State = any> {
     return new ComponentClass({
       target: $container,
       ...(params ?? {}),
+    });
+  }
+
+  addEvent(
+    type: keyof HTMLElementEventMap,
+    listener: (targetElement: HTMLElement) => void
+  ) {
+    this.$target.addEventListener(type, (event) => {
+      const targetElement = event.target as HTMLElement;
+      listener(targetElement);
     });
   }
 }
