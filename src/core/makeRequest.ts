@@ -7,15 +7,17 @@ interface RequestOptions<T = any, S = any> {
 }
 
 interface Result<T> {
-  data: T | null;
+  data: T | undefined;
   isSuccess: boolean;
   isError: boolean;
 }
 
 const makeRequest = async <T = any, S = any>(
   fetchFn: () => Promise<Response>,
-  { onSuccess, onError, onStart, onEnd, select }: RequestOptions<T, S>
+  requestOptions?: RequestOptions<T, S>
 ): Promise<Result<T>> => {
+  const { onSuccess, onError, onStart, onEnd, select } =
+    requestOptions ?? {};
   if (onStart) onStart();
 
   try {
@@ -36,7 +38,7 @@ const makeRequest = async <T = any, S = any>(
   } catch (error: any) {
     if (onError) onError(error);
     return {
-      data: null,
+      data: undefined,
       isSuccess: false,
       isError: true,
     };
