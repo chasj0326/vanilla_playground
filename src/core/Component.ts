@@ -1,7 +1,7 @@
 interface ComponentProps<Props = any, State = any> {
   target: HTMLElement;
-  state: State;
-  props: Props;
+  state?: State;
+  props?: Props;
 }
 
 class Component<Props = any, State = any> {

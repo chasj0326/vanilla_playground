@@ -3,21 +3,31 @@ import Component from '../core/Component';
 import makeRequest from '../core/makeRequest';
 import { navigate } from '../routes/Router';
 import { CreatedDocument, RootDocuments } from '../types/document';
+import { DirectoryData } from '../types/data';
+import { router } from '../main';
+import { store, directoryData } from '../store';
 
-interface DirectoryState {
-  currentId: number;
-  rootDocuments: RootDocuments | undefined;
-}
+class Directory extends Component {
+  created(): void {
+    store.subscribe([directoryData], () => this.render());
+  }
 
-class Directory extends Component<null, DirectoryState> {
   async getRootDocuments(newId?: number) {
+    const setDirectoryData =
+      store.setData<DirectoryData>(directoryData);
     const { data } = await makeRequest<RootDocuments>(() =>
       notion.all()
     );
     if (newId) {
-      this.setState({ currentId: newId, rootDocuments: data });
+      setDirectoryData(() => ({
+        currentId: newId,
+        rootDocuments: data ?? [],
+      }));
     } else {
-      this.setState({ ...this.state, rootDocuments: data });
+      setDirectoryData((prev) => ({
+        ...prev,
+        rootDocuments: data ?? [],
+      }));
     }
   }
 
@@ -34,10 +44,11 @@ class Directory extends Component<null, DirectoryState> {
   }
 
   async deleteDocument(id: number) {
+    const { currentId } = store.getData<DirectoryData>(directoryData);
     makeRequest(() => notion.delete(id), {
       onSuccess: () => {
         this.getRootDocuments();
-        if (id === this.state.currentId) {
+        if (id === currentId) {
           navigate('/');
         }
       },
@@ -45,30 +56,33 @@ class Directory extends Component<null, DirectoryState> {
   }
 
   async mounted() {
-    await this.getRootDocuments();
+    const { params } = router.match() || {};
+    await this.getRootDocuments(Number(params?.id));
+
+    const setDirectoryData =
+      store.setData<DirectoryData>(directoryData);
 
     this.addEvent('click', async ({ tagName, id, parentElement }) => {
-      switch (tagName) {
-        case 'LI': {
-          this.setState({ ...this.state, currentId: Number(id) });
-          navigate(`/${id}`);
-          break;
-        }
-        case 'BUTTON': {
-          const { id: documentId } = parentElement ?? {};
-          switch (id) {
-            case 'delete': {
-              await this.deleteDocument(Number(documentId));
-              break;
-            }
-            case 'create': {
-              await this.createDocument(documentId ?? null);
-              break;
-            }
-            case 'create-null': {
-              await this.createDocument(null);
-              break;
-            }
+      if (tagName === 'LI') {
+        setDirectoryData((prev) => ({
+          ...prev,
+          currentId: Number(id),
+        }));
+        navigate(`/${id}`);
+      } else if (tagName === 'BUTTON') {
+        const documentId = parentElement?.id ?? null;
+        switch (id) {
+          case 'delete': {
+            await this.deleteDocument(Number(documentId));
+            break;
+          }
+          case 'create': {
+            await this.createDocument(documentId);
+            break;
+          }
+          case 'create-null': {
+            await this.createDocument(null);
+            break;
           }
         }
       }
@@ -76,7 +90,10 @@ class Directory extends Component<null, DirectoryState> {
   }
 
   template() {
-    const { currentId } = this.state ?? {};
+    console.log('render!');
+    const { currentId, rootDocuments } =
+      store.getData<DirectoryData>(directoryData);
+
     const renderDocument = (
       rootDocuments: RootDocuments,
       depth: number
@@ -102,7 +119,7 @@ class Directory extends Component<null, DirectoryState> {
 
     return `
       <div style='border: 1px solid black; padding: 10px'>${renderDocument(
-        this.state.rootDocuments ?? [],
+        rootDocuments,
         0
       )}</div>
       <button id='create-null'>문서 추가하기</button>

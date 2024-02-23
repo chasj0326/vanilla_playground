@@ -74,7 +74,7 @@ class Store {
 
   setData<T = any>(key: keyof Data) {
     this.validateKey([key]);
-    return (value: T | ((x: T) => void)) => {
+    return (value: T | ((x: T) => T)) => {
       const oldValue = this.data[key].value;
 
       if (typeof value === 'function') {
