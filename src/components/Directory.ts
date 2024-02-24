@@ -1,4 +1,4 @@
-import { Component } from '@notion/core';
+import { Component } from '@core';
 import { RootDocuments, DirectoryData } from '@notion/types';
 import { router } from '@notion/main';
 import { store, directoryData } from '@notion/store';
