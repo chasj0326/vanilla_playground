@@ -1,4 +1,4 @@
-import { Component } from '@core';
+import { Component, navigate } from '@core';
 import { RootDocuments, DirectoryData } from '@notion/types';
 import { router } from '@notion/main';
 import { store, directoryData } from '@notion/store';
@@ -22,6 +22,7 @@ class Directory extends Component {
         ...prev,
         currentId: Number(id),
       }));
+      navigate(`/${id}`);
     });
 
     this.addEvent('click', ({ tagName, id, parentElement }) => {

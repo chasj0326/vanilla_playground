@@ -12,13 +12,7 @@ class NotionPage extends Component {
   }
 
   rendered() {
-    this.addComponent(Directory, {
-      state: {
-        currentId: 0,
-        rootDocuments: [],
-      },
-      props: null,
-    });
+    this.addComponent(Directory);
   }
 }
 
