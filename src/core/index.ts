@@ -9,3 +9,6 @@ export { outlet } from './routes/domUtils';
 export { default as createApiClient } from './services/ApiClient';
 export { default as makeRequest } from './services/makeRequest';
 export { default as Store } from './services/Store';
+
+/* utils */
+export { default as createDOMElement } from './utils/createDOMElement';
