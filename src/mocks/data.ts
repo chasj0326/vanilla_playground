@@ -1,4 +1,4 @@
-import { RootDocuments, DocumentContent } from '../types/document';
+import { RootDocuments, DocumentContent } from '@/types';
 
 export const rootDocuments: RootDocuments = [
   {

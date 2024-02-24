@@ -1,5 +1,5 @@
-import Component from '../core/Component';
-import { router } from '../main';
+import { Component } from '@/core';
+import { router } from '@/main';
 
 class DocumentPage extends Component {
   template() {

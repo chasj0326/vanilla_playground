@@ -1,4 +1,4 @@
-import createApi from '../core/ApiClient';
+import { createApi } from '@/core';
 
 export const notionApi = createApi(import.meta.env.VITE_BASE_URL, {
   headers: {

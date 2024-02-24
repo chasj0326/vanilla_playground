@@ -1,5 +1,4 @@
-import Component from './core/Component';
-import { outlet } from './routes/domUtils';
+import { Component, outlet } from '@/core';
 
 class App extends Component {
   template(): string {

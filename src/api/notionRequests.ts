@@ -10,7 +10,7 @@ interface UpdateDocumentRequestBody {
   content: string;
 }
 
-export const notion = {
+const notion = {
   all: async () => await notionApi.get('/documents'),
   detail: async (id: string) =>
     await notionApi.get(`/documents/${id}`),
@@ -21,3 +21,5 @@ export const notion = {
   delete: async (id: number) =>
     await notionApi.delete(`/documents/${id}`),
 };
+
+export default notion;

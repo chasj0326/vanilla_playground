@@ -1,5 +1,5 @@
-import Store from './core/Store';
-import { DirectoryData } from './types/data';
+import { Store } from '@/core';
+import { DirectoryData } from '@/types';
 
 export const store = new Store();
 

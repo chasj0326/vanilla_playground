@@ -1,6 +1,5 @@
-import Component from '../core/Component';
-import { outlet } from '../routes/domUtils';
-import Directory from '../components/Directory';
+import { Component, outlet } from '@/core';
+import Directory from '@/components/Directory';
 
 class NotionPage extends Component {
   template() {

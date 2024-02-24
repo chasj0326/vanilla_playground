@@ -1,21 +1,21 @@
-interface RequestOptions<T = any, S = any> {
-  onSuccess?: (data: T) => void;
+interface RequestOptions<ReturnType = any, DataType = any> {
+  onSuccess?: (data: ReturnType) => void;
   onError?: (error: Error) => void;
   onStart?: () => void;
   onEnd?: () => void;
-  select?: (data: S) => T;
+  select?: (data: DataType) => ReturnType;
 }
 
-interface Result<T> {
-  data: T | undefined;
+interface Result<ReturnType> {
+  data: ReturnType | undefined;
   isSuccess: boolean;
   isError: boolean;
 }
 
-const makeRequest = async <T = any, S = any>(
+const makeRequest = async <ReturnType = any, DataType = any>(
   fetchFn: () => Promise<Response>,
-  requestOptions?: RequestOptions<T, S>
-): Promise<Result<T>> => {
+  requestOptions?: RequestOptions<ReturnType, DataType>
+): Promise<Result<ReturnType>> => {
   const { onSuccess, onError, onStart, onEnd, select } =
     requestOptions ?? {};
   if (onStart) onStart();

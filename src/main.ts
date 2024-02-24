@@ -1,6 +1,6 @@
-import './style.css';
-import App from './App';
-import createRouter from './routes/Router';
+import '@/style.css';
+import App from '@/App';
+import { createRouter } from '@/core';
 import NotionPage from './pages/NotionPage';
 import DocumentPage from './pages/DocumentPage';
 
