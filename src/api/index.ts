@@ -1,1 +1,1 @@
-export { default as notion } from './notionRequests';
+export { default as notionApi } from './notionApi';

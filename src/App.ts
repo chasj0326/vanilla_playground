@@ -1,4 +1,4 @@
-import { Component, outlet } from '@/core';
+import { Component, outlet } from '@core';
 
 class App extends Component {
   template(): string {

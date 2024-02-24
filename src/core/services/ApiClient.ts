@@ -55,7 +55,7 @@ class ApiClient {
   }
 }
 
-const createApi = (baseUrl: string, options: RequestInit) =>
+const createApiClient = (baseUrl: string, options: RequestInit) =>
   new ApiClient(baseUrl, options);
 
-export default createApi;
+export default createApiClient;

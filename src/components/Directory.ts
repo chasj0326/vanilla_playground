@@ -1,58 +1,17 @@
-import { notion } from '@/api';
-import { Component, makeRequest, navigate } from '@/core';
-import {
-  CreatedDocument,
-  RootDocuments,
-  DirectoryData,
-} from '@/types';
-import { router } from '@/main';
-import { store, directoryData } from '@/store';
+import { Component } from '@notion/core';
+import { RootDocuments, DirectoryData } from '@notion/types';
+import { router } from '@notion/main';
+import { store, directoryData } from '@notion/store';
+import { notion } from '@notion/services';
 
 class Directory extends Component {
   created(): void {
     store.subscribe([directoryData], () => this.render());
   }
 
-  getRootDocuments(newId?: number) {
-    const setDirectoryData =
-      store.setData<DirectoryData>(directoryData);
-    makeRequest<RootDocuments>(() => notion.all(), {
-      onSuccess: (data) => {
-        setDirectoryData((prev) => ({
-          currentId: newId ?? prev.currentId,
-          rootDocuments: data ?? [],
-        }));
-      },
-    });
-  }
-
-  createDocument(parent: null | string) {
-    makeRequest<CreatedDocument>(
-      () => notion.create({ parent, title: '' }),
-      {
-        onSuccess: (data) => {
-          this.getRootDocuments(data.id);
-          navigate(`/${data.id}`);
-        },
-      }
-    );
-  }
-
-  deleteDocument(id: number) {
-    const { currentId } = store.getData<DirectoryData>(directoryData);
-    makeRequest(() => notion.delete(id), {
-      onSuccess: () => {
-        this.getRootDocuments();
-        if (id === currentId) {
-          navigate('/');
-        }
-      },
-    });
-  }
-
   mounted() {
     const { params } = router.match() || {};
-    this.getRootDocuments(Number(params?.id));
+    notion.getRootDocuments(Number(params?.id));
 
     const setDirectoryData =
       store.setData<DirectoryData>(directoryData);
@@ -68,18 +27,22 @@ class Directory extends Component {
     this.addEvent('click', ({ tagName, id, parentElement }) => {
       if (tagName !== 'BUTTON') return;
 
-      const documentId = parentElement?.id ?? null;
+      const documentId = parentElement?.id;
+
       switch (id) {
         case 'delete': {
-          this.deleteDocument(Number(documentId));
+          if (!documentId) return;
+          notion.deleteDocument(Number(documentId));
           break;
         }
         case 'create': {
-          this.createDocument(documentId);
+          notion.createDocument(
+            documentId ? Number(documentId) : null
+          );
           break;
         }
         case 'create-null': {
-          this.createDocument(null);
+          notion.createDocument(null);
           break;
         }
       }

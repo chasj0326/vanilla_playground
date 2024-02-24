@@ -1,8 +1,25 @@
-import { createApi } from '@/core';
+import apiClient from './apiClient';
 
-export const notionApi = createApi(import.meta.env.VITE_BASE_URL, {
-  headers: {
-    'x-username': import.meta.env.VITE_USERNAME,
-    'Content-Type': 'application/json',
-  },
-});
+interface CreateDocumentRequestBody {
+  title: string;
+  parent: number | null;
+}
+
+interface UpdateDocumentRequestBody {
+  title: string;
+  content: string;
+}
+
+const notionApi = {
+  getAll: async () => await apiClient.get('/documents'),
+  getDetail: async (id: string) =>
+    await apiClient.get(`/documents/${id}`),
+  create: async (body: CreateDocumentRequestBody) =>
+    await apiClient.post('/documents', body),
+  update: async (id: string, body: UpdateDocumentRequestBody) =>
+    await apiClient.put(`/documents/${id}`, body),
+  delete: async (id: number) =>
+    await apiClient.delete(`/documents/${id}`),
+};
+
+export default notionApi;

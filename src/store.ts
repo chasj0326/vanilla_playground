@@ -1,5 +1,5 @@
-import { Store } from '@/core';
-import { DirectoryData } from '@/types';
+import { Store } from '@core';
+import { DirectoryData } from '@notion/types';
 
 export const store = new Store();
 

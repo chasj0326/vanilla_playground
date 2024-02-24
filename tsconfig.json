@@ -22,7 +22,8 @@
     /* Path Alias */
     "baseUrl": "src",
     "paths": {
-      "@/*": ["*"]
+      "@notion/*": ["*"],
+      "@core": ["core/index.ts"]
     }
   },
   "include": ["src"]

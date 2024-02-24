@@ -1,8 +1,8 @@
-import '@/style.css';
-import App from '@/App';
-import { createRouter } from '@/core';
-import NotionPage from './pages/NotionPage';
-import DocumentPage from './pages/DocumentPage';
+import '@notion/style.css';
+import App from '@notion/App';
+import { createRouter } from '@core';
+import NotionPage from '@notion/pages/NotionPage';
+import DocumentPage from '@notion/pages/DocumentPage';
 
 const $app = document.querySelector<HTMLElement>('#app');
 if ($app) {
