@@ -1,11 +1,14 @@
 import {
   CreatedDocument,
   DirectoryData,
+  EditorData,
   RootDocuments,
+  DocumentContent,
 } from '@notion/types';
-import { store, directoryData } from '@notion/store';
+import { store, directoryData, editorData } from '@notion/store';
 import { makeRequest, navigate } from '@core';
 import { notionApi } from '@notion/api';
+import { UpdateDocumentRequestBody } from '@notion/types';
 
 const getRootDocuments = (newId?: number) => {
   const setDirectoryData =
@@ -20,9 +23,24 @@ const getRootDocuments = (newId?: number) => {
   });
 };
 
+const getDetailDocument = (id: number) => {
+  const setEditorData = store.setData<EditorData>(editorData);
+  makeRequest<DocumentContent>(() => notionApi.getDetail(id), {
+    onSuccess: ({ id, title, content, updatedAt, createdAt }) => {
+      setEditorData({
+        id,
+        title,
+        content,
+        updatedAt,
+        createdAt,
+      });
+    },
+  });
+};
+
 const createDocument = (parent: null | number) => {
   makeRequest<CreatedDocument>(
-    () => notionApi.create({ parent, title: '' }),
+    () => notionApi.create({ parent, title: '테스트' }),
     {
       onSuccess: (data) => {
         getRootDocuments(data.id);
@@ -30,6 +48,17 @@ const createDocument = (parent: null | number) => {
       },
     }
   );
+};
+
+const updateDocument = (
+  id: number,
+  body: UpdateDocumentRequestBody
+) => {
+  makeRequest(() => notionApi.update(id, body), {
+    onSuccess: () => {
+      getDetailDocument(id);
+    },
+  });
 };
 
 const deleteDocument = (id: number) => {
@@ -47,7 +76,9 @@ const deleteDocument = (id: number) => {
 
 const notionService = {
   getRootDocuments,
+  getDetailDocument,
   createDocument,
+  updateDocument,
   deleteDocument,
 };
 

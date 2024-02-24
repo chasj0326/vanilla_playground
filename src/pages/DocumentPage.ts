@@ -1,12 +1,15 @@
 import { Component } from '@core';
-import { router } from '@notion/main';
+import Editor from '@notion/components/Editor';
 
 class DocumentPage extends Component {
   template() {
-    const matched = router.match();
     return `
-      DOCUMENT: ${matched?.params.id}
+     <div class='editor'></div>
     `;
+  }
+
+  mounted(): void {
+    this.addComponent(Editor);
   }
 }
 

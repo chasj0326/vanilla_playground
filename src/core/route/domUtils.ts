@@ -1,7 +1,7 @@
-import Component from '../components/Component';
+import Component from '../component/Component';
 import createDOMElement, {
   ElementProps,
-} from '../utils/createDOMElement';
+} from '../util/createDOMElement';
 
 const getOutletElement = (depth: number) => {
   const selector = Array(depth + 1)

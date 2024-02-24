@@ -1,4 +1,4 @@
-import Component from '../components/Component';
+import Component from '../component/Component';
 
 export interface Params {
   [key: string]: string;

@@ -1,7 +1,7 @@
 import { Component, outlet } from '@core';
 import Directory from '@notion/components/Directory';
 
-class NotionPage extends Component {
+class MainPage extends Component {
   template() {
     return `
     <div style='display: flex; padding: 20px; gap: 20px;'>
@@ -16,4 +16,4 @@ class NotionPage extends Component {
   }
 }
 
-export default NotionPage;
+export default MainPage;

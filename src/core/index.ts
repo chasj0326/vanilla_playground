@@ -1,14 +1,14 @@
 /* components */
-export { default as Component } from './components/Component';
+export { default as Component } from './component/Component';
 
 /* routes */
-export { default as createRouter, navigate } from './routes/Router';
-export { outlet } from './routes/domUtils';
+export { default as createRouter, navigate } from './route/Router';
+export { outlet } from './route/domUtils';
 
 /* services */
-export { default as createApiClient } from './services/ApiClient';
-export { default as makeRequest } from './services/makeRequest';
-export { default as Store } from './services/Store';
+export { default as createApiClient } from './service/ApiClient';
+export { default as makeRequest } from './service/makeRequest';
+export { default as Store } from './service/Store';
 
 /* utils */
-export { default as createDOMElement } from './utils/createDOMElement';
+export { default as createDOMElement } from './util/createDOMElement';

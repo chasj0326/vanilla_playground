@@ -1,8 +1,7 @@
 import '@notion/style.css';
 import App from '@notion/App';
 import { createRouter } from '@core';
-import NotionPage from '@notion/pages/NotionPage';
-import DocumentPage from '@notion/pages/DocumentPage';
+import { MainPage, DocumentPage } from '@notion/pages';
 
 const $app = document.querySelector<HTMLElement>('#app');
 if ($app) {
@@ -12,7 +11,7 @@ if ($app) {
 export const router = createRouter([
   {
     path: '/',
-    component: NotionPage,
+    component: MainPage,
     children: [
       {
         path: '/:id',
