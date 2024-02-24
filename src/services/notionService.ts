@@ -45,10 +45,10 @@ const deleteDocument = (id: number) => {
   });
 };
 
-const notion = {
+const notionService = {
   getRootDocuments,
   createDocument,
   deleteDocument,
 };
 
-export default notion;
+export default notionService;

@@ -2,7 +2,7 @@ import { Component } from '@core';
 import { RootDocuments, DirectoryData } from '@notion/types';
 import { router } from '@notion/main';
 import { store, directoryData } from '@notion/store';
-import { notion } from '@notion/services';
+import { notionService as notion } from '@notion/services';
 
 class Directory extends Component {
   created(): void {

@@ -1,1 +1,1 @@
-export { default as notion } from './notionService';
+export { default as notionService } from './notionService';
