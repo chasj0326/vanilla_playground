@@ -9,7 +9,7 @@ export interface RootDocuments extends Array<LeafDocument> {}
 export interface DocumentContent {
   id: number;
   title: string;
-  content: string;
+  content: string | null;
   createdAt: string;
   updatedAt: string;
   documents: Omit<DocumentContent, 'content' | 'documents'>[];

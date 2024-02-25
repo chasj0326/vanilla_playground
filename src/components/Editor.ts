@@ -1,8 +1,9 @@
 import { Component } from '@core';
+import { PLACEHOLDER } from '@notion/constants';
 import { router } from '@notion/main';
 import { notionService as notion } from '@notion/services';
 import { editorData, store } from '@notion/store';
-import { EditorData, UpdateDocumentRequestBody } from '@notion/types';
+import { EditorData } from '@notion/types';
 import { debounce } from '@notion/utils';
 
 class Editor extends Component {
@@ -15,15 +16,9 @@ class Editor extends Component {
     const documentId = Number(params?.id);
     notion.getDetailDocument(documentId);
 
-    const updateWithDebounce = debounce(
-      (
-        target: 'title' | 'content',
-        body: UpdateDocumentRequestBody
-      ) => {
-        notion.updateDocument(documentId, target, body);
-      },
-      1000
-    );
+    const updateWithDebounce = debounce((target, body) => {
+      notion.updateDocument(documentId, target, body);
+    }, 500);
 
     this.addEvent('input', ({ id }) => {
       const { value: title } =
@@ -39,10 +34,24 @@ class Editor extends Component {
       store.getData<EditorData>(editorData);
     return `
       <h3>${id}</h3>
-      <textarea id='title'>${title}</textarea>
+      <textarea id='title' placeholder='${
+        PLACEHOLDER.DOCUMENT_TITLE
+      }'>${title}</textarea>
       <br/>
-      <textarea id='content'>${content}</textarea>
+      <textarea id='content' placeholder='${
+        PLACEHOLDER.DOCUMENT_CONTNET
+      }'>${content || ''}</textarea>
     `;
+  }
+
+  rendered() {
+    // TODO : 시간 비교해서 title 또는 content 포커싱
+    const { title } = store.getData<EditorData>(editorData);
+    const titleEl = this.findElement<HTMLTextAreaElement>('#title');
+
+    titleEl.focus();
+    titleEl.value = '';
+    titleEl.value = title;
   }
 }
 

@@ -3,6 +3,7 @@ import { RootDocuments, DirectoryData } from '@notion/types';
 import { router } from '@notion/main';
 import { store, directoryData } from '@notion/store';
 import { notionService as notion } from '@notion/services';
+import { PLACEHOLDER } from '@notion/constants';
 
 class Directory extends Component {
   created(): void {
@@ -60,11 +61,10 @@ class Directory extends Component {
     ): string => `
        <ul>${rootDocuments
          .map(({ id, title, documents }) => {
-           const defaultTitle = '제목 없음';
            const titleEl =
              id === currentId
-               ? `<b>${title || defaultTitle}</b>`
-               : title || defaultTitle;
+               ? `<b>${title || PLACEHOLDER.DIRECTORY_TITLE}</b>`
+               : title || PLACEHOLDER.DIRECTORY_TITLE;
 
            return `
             <li id='${id}'>
