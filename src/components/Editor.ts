@@ -18,7 +18,7 @@ class Editor extends Component {
 
     const updateWithDebounce = debounce((target, body) => {
       notion.updateDocument(documentId, target, body);
-    }, 500);
+    }, 300);
 
     this.addEvent('input', ({ id }) => {
       const { value: title } =
@@ -42,16 +42,6 @@ class Editor extends Component {
         PLACEHOLDER.DOCUMENT_CONTNET
       }'>${content || ''}</textarea>
     `;
-  }
-
-  rendered() {
-    // TODO : 시간 비교해서 title 또는 content 포커싱
-    const { title } = store.getData<EditorData>(editorData);
-    const titleEl = this.findElement<HTMLTextAreaElement>('#title');
-
-    titleEl.focus();
-    titleEl.value = '';
-    titleEl.value = title;
   }
 }
 

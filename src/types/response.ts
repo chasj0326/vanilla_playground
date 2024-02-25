@@ -6,13 +6,13 @@ export interface LeafDocument {
 
 export interface RootDocuments extends Array<LeafDocument> {}
 
-export interface DocumentContent {
+export interface DetailDocument {
   id: number;
   title: string;
   content: string | null;
   createdAt: string;
   updatedAt: string;
-  documents: Omit<DocumentContent, 'content' | 'documents'>[];
+  documents: Omit<DetailDocument, 'content' | 'documents'>[];
 }
 
 export interface CreatedDocument {

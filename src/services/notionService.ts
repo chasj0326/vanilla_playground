@@ -3,12 +3,20 @@ import {
   DirectoryData,
   EditorData,
   RootDocuments,
-  DocumentContent,
+  DetailDocument,
+  StoredDocument,
 } from '@notion/types';
 import { store, directoryData, editorData } from '@notion/store';
-import { makeRequest, navigate } from '@core';
+import { makeRequest, navigate, storage } from '@core';
 import { notionApi } from '@notion/api';
 import { UpdateDocumentRequestBody } from '@notion/types';
+import {
+  STORAGE_KEY,
+  defaultStoredDocument,
+} from '@notion/constants';
+import { isFreshByTime } from '@notion/utils';
+
+const localStorage = storage(window.localStorage);
 
 const getRootDocuments = (newId?: number) => {
   const setDirectoryData =
@@ -25,15 +33,33 @@ const getRootDocuments = (newId?: number) => {
 
 const getDetailDocument = (id: number) => {
   const setEditorData = store.setData<EditorData>(editorData);
-  makeRequest<DocumentContent>(() => notionApi.getDetail(id), {
+  const storedDocument = localStorage.getItem<StoredDocument>({
+    key: STORAGE_KEY.EDITING,
+    default: defaultStoredDocument,
+  });
+  makeRequest<DetailDocument>(() => notionApi.getDetail(id), {
     onSuccess: ({ id, title, content, updatedAt, createdAt }) => {
-      setEditorData({
-        id,
-        title,
-        content,
-        updatedAt,
-        createdAt,
-      });
+      if (
+        id === storedDocument.id &&
+        storedDocument.updatedAt &&
+        !isFreshByTime(
+          new Date(updatedAt),
+          new Date(storedDocument.updatedAt)
+        )
+      ) {
+        if (confirm('작성중인 글이 있습니다. 불러오시겠습니까?')) {
+          setEditorData({ ...storedDocument, id, createdAt });
+          localStorage.removeItem(STORAGE_KEY.EDITING);
+        }
+      } else {
+        setEditorData({
+          id,
+          title,
+          content,
+          updatedAt,
+          createdAt,
+        });
+      }
     },
   });
 };
@@ -55,9 +81,16 @@ const updateDocument = (
   target: 'title' | 'content',
   body: UpdateDocumentRequestBody
 ) => {
+  localStorage.setItem<StoredDocument>({
+    key: STORAGE_KEY.EDITING,
+    value: {
+      id,
+      updatedAt: String(new Date()),
+      ...body,
+    },
+  });
   makeRequest(() => notionApi.update(id, body), {
     onSuccess: () => {
-      getDetailDocument(id);
       if (target === 'title') getRootDocuments();
     },
   });
