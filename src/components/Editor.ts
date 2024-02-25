@@ -30,10 +30,8 @@ class Editor extends Component {
   }
 
   template(): string {
-    const { title, id, content } =
-      store.getData<EditorData>(editorData);
+    const { title, content } = store.getData<EditorData>(editorData);
     return `
-      <h3>${id}</h3>
       <textarea id='title' placeholder='${
         PLACEHOLDER.DOCUMENT_TITLE
       }'>${title}</textarea>

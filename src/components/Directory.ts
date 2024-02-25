@@ -14,15 +14,11 @@ class Directory extends Component {
     const { params } = router.match() || {};
     notion.getRootDocuments(Number(params?.id));
 
-    const setDirectoryData =
-      store.setData<DirectoryData>(directoryData);
+    const setDirectoryData = store.setData<DirectoryData>(directoryData);
 
     this.addEvent('click', ({ tagName, id }) => {
       if (tagName !== 'LI') return;
-      setDirectoryData((prev) => ({
-        ...prev,
-        currentId: Number(id),
-      }));
+      setDirectoryData((prev) => ({ ...prev, currentId: Number(id) }));
       navigate(`/${id}`);
     });
 
@@ -38,9 +34,7 @@ class Directory extends Component {
           break;
         }
         case 'create': {
-          notion.createDocument(
-            documentId ? Number(documentId) : null
-          );
+          notion.createDocument(documentId ? Number(documentId) : null);
           break;
         }
         case 'create-null': {

@@ -7,10 +7,7 @@ export const renderRoute = (
   nextPath: string, // 이동해야 하는 주소
   prevPath?: string // 현재 주소
 ) => {
-  const { routes: prevRoutes } = findMatchingRoutes(
-    routes,
-    prevPath ?? '/'
-  );
+  const { routes: prevRoutes } = findMatchingRoutes(routes, prevPath ?? '/');
 
   const { routes: nextRoutes } = findMatchingRoutes(routes, nextPath);
 

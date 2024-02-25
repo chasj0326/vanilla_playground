@@ -9,11 +9,7 @@ class Component<Props = any, State = any> {
   props;
   state;
 
-  constructor({
-    target,
-    props,
-    state,
-  }: ComponentProps<Props, State>) {
+  constructor({ target, props, state }: ComponentProps<Props, State>) {
     this.$target = target;
     this.props = props;
     this.state = state;

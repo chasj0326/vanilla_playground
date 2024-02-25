@@ -1,11 +1,5 @@
 const storage = (_storage = window.localStorage) => {
-  const setItem = <T = any>({
-    key,
-    value,
-  }: {
-    key: string;
-    value: T;
-  }) => {
+  const setItem = <T = any>({ key, value }: { key: string; value: T }) => {
     _storage.setItem(key, JSON.stringify(value));
   };
 
@@ -24,11 +18,7 @@ const storage = (_storage = window.localStorage) => {
     _storage.removeItem(key);
   };
 
-  return {
-    setItem,
-    getItem,
-    removeItem,
-  };
+  return { setItem, getItem, removeItem };
 };
 
 export default storage;

@@ -24,9 +24,7 @@ class Store {
   }
 
   validateKey(keyList: (keyof Data)[]) {
-    if (
-      !keyList.every((key) => key in this.channel && key in this.data)
-    ) {
+    if (!keyList.every((key) => key in this.channel && key in this.data)) {
       throw new Error('Invalid Key in Data');
     }
   }
@@ -51,18 +49,9 @@ class Store {
     this.updateQueue.clear();
   }
 
-  addData<T>({
-    key,
-    default: defaultValue,
-  }: {
-    key: string;
-    default: T;
-  }) {
+  addData<T>({ key, default: defaultValue }: { key: string; default: T }) {
     const uniqueKey = Symbol(key);
-    this.data[uniqueKey] = {
-      default: defaultValue,
-      value: defaultValue,
-    };
+    this.data[uniqueKey] = { default: defaultValue, value: defaultValue };
     this.channel[uniqueKey] = [];
     return uniqueKey;
   }
@@ -78,9 +67,7 @@ class Store {
       const oldValue = this.data[key].value;
 
       if (typeof value === 'function') {
-        this.data[key].value = (value as (x: T) => void)(
-          this.data[key].value
-        );
+        this.data[key].value = (value as (x: T) => void)(this.data[key].value);
       } else {
         this.data[key].value = value;
       }

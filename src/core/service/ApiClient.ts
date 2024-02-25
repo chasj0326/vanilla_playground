@@ -7,10 +7,7 @@ class ApiClient {
     this.baseOptions = options;
   }
 
-  async request(
-    endpoint: string,
-    options?: RequestInit
-  ): Promise<Response> {
+  async request(endpoint: string, options?: RequestInit): Promise<Response> {
     try {
       const response = await fetch(`${this.baseUrl}${endpoint}`, {
         ...this.baseOptions,
