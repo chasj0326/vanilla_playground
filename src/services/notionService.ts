@@ -11,7 +11,7 @@ import { store, directoryData, editorData } from '@notion/store';
 import { notionApi } from '@notion/api';
 import { UpdateDocumentRequestBody } from '@notion/types';
 import { STORAGE_KEY, defaultStoredDocument } from '@notion/constants';
-import { isFreshByTime } from '@notion/utils';
+import { isFreshByTime, makeToggleData, updateToggleData } from '@notion/utils';
 
 const localStorage = storage(window.localStorage);
 
@@ -19,9 +19,15 @@ const getRootDocuments = (newId?: number) => {
   const setDirectoryData = store.setData<DirectoryData>(directoryData);
   makeRequest<RootDocuments>(() => notionApi.getAll(), {
     onSuccess: (data) => {
+      const toggleData = makeToggleData(data);
+      const storedToggleData = localStorage.getItem({
+        key: STORAGE_KEY.TOGGLE,
+        default: toggleData,
+      });
       setDirectoryData((prev) => ({
         currentId: newId ?? prev.currentId,
         rootDocuments: data ?? [],
+        toggleData: updateToggleData(toggleData, storedToggleData),
       }));
     },
   });
@@ -54,6 +60,13 @@ const getDetailDocument = (id: number) => {
 const createDocument = (parent: null | number) => {
   makeRequest<CreatedDocument>(() => notionApi.create({ parent, title: '' }), {
     onSuccess: (data) => {
+      if (parent) {
+        const { toggleData } = store.getData<DirectoryData>(directoryData);
+        localStorage.setItem({
+          key: STORAGE_KEY.TOGGLE,
+          value: { ...toggleData, [parent]: true },
+        });
+      }
       getRootDocuments(data.id);
       navigate(`/${data.id}`);
     },
@@ -89,12 +102,27 @@ const deleteDocument = (id: number) => {
   });
 };
 
+const toggleDocument = (id: number) => {
+  const [{ toggleData }, setDirectoryData] =
+    store.useData<DirectoryData>(directoryData);
+  const newToggleData = { ...toggleData, [id]: !toggleData[id] };
+  localStorage.setItem({
+    key: STORAGE_KEY.TOGGLE,
+    value: newToggleData,
+  });
+  setDirectoryData((prev) => ({
+    ...prev,
+    toggleData: newToggleData,
+  }));
+};
+
 const notionService = {
   getRootDocuments,
   getDetailDocument,
   createDocument,
   updateDocument,
   deleteDocument,
+  toggleDocument,
 };
 
 export default notionService;

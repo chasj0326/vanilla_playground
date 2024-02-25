@@ -1,7 +1,4 @@
-const debounce = (
-  callback: (...args: any[]) => void,
-  delay: number
-) => {
+export const debounce = (callback: (...args: any[]) => void, delay: number) => {
   let timerId: ReturnType<typeof setTimeout>;
 
   return (...args: any) => {
@@ -11,5 +8,3 @@ const debounce = (
     timerId = setTimeout(() => callback(...args), delay);
   };
 };
-
-export default debounce;

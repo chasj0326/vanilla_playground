@@ -24,7 +24,7 @@ class Directory extends Component {
 
       switch (action) {
         case 'toggle': {
-          console.log(documentId, 'toggle');
+          notion.toggleDocument(Number(documentId));
           break;
         }
         case 'create': {
@@ -51,7 +51,7 @@ class Directory extends Component {
   }
 
   template() {
-    const { currentId, rootDocuments } =
+    const { currentId, rootDocuments, toggleData } =
       store.getData<DirectoryData>(directoryData);
 
     const renderDocument = (
@@ -74,7 +74,7 @@ class Directory extends Component {
                 <button data-action='create'>create</button>
               </div>
             </li>
-            ${renderDocument(documents, depth + 1)}
+            ${toggleData[id] ? renderDocument(documents, depth + 1) : ''}
           `;
           })
           .join('')}

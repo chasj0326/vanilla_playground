@@ -6,4 +6,5 @@ export const PLACEHOLDER = {
 
 export const STORAGE_KEY = {
   EDITING: 'editing-document',
+  TOGGLE: 'toggle-data',
 };

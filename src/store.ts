@@ -8,6 +8,7 @@ export const directoryData = store.addData<DirectoryData>({
   default: {
     currentId: 0,
     rootDocuments: [],
+    toggleData: {},
   },
 });
 
