@@ -13,33 +13,38 @@ class Directory extends Component {
   mounted() {
     const { params } = router.match() || {};
     notion.getRootDocuments(Number(params?.id));
-
     const setDirectoryData = store.setData<DirectoryData>(directoryData);
 
-    this.addEvent('click', ({ tagName, id }) => {
-      if (tagName !== 'LI') return;
-      setDirectoryData((prev) => ({ ...prev, currentId: Number(id) }));
-      navigate(`/${id}`);
-    });
+    this.addEvent('click', (target) => {
+      const $li = target.closest('li');
+      const documentId = $li?.id;
+      const { action } = target.dataset;
 
-    this.addEvent('click', ({ tagName, id, parentElement }) => {
-      if (tagName !== 'BUTTON') return;
+      if (!documentId) return;
 
-      const documentId = parentElement?.id;
-
-      switch (id) {
-        case 'delete': {
-          if (!documentId) return;
-          notion.deleteDocument(Number(documentId));
+      switch (action) {
+        case 'toggle': {
+          console.log(documentId, 'toggle');
           break;
         }
         case 'create': {
           notion.createDocument(documentId ? Number(documentId) : null);
           break;
         }
-        case 'create-null': {
+        case 'create-root': {
           notion.createDocument(null);
           break;
+        }
+        case 'delete': {
+          notion.deleteDocument(Number(documentId));
+          break;
+        }
+        default: {
+          setDirectoryData((prev) => ({
+            ...prev,
+            currentId: Number(documentId),
+          }));
+          navigate(`/${documentId}`);
         }
       }
     });
@@ -52,32 +57,36 @@ class Directory extends Component {
     const renderDocument = (
       rootDocuments: RootDocuments,
       depth: number
-    ): string => `
-       <ul>${rootDocuments
-         .map(({ id, title, documents }) => {
-           const titleEl =
-             id === currentId
-               ? `<b>${title || PLACEHOLDER.DIRECTORY_TITLE}</b>`
-               : title || PLACEHOLDER.DIRECTORY_TITLE;
-
-           return `
+    ): string => {
+      if (rootDocuments.length === 0) return '';
+      return `
+        <ul>${rootDocuments
+          .map(({ id, title, documents }) => {
+            return `
             <li id='${id}'>
-              ${titleEl}
-              <button id='delete'>delete</button>
-              <button id='create'>create</button>
+              <div class='title-container' style='--depth: ${depth}'>
+                <button data-action='toggle'>toggle</button>
+                <div class='title ${id === currentId ? 'current' : ''}'>
+                ${title || PLACEHOLDER.DIRECTORY_TITLE}</div>
+              </div>
+              <div class='button-container'>
+                <button data-action='delete'>delete</button>
+                <button data-action='create'>create</button>
+              </div>
             </li>
             ${renderDocument(documents, depth + 1)}
           `;
-         })
-         .join('')}
+          })
+          .join('')}
         </ul>
-      `;
+     `;
+    };
 
     return `
-      <div style='border: 1px solid black; padding: 10px'>
+      <header>
+        <button data-action='create-root'>문서 추가하기</button>
+      </header>
       ${renderDocument(rootDocuments, 0)}
-      </div>
-      <button id='create-null'>문서 추가하기</button>
     `;
   }
 }
