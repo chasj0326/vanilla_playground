@@ -40,7 +40,7 @@ const getDetailDocument = (id: number) => {
 
 const createDocument = (parent: null | number) => {
   makeRequest<CreatedDocument>(
-    () => notionApi.create({ parent, title: '테스트' }),
+    () => notionApi.create({ parent, title: '' }),
     {
       onSuccess: (data) => {
         getRootDocuments(data.id);
@@ -52,11 +52,13 @@ const createDocument = (parent: null | number) => {
 
 const updateDocument = (
   id: number,
+  target: 'title' | 'content',
   body: UpdateDocumentRequestBody
 ) => {
   makeRequest(() => notionApi.update(id, body), {
     onSuccess: () => {
       getDetailDocument(id);
+      if (target === 'title') getRootDocuments();
     },
   });
 };

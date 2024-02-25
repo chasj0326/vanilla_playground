@@ -69,6 +69,10 @@ class Component<Props = any, State = any> {
       listener(targetElement);
     });
   }
+
+  findElement<ElementType>(selector: string) {
+    return this.$target.querySelector(selector) as ElementType;
+  }
 }
 
 export default Component;
