@@ -1,0 +1,12 @@
+:root {
+  --default-text: rgb(55, 53, 47);
+  --directory-bg: rgb(247, 247, 245);
+  --directory-hover: rgba(55, 53, 47, 0.08);
+  --directory-current: rgba(55, 53, 47, 0.06);
+  --directory-current-hover: rgba(55, 53, 47, 0.1);
+  --directory-active: rgba(55, 53, 47, 0.15);
+  --directory-btn: rgb(160, 160, 156);
+  --directory-text: rgb(114, 113, 109);
+  --directory-holder: rgba(114, 113, 109, 0.4);
+  --editor-bg: rgb(255, 255, 255);
+}

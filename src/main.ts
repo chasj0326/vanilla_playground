@@ -1,4 +1,4 @@
-import '@notion/style.css';
+import '@notion/style/style.css';
 import App from '@notion/App';
 import { createRouter } from '@core';
 import { MainPage, DocumentPage } from '@notion/pages';

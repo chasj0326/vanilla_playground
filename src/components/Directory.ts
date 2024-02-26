@@ -58,20 +58,21 @@ class Directory extends Component {
       rootDocuments: RootDocuments,
       depth: number
     ): string => {
-      if (rootDocuments.length === 0) return '';
+      if (rootDocuments.length === 0)
+        return `<div class='document-holder' style='--depth: ${depth}'>하위 페이지 없음</div>`;
       return `
         <ul>${rootDocuments
           .map(({ id, title, documents }) => {
             return `
-            <li id='${id}'>
+            <li id='${id}' class='${id === currentId ? 'current' : ''}'>
               <div class='title-container' style='--depth: ${depth}'>
-                <button data-action='toggle'>toggle</button>
-                <div class='title ${id === currentId ? 'current' : ''}'>
+                <button data-action='toggle'>></button>
+                <div class='title'>
                 ${title || PLACEHOLDER.DIRECTORY_TITLE}</div>
               </div>
               <div class='button-container'>
-                <button data-action='delete'>delete</button>
-                <button data-action='create'>create</button>
+                <button data-action='delete'>-</button>
+                <button data-action='create'>+</button>
               </div>
             </li>
             ${toggleData[id] ? renderDocument(documents, depth + 1) : ''}
