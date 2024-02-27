@@ -19,3 +19,10 @@ export interface EmojiByCategory {
 export interface EmojiData {
   emojiMap: EmojiByCategory;
 }
+
+export interface InfiniteEmojiData {
+  categories: string[];
+  cursor: number;
+  done: boolean;
+  scrollTop: number;
+}

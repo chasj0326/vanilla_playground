@@ -1,33 +1,59 @@
-import { makeRequest, makeRequestAll } from '@core';
+import { makeRequest } from '@core';
 import { emojiApi } from '@notion/api';
-import { EmojiCategories, EmojiList, EmojiByCategory } from '@notion/types';
+import {
+  EmojiCategories,
+  EmojiList,
+  EmojiByCategory,
+  EmojiData,
+  InfiniteEmojiData,
+} from '@notion/types';
+import { store, emojiData, infiniteEmojiData } from '@notion/store';
 
-const getEmojiByCategory = (categories: string[]) => {
-  const fetchFns = categories.map(
-    (category) => () => emojiApi.getEmojiByCategory(category)
+export const getInfiniteEmoji = () => {
+  const [{ categories, cursor }, setInfiniteEmojiData] =
+    store.useData<InfiniteEmojiData>(infiniteEmojiData);
+  // if (cursor && cursor === categories.length) {
+  //   setInfiniteEmojiData((prev) => ({ ...prev, done: true }));
+  //   return;
+  // }
+
+  const setEmojiData = store.setData<EmojiData>(emojiData);
+  makeRequest<EmojiByCategory, EmojiList>(
+    () => emojiApi.getEmojiByCategory(categories[cursor]),
+    {
+      select: (data) => {
+        return { [categories[cursor]]: data.map(({ character }) => character) };
+      },
+      onSuccess: (data) => {
+        setEmojiData((prev) => ({
+          ...prev,
+          emojiMap: { ...prev.emojiMap, ...data },
+        }));
+        setInfiniteEmojiData((prev) => ({
+          ...prev,
+          cursor: prev.cursor + 1,
+          done: cursor === categories.length - 1,
+        }));
+      },
+    }
   );
-  makeRequestAll<EmojiByCategory, EmojiList[]>(fetchFns, {
-    select: (data) =>
-      data.reduce((result, emojis, i) => {
-        if (!emojis) return result;
-        return {
-          ...result,
-          [categories[i]]: emojis.map(({ character }) => character),
-        };
-      }, {}),
-    onSuccess: (data) => {
-      console.log(data);
-    },
-  });
 };
 
-export const getAllEmoji = () => {
+export const getEmojiCategory = () => {
+  const [{ cursor }, setInfiniteEmojiData] =
+    store.useData<InfiniteEmojiData>(infiniteEmojiData);
   makeRequest<string[], EmojiCategories>(() => emojiApi.getCategories(), {
     select: (data) => {
       return data.map(({ slug }) => slug);
     },
     onSuccess: (data) => {
-      getEmojiByCategory(data);
+      if (cursor === 0) {
+        setInfiniteEmojiData((prev) => ({
+          ...prev,
+          categories: data.filter((emoji) => emoji !== 'component'),
+        }));
+        getInfiniteEmoji();
+      }
     },
   });
 };

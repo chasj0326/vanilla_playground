@@ -192,3 +192,51 @@ main {
   color: var(--default-text);
   opacity: 0.4;
 }
+
+.emoji-container {
+  width: 280px;
+  height: 280px;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 1px 1px 4px 4px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.emoji {
+  width: 280px;
+  height: 280px;
+  overflow: auto;
+}
+
+.category-name {
+  margin: 10px;
+}
+
+.emoji-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.emoji button {
+  height: 36px;
+  width: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+}
+.emoji button:hover {
+  background-color: var(--directory-hover);
+}
+
+.divider {
+  height: 2px;
+  background-color: black;
+}
+
+.intersector {
+  height: 20px;
+  background-color: white;
+}
