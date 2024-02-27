@@ -21,3 +21,21 @@ export interface CreatedDocument {
   createAt: string;
   updateAt: string;
 }
+
+export interface EmojiCategory {
+  slug: string;
+  subCategories: string[];
+}
+
+export type EmojiCategories = EmojiCategory[];
+
+export type EmojiList = Emoji[];
+
+export interface Emoji {
+  slug: string;
+  character: string;
+  unicodeName: string;
+  codePoint: string;
+  group: string;
+  subGroup: string;
+}

@@ -11,3 +11,11 @@ export interface DirectoryData {
   toggleData: ToggleData;
 }
 export type EditorData = Omit<DetailDocument, 'documents'>;
+
+export interface EmojiByCategory {
+  [category: string]: string[];
+}
+
+export interface EmojiData {
+  emojiMap: EmojiByCategory;
+}

@@ -8,6 +8,7 @@ export { outlet } from './route/domUtils';
 /* services */
 export { default as createApiClient } from './service/ApiClient';
 export { default as makeRequest } from './service/makeRequest';
+export { default as makeRequestAll } from './service/makeRequestAll';
 export { default as Store } from './service/Store';
 export { default as storage } from './service/storage';
 
