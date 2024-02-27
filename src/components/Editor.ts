@@ -4,7 +4,7 @@ import { router } from '@notion/main';
 import { notionService as notion } from '@notion/services';
 import { editorData, store } from '@notion/store';
 import { EditorData } from '@notion/types';
-import { debounce } from '@notion/utils';
+import { debounce, resizeTextArea } from '@notion/utils';
 
 class Editor extends Component {
   created(): void {
@@ -21,12 +21,22 @@ class Editor extends Component {
     }, 300);
 
     this.addEvent('input', ({ id }) => {
-      const { value: title } =
-        this.findElement<HTMLTextAreaElement>('#title');
-      const { value: content } =
-        this.findElement<HTMLTextAreaElement>('#content');
-      updateWithDebounce(id, { title, content });
+      const titleEl = this.findElement<HTMLTextAreaElement>('#title');
+      const contentEl = this.findElement<HTMLTextAreaElement>('#content');
+
+      resizeTextArea('#title');
+      resizeTextArea('#content');
+
+      updateWithDebounce(id, {
+        title: titleEl.value,
+        content: contentEl.value,
+      });
     });
+  }
+
+  rendered(): void {
+    resizeTextArea('#title');
+    resizeTextArea('#content');
   }
 
   template(): string {
@@ -34,11 +44,10 @@ class Editor extends Component {
     return `
       <textarea id='title' placeholder='${
         PLACEHOLDER.DOCUMENT_TITLE
-      }'>${title}</textarea>
-      <br/>
+      }' rows='1'>${title}</textarea>
       <textarea id='content' placeholder='${
         PLACEHOLDER.DOCUMENT_CONTNET
-      }'>${content || ''}</textarea>
+      }' rows='1'>${content || ''}</textarea>
     `;
   }
 }

@@ -54,7 +54,10 @@ class Directory extends Component {
       depth: number
     ): string => {
       if (rootDocuments.length === 0) {
-        return `<div class='document-holder' style='--depth: ${depth}'>하위 페이지 없음</div>`;
+        return `
+        <div class='document-holder' style='--depth: ${depth}'>
+          ${depth ? '하위' : ''} 페이지 없음
+        </div>`;
       }
       return `
         <ul>${rootDocuments
