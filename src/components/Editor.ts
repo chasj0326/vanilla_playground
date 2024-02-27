@@ -24,8 +24,7 @@ class Editor extends Component {
       const titleEl = this.findElement<HTMLTextAreaElement>('#title');
       const contentEl = this.findElement<HTMLTextAreaElement>('#content');
 
-      resizeTextArea('#title');
-      resizeTextArea('#content');
+      resizeTextArea(['#title', '#content']);
 
       updateWithDebounce(id, {
         title: titleEl.value,
@@ -35,8 +34,7 @@ class Editor extends Component {
   }
 
   rendered(): void {
-    resizeTextArea('#title');
-    resizeTextArea('#content');
+    resizeTextArea(['#title', '#content']);
   }
 
   template(): string {
