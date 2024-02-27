@@ -1,5 +1,12 @@
 @import './variable.css';
 
+* {
+  box-sizing: border-box;
+  outline: none;
+  border: none;
+  background-color: transparent;
+}
+
 #app {
   height: 100vh;
 }
@@ -9,31 +16,73 @@
 
 /* Directory */
 
-.directory {
-  width: 300px;
+nav {
+  display: flex;
+  flex-direction: column;
+  font-family: 'Noto Sans KR', sans-serif;
+  width: 250px;
   height: 100vh;
-  border-right: 1px solid black;
+  border-right: 1px solid var(--directory-current);
   background-color: var(--directory-bg);
   color: var(--directory-text);
+  gap: 20px;
+  overflow: hidden;
+  padding: 2px;
 }
 
 header {
-  padding: 10px;
-}
-
-li {
-  list-style: none;
+  width: 100%;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 2px;
+  padding: 2px;
+  margin-top: 2px;
+}
+header button {
+  font-family: 'Noto Sans KR', sans-serif;
+  display: flex;
+  width: 100%;
   align-items: center;
   height: 32px;
   cursor: pointer;
-  margin: 2px 4px;
   padding: 4px;
+  padding-left: 8px;
   border-radius: 4px;
-  box-sizing: border-box;
+  gap: 10px;
+  font-size: 16px;
+}
+header button:hover {
+  background-color: var(--directory-hover);
+}
+header button:active {
+  background-color: var(--directory-active);
+}
+header button > div {
+  color: var(--directory-text);
+}
+header button.btn-home {
+  font-weight: 500;
+  height: 42px;
+}
+header button > i {
+  color: var(--directory-btn);
 }
 
+.directory {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+li {
+  position: relative;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  height: 32px;
+  cursor: pointer;
+  margin: 2px;
+  padding: 4px;
+  border-radius: 4px;
+}
 li.current {
   background-color: var(--directory-current);
 }
@@ -47,15 +96,28 @@ li:active {
   background-color: var(--directory-active);
 }
 
+.button-container {
+  position: absolute;
+  right: 4px;
+  display: none;
+}
+li:hover .button-container {
+  display: flex;
+}
 li button {
-  background-color: transparent;
-  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 4px;
   height: 24px;
   width: 24px;
 }
 li button:hover {
   background-color: var(--directory-hover);
+}
+li button > i {
+  font-size: 12px;
+  color: var(--directory-btn);
 }
 
 .title-container {
@@ -64,13 +126,19 @@ li button:hover {
 }
 
 .title {
-  display: flex;
+  width: calc(190px - var(--depth) * 20px);
+  padding: 3px 0px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   align-items: center;
   margin-left: 4px;
 }
-
+li:hover .title {
+  width: calc(132px - var(--depth) * 20px);
+}
 li.current .title {
-  font-weight: bold;
+  font-weight: 500;
   color: var(--default-text);
 }
 
@@ -87,7 +155,6 @@ li.current .title {
 main {
   min-height: 100vh;
   overflow-y: auto;
-  background-color: pink;
   flex-grow: 1;
 }
 
@@ -96,7 +163,6 @@ main {
   display: flex;
   flex-direction: column;
   padding: 10px;
-  box-sizing: border-box;
 }
 
 .editor > textarea {

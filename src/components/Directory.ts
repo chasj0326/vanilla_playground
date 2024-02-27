@@ -16,9 +16,8 @@ class Directory extends Component {
     const setDirectoryData = store.setData<DirectoryData>(directoryData);
 
     this.addEvent('click', (target) => {
-      const $li = target.closest('li');
-      const documentId = $li?.id;
-      const { action } = target.dataset;
+      const documentId = target.closest('li')?.id;
+      const action = target.closest('button')?.dataset.action;
 
       if (!documentId) return;
 
@@ -29,10 +28,6 @@ class Directory extends Component {
         }
         case 'create': {
           notion.createDocument(documentId ? Number(documentId) : null);
-          break;
-        }
-        case 'create-root': {
-          notion.createDocument(null);
           break;
         }
         case 'delete': {
@@ -58,21 +53,30 @@ class Directory extends Component {
       rootDocuments: RootDocuments,
       depth: number
     ): string => {
-      if (rootDocuments.length === 0)
+      if (rootDocuments.length === 0) {
         return `<div class='document-holder' style='--depth: ${depth}'>하위 페이지 없음</div>`;
+      }
       return `
         <ul>${rootDocuments
           .map(({ id, title, documents }) => {
             return `
             <li id='${id}' class='${id === currentId ? 'current' : ''}'>
               <div class='title-container' style='--depth: ${depth}'>
-                <button data-action='toggle'>></button>
+                <button data-action='toggle'>
+                  <i class="fa-solid fa-chevron-${
+                    toggleData[id] ? 'down' : 'right'
+                  }"></i>
+                </button>
                 <div class='title'>
                 ${title || PLACEHOLDER.DIRECTORY_TITLE}</div>
               </div>
               <div class='button-container'>
-                <button data-action='delete'>-</button>
-                <button data-action='create'>+</button>
+                <button data-action='delete'>
+                  <i class="fa-solid fa-minus"></i>
+                </button>
+                <button data-action='create'>
+                  <i class="fa-solid fa-plus"></i>
+                </button>
               </div>
             </li>
             ${toggleData[id] ? renderDocument(documents, depth + 1) : ''}
@@ -84,10 +88,7 @@ class Directory extends Component {
     };
 
     return `
-      <header>
-        <button data-action='create-root'>문서 추가하기</button>
-      </header>
-      ${renderDocument(rootDocuments, 0)}
+        ${renderDocument(rootDocuments, 0)}
     `;
   }
 }

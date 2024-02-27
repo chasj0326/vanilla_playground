@@ -58,9 +58,11 @@ class Component<Props = any, State = any> {
 
   addEvent(
     type: keyof HTMLElementEventMap,
-    listener: (targetElement: HTMLElement) => void
+    listener: (targetElement: HTMLElement) => void,
+    innerTarget?: HTMLElement
   ) {
-    this.$target.addEventListener(type, (event) => {
+    const eventTarget = innerTarget ?? this.$target;
+    eventTarget.addEventListener(type, (event) => {
       const targetElement = event.target as HTMLElement;
       listener(targetElement);
     });
