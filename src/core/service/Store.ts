@@ -65,7 +65,6 @@ class Store {
     this.validateKey([key]);
     return (value: T | ((x: T) => T)) => {
       const oldValue = this.data[key].value;
-      console.log(value);
       if (typeof value === 'function') {
         this.data[key].value = (value as (x: T) => void)(this.data[key].value);
       } else {
