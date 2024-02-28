@@ -67,7 +67,10 @@ class Emoji extends Component<EmojiProps> {
 
     return `
     <div class='emoji-container'>
-      <button id='remove'>제거</button>
+      <header>
+        <h3>이모지 선택</h3>
+        <button id='remove'>제거</button>
+      </header>
       <div class='emoji'>
       ${Object.entries(emojiMap)
         .map(

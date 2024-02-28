@@ -30,7 +30,7 @@ nav {
   padding: 2px;
 }
 
-header {
+nav header {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -38,7 +38,7 @@ header {
   padding: 2px;
   margin-top: 2px;
 }
-header button {
+nav header button {
   font-family: 'Noto Sans KR', sans-serif;
   display: flex;
   width: 100%;
@@ -51,20 +51,20 @@ header button {
   gap: 10px;
   font-size: 16px;
 }
-header button:hover {
+nav header button:hover {
   background-color: var(--directory-hover);
 }
-header button:active {
+nav header button:active {
   background-color: var(--directory-active);
 }
-header button > div {
+nav header button > div {
   color: var(--directory-text);
 }
-header button.btn-home {
+nav header button.btn-home {
   font-weight: 500;
   height: 42px;
 }
-header button > i {
+nav header button > i {
   color: var(--directory-btn);
 }
 
@@ -225,25 +225,49 @@ main {
 /* Emoji */
 
 .emoji-container {
-  width: 280px;
+  width: 282px;
   height: 280px;
-  border-radius: 10px;
+  border-radius: 8px;
   background-color: white;
-  box-shadow: 1px 1px 4px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 1px 4px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
+.emoji-container header {
+  height: 40px;
+  padding: 10px;
+  padding-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--directory-hover);
+  background-color: var(--directory-bg);
+}
+
+.emoji-container button#remove {
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.emoji-container button:hover {
+  background-color: var(--directory-hover);
+}
+
 .emoji {
-  width: 280px;
-  height: 280px;
+  width: 282px;
+  height: 240px;
   overflow: auto;
 }
 
 .category-name {
-  margin: 10px;
+  margin: 24px 0 12px 15px;
+  font-size: 14px;
+  color: var(--directory-text);
 }
 
 .emoji-list {
+  padding-left: 8px;
   display: flex;
   flex-wrap: wrap;
 }
@@ -257,9 +281,6 @@ main {
   justify-content: center;
   font-size: 24px;
   cursor: pointer;
-}
-.emoji button:hover {
-  background-color: var(--directory-hover);
 }
 
 .divider {
