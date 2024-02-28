@@ -2,6 +2,8 @@ import { Component } from '@core';
 import {
   getEmojiCategory,
   getInfiniteEmoji,
+  storeEmoji,
+  getStoredEmoji,
 } from '@notion/services/emojiService';
 import { store, emojiData, infiniteEmojiData } from '@notion/store';
 import { EmojiData, InfiniteEmojiData } from '@notion/types';
@@ -28,10 +30,19 @@ class Emoji extends Component<EmojiProps> {
       scrollTop: 0,
     }));
 
-    this.addEvent('click', ({ tagName, id, innerHTML }) => {
-      if (tagName !== 'BUTTON') return;
-      this.props?.onSelect(id === 'remove' ? '' : innerHTML);
-    });
+    this.addEvent(
+      'click',
+      ({ tagName, id, innerHTML }) => {
+        if (tagName !== 'BUTTON') return;
+        if (id === 'remove') {
+          this.props?.onSelect('');
+        } else {
+          storeEmoji(innerHTML);
+          this.props?.onSelect(innerHTML);
+        }
+      },
+      { once: true }
+    );
 
     document.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
@@ -72,16 +83,18 @@ class Emoji extends Component<EmojiProps> {
         <button id='remove'>제거</button>
       </header>
       <div class='emoji'>
-      ${Object.entries(emojiMap)
-        .map(
-          ([category, emojiList]) => `
-          <div>
-            <div class='category-name'>${categoryKR(category)}</div>
-            <div class='emoji-list'>
-              ${emojiList.map((emoji) => `<button>${emoji}</button>`).join('')}
-            </div>
-          </div>
-        `
+      ${Object.entries({ ...getStoredEmoji(), ...emojiMap })
+        .map(([category, emojiList]) =>
+          emojiList.length
+            ? `<div>
+                <div class='category-name'>${categoryKR(category)}</div>
+                <div class='emoji-list'>
+                  ${emojiList
+                    .map((emoji) => `<button>${emoji}</button>`)
+                    .join('')}
+                </div>
+              </div>`
+            : ''
         )
         .join('')}
         ${

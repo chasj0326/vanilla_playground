@@ -4,3 +4,5 @@ export interface StoredDocument {
   content: string | null;
   updatedAt: string;
 }
+
+export type StoredEmojiList = string[];

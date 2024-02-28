@@ -6,11 +6,13 @@ export const PLACEHOLDER = {
 export const STORAGE_KEY = {
   EDITING: 'editing-document',
   TOGGLE: 'toggle-data',
+  EMOJI: 'emoji-list',
 };
 
 export const EMOJI_CATEGORY: {
   [key: string]: string;
 } = {
+  'recently-used': '최근 사용',
   'smileys-emotion': '감정',
   'people-body': '사람',
   'animals-nature': '동물과 자연',

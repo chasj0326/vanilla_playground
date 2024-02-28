@@ -64,13 +64,17 @@ class Component<Props = any, State = any> {
   addEvent(
     type: keyof HTMLElementEventMap,
     listener: (targetElement: HTMLElement) => void,
-    innerTarget?: HTMLElement
+    options?: AddEventListenerOptions
   ) {
-    const eventTarget = innerTarget ?? this.$target;
-    eventTarget.addEventListener(type, (event) => {
-      const targetElement = event.target as HTMLElement;
-      listener(targetElement);
-    });
+    const eventTarget = this.$target;
+    eventTarget.addEventListener(
+      type,
+      (event) => {
+        const targetElement = event.target as HTMLElement;
+        listener(targetElement);
+      },
+      options
+    );
   }
 
   findElement<ElementType>(selector: string) {

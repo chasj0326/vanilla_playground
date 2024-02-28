@@ -6,8 +6,13 @@ import {
   EmojiByCategory,
   EmojiData,
   InfiniteEmojiData,
+  StoredEmojiList,
 } from '@notion/types';
 import { store, emojiData, infiniteEmojiData } from '@notion/store';
+import { storage } from '@core';
+import { STORAGE_KEY } from '@notion/constants';
+
+const sessionStorage = storage(window.sessionStorage);
 
 export const getInfiniteEmoji = () => {
   const [{ categories, cursor }, setInfiniteEmojiData] =
@@ -51,5 +56,27 @@ export const getEmojiCategory = () => {
         getInfiniteEmoji();
       }
     },
+  });
+};
+
+export const getStoredEmoji = () => {
+  const storedEmojiList = sessionStorage.getItem<StoredEmojiList>({
+    key: STORAGE_KEY.EMOJI,
+    default: [],
+  });
+  return {
+    'recently-used': storedEmojiList,
+  };
+};
+
+export const storeEmoji = (emoji: string) => {
+  const storedEmojiList = sessionStorage.getItem<StoredEmojiList>({
+    key: STORAGE_KEY.EMOJI,
+    default: [],
+  });
+  const newStoredEmoji = [...new Set([...storedEmojiList, emoji])];
+  sessionStorage.setItem({
+    key: STORAGE_KEY.EMOJI,
+    value: newStoredEmoji,
   });
 };
