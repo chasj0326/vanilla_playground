@@ -1,5 +1,4 @@
 export const PLACEHOLDER = {
-  DIRECTORY_TITLE: '제목 없음',
   DOCUMENT_TITLE: '제목 없음',
   DOCUMENT_CONTNET: '빈 페이지',
 };

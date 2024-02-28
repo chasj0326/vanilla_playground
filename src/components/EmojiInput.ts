@@ -1,5 +1,6 @@
 import { Component } from 'core';
 import Emoji from './Emoji';
+import { getRandomEmoji } from '@notion/utils';
 
 interface EmojiInputProps {
   onInput: VoidFunction;
@@ -13,7 +14,7 @@ class EmojiInput extends Component<EmojiInputProps> {
       const emojiSelector = '.select-emoji';
 
       if (target.classList.contains('empty')) {
-        target.innerHTML = '⭐️';
+        target.innerHTML = getRandomEmoji();
         this.props?.onInput();
         target.classList.remove('empty');
       }

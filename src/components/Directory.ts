@@ -74,7 +74,7 @@ class Directory extends Component {
                 </button>
                 <div class='title'>
                   ${emojiValue}
-                  ${titleValue || PLACEHOLDER.DIRECTORY_TITLE}
+                  ${titleValue || PLACEHOLDER.DOCUMENT_TITLE}
                 </div>
               </div>
               <div class='button-container'>
