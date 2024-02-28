@@ -24,8 +24,12 @@ class EmojiInput extends Component<EmojiInputProps> {
         props: {
           onSelect: (emoji: string) => {
             target.innerHTML = emoji;
+            if (!emoji) {
+              target.classList.add('empty');
+            }
             this.removeComponent(emojiSelector);
             this.props?.onInput();
+            target.innerHTML = emoji || '아이콘 추가';
           },
           onBlur: () => this.removeComponent(emojiSelector),
           container: this.$target,
