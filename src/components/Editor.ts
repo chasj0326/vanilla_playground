@@ -20,8 +20,12 @@ class Editor extends Component<EditorProps> {
     const titleEl = this.findElement<HTMLTextAreaElement>('#title');
     const contentEl = this.findElement<HTMLTextAreaElement>('#content');
     const emojiEl = this.findElement<HTMLButtonElement>('#emoji');
+    const isEmojiEmpty = emojiEl.classList.contains('empty');
     return {
-      title: joinTitleWithEmoji(emojiEl.innerText, titleEl.value),
+      title: joinTitleWithEmoji(
+        isEmojiEmpty ? '' : emojiEl.innerText,
+        titleEl.value
+      ),
       content: contentEl.value,
     };
   }

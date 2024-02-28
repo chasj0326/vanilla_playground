@@ -73,8 +73,10 @@ class Directory extends Component {
                   }"></i>
                 </button>
                 <div class='title'>
-                  ${emojiValue}
-                  ${titleValue || PLACEHOLDER.DOCUMENT_TITLE}
+                  <span class='emoji'> ${
+                    emojiValue || '<i class="fa-regular fa-file-lines"></i>'
+                  }</span>
+                  <span>${titleValue || PLACEHOLDER.DOCUMENT_TITLE}</span>
                 </div>
               </div>
               <div class='button-container'>

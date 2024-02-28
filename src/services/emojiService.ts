@@ -74,7 +74,10 @@ export const storeEmoji = (emoji: string) => {
     key: STORAGE_KEY.EMOJI,
     default: [],
   });
-  const newStoredEmoji = [...new Set([...storedEmojiList, emoji])];
+  const newStoredEmoji = [
+    ...storedEmojiList.filter((stored) => stored !== emoji),
+    emoji,
+  ];
   sessionStorage.setItem({
     key: STORAGE_KEY.EMOJI,
     value: newStoredEmoji,

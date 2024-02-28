@@ -10,26 +10,29 @@ interface EmojiInputProps {
 class EmojiInput extends Component<EmojiInputProps> {
   mounted(): void {
     this.addEvent('click', (target) => {
-      if (target.id !== 'emoji') return;
-      const emojiSelector = '.select-emoji';
+      const $emoji = target.closest<HTMLButtonElement>('#emoji');
+      if (!$emoji) return;
 
-      if (target.classList.contains('empty')) {
-        target.innerHTML = getRandomEmoji();
+      const emojiSelector = '.select-emoji';
+      if ($emoji.classList.contains('empty')) {
+        $emoji.classList.remove('empty');
+        $emoji.innerHTML = getRandomEmoji();
         this.props?.onInput();
-        target.classList.remove('empty');
       }
 
       this.addComponent(Emoji, {
         selector: emojiSelector,
         props: {
           onSelect: (emoji: string) => {
-            target.innerHTML = emoji;
             if (!emoji) {
-              target.classList.add('empty');
+              $emoji.classList.add('empty');
+            } else {
+              $emoji.innerHTML = emoji;
             }
             this.removeComponent(emojiSelector);
             this.props?.onInput();
-            target.innerHTML = emoji || '아이콘 추가';
+            $emoji.innerHTML =
+              emoji || '<i class="fa-solid fa-face-smile"></i>아이콘 추가';
           },
           onBlur: () => this.removeComponent(emojiSelector),
           container: this.$target,
@@ -42,7 +45,7 @@ class EmojiInput extends Component<EmojiInputProps> {
     const emojiValue = this.props?.value;
     return `
       <button id='emoji' class='${emojiValue ? '' : 'empty'}'>
-        ${emojiValue || '아이콘 추가'}
+        ${emojiValue || '<i class="fa-solid fa-face-smile"></i>아이콘 추가'}
       </button>
       <div class='select-emoji'></div>
     `;
