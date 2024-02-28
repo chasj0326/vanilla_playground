@@ -165,11 +165,17 @@ main {
   display: flex;
   flex-direction: column;
   width: 90%;
-  padding: 10%;
   gap: 20px;
 }
 
-.editor > textarea {
+.editor .title-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 20px;
+}
+
+.editor textarea {
   padding: 2px;
   font-size: 16px;
   resize: none;
@@ -199,10 +205,21 @@ main {
 .select-emoji-container {
   position: relative;
   width: fit-content;
+  border-radius: 10px;
+}
+.select-emoji-container:hover {
+  background-color: var(--directory-hover);
 }
 .select-emoji {
   position: absolute;
   z-index: 10;
+}
+#emoji.empty {
+  visibility: hidden;
+  font-size: 16px;
+}
+.title-container:hover #emoji.empty {
+  visibility: visible;
 }
 
 /* Emoji */

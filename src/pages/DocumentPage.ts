@@ -1,5 +1,6 @@
 import { Component } from '@core';
 import Editor from '@notion/components/Editor';
+import { router } from '@notion/main';
 
 class DocumentPage extends Component {
   template() {
@@ -9,7 +10,14 @@ class DocumentPage extends Component {
   }
 
   mounted(): void {
-    this.addComponent(Editor);
+    const { params } = router.match() || {};
+    const documentId = Number(params?.id);
+
+    this.addComponent(Editor, {
+      props: {
+        documentId,
+      },
+    });
   }
 }
 

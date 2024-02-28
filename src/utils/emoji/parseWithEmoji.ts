@@ -3,5 +3,5 @@ export const joinTitleWithEmoji = (emoji: string, title: string) =>
 
 export const splitTitleWithEmoji = (title: string) => {
   const [emojiValue, titleValue] = title.split('@@@');
-  return [emojiValue || '📋', titleValue || ''] as const;
+  return [emojiValue || '', titleValue || ''] as const;
 };
