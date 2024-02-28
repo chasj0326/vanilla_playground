@@ -14,6 +14,7 @@ class Directory extends Component {
   mounted() {
     const { params } = router.match() || {};
     notion.getRootDocuments(Number(params?.id));
+    console.log('mounted');
     console.log(params, notion);
     const setDirectoryData = store.setData<DirectoryData>(directoryData);
 
