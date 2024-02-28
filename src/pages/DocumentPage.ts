@@ -14,6 +14,7 @@ class DocumentPage extends Component {
     const documentId = Number(params?.id);
 
     this.addComponent(Editor, {
+      selector: 'editor',
       props: {
         documentId,
       },

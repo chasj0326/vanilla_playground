@@ -14,10 +14,8 @@ class MainPage extends Component {
   }
 
   rendered() {
-    this.addComponent(Directory);
-    this.addComponent(NavHeader, {
-      selector: 'header',
-    });
+    this.addComponent(Directory, '.directory');
+    this.addComponent(NavHeader, 'header');
   }
 }
 
