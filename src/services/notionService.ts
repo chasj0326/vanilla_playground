@@ -75,7 +75,7 @@ const createDocument = (parent: null | number) => {
 
 const updateDocument = (
   id: number,
-  target: 'title' | 'content',
+  target: 'title' | 'content' | 'emoji',
   body: UpdateDocumentRequestBody
 ) => {
   localStorage.setItem<StoredDocument>({
@@ -84,7 +84,7 @@ const updateDocument = (
   });
   makeRequest(() => notionApi.update(id, body), {
     onSuccess: () => {
-      if (target === 'title') getRootDocuments();
+      if (target === 'title' || target === 'emoji') getRootDocuments();
     },
   });
 };

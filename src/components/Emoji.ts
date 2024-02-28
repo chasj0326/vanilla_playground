@@ -7,10 +7,17 @@ import { store, emojiData, infiniteEmojiData } from '@notion/store';
 import { EmojiData, InfiniteEmojiData } from '@notion/types';
 import { observeIntersector } from '@notion/utils';
 
-class Emoji extends Component {
+interface EmojiProps {
+  container: HTMLElement;
+  onSelect: (emoji: string) => void;
+  onBlur: VoidFunction;
+}
+
+class Emoji extends Component<EmojiProps> {
   created(): void {
     store.subscribe([emojiData], () => this.render());
   }
+
   mounted(): void {
     getEmojiCategory();
 
@@ -23,7 +30,16 @@ class Emoji extends Component {
 
     this.addEvent('click', ({ tagName, innerHTML }) => {
       if (tagName !== 'BUTTON') return;
-      console.log(innerHTML);
+      this.props?.onSelect(innerHTML);
+    });
+
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      const emojiSelector = this.props?.container;
+      if (emojiSelector && emojiSelector.contains(target)) {
+        return;
+      }
+      this.props?.onBlur();
     });
   }
 

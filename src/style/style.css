@@ -192,6 +192,20 @@ main {
   color: var(--default-text);
   opacity: 0.4;
 }
+#emoji {
+  font-size: 60px;
+}
+
+.select-emoji-container {
+  position: relative;
+  width: fit-content;
+}
+.select-emoji {
+  position: absolute;
+  z-index: 10;
+}
+
+/* Emoji */
 
 .emoji-container {
   width: 280px;

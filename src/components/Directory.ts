@@ -4,6 +4,7 @@ import { router } from '@notion/main';
 import { store, directoryData } from '@notion/store';
 import { notionService as notion } from '@notion/services';
 import { PLACEHOLDER } from '@notion/constants';
+import { splitTitleWithEmoji } from '@notion/utils';
 
 class Directory extends Component {
   created(): void {
@@ -62,6 +63,7 @@ class Directory extends Component {
       return `
         <ul>${rootDocuments
           .map(({ id, title, documents }) => {
+            const [emojiValue, titleValue] = splitTitleWithEmoji(title || '');
             return `
             <li id='${id}' class='${id === currentId ? 'current' : ''}'>
               <div class='title-container' style='--depth: ${depth}'>
@@ -71,7 +73,9 @@ class Directory extends Component {
                   }"></i>
                 </button>
                 <div class='title'>
-                ${title || PLACEHOLDER.DIRECTORY_TITLE}</div>
+                  ${emojiValue}
+                  ${titleValue || PLACEHOLDER.DIRECTORY_TITLE}
+                </div>
               </div>
               <div class='button-container'>
                 <button data-action='delete'>

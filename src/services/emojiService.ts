@@ -12,10 +12,6 @@ import { store, emojiData, infiniteEmojiData } from '@notion/store';
 export const getInfiniteEmoji = () => {
   const [{ categories, cursor }, setInfiniteEmojiData] =
     store.useData<InfiniteEmojiData>(infiniteEmojiData);
-  // if (cursor && cursor === categories.length) {
-  //   setInfiniteEmojiData((prev) => ({ ...prev, done: true }));
-  //   return;
-  // }
 
   const setEmojiData = store.setData<EmojiData>(emojiData);
   makeRequest<EmojiByCategory, EmojiList>(

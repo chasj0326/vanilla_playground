@@ -56,6 +56,11 @@ class Component<Props = any, State = any> {
     });
   }
 
+  removeComponent(selector: string) {
+    const $container = this.findElement<HTMLElement>(selector);
+    $container.innerHTML = '';
+  }
+
   addEvent(
     type: keyof HTMLElementEventMap,
     listener: (targetElement: HTMLElement) => void,
