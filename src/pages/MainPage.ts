@@ -14,7 +14,6 @@ class MainPage extends Component {
   }
 
   rendered() {
-    console.log(Directory);
     this.addComponent(Directory);
     this.addComponent(NavHeader, {
       selector: 'header',

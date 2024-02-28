@@ -48,7 +48,7 @@ class Component<Props = any, State = any> {
     const $container = this.$target.querySelector<HTMLElement>(
       params?.selector ?? `.${ComponentClass.name.toLowerCase()}`
     );
-
+    console.log(ComponentClass.name, $container);
     if ($container === null) return;
     return new ComponentClass({
       target: $container,
