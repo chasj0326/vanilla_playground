@@ -12,6 +12,7 @@ class DocumentPage extends Component {
   mounted(): void {
     const { params } = router.match() || {};
     const documentId = Number(params?.id);
+    console.log(documentId);
 
     this.addComponent(Editor, {
       selector: 'editor',
