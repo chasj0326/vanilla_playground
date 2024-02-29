@@ -1,3 +1,4 @@
+import RichEditor from "./components/RichEditor";
 import App from "@notion/App";
 import "@notion/style/style.css";
 import { createRouter } from "@core";
@@ -13,6 +14,10 @@ export const router = createRouter([
     path: "/",
     component: MainPage,
     children: [
+      {
+        path: "/rich",
+        component: RichEditor,
+      },
       {
         path: "/:id",
         component: DocumentPage,

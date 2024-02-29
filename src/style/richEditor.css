@@ -1,0 +1,57 @@
+.rich-editor-container {
+  padding: 20px;
+  width: 100%;
+}
+.rich-editor-container * {
+  display: block;
+}
+/* const textTagMap = ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "b", "mark"]; */
+#rich-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 40px;
+}
+
+.rich-editor-container input {
+  font-size: 16px;
+}
+
+.rich-editor-container h1,
+input.h1 {
+  font-size: 40px;
+  font-weight: 700;
+}
+.rich-editor-container h2,
+input.h2 {
+  font-size: 36px;
+  font-weight: 700;
+}
+.rich-editor-container h3,
+input.h3 {
+  font-size: 32px;
+  font-weight: 700;
+}
+.rich-editor-container h4,
+input.h4 {
+  font-size: 28px;
+  font-weight: 700;
+}
+.rich-editor-container h5,
+input.h5 {
+  font-size: 24px;
+  font-weight: 700;
+}
+.rich-editor-container h6,
+input.h6 {
+  font-size: 20px;
+  font-weight: 700;
+}
+.rich-editor-container b,
+input.b {
+  font-weight: 500;
+}
+.rich-editor-container mark,
+input.mark {
+  background-color: yellow;
+}
