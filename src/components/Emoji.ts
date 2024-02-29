@@ -1,14 +1,9 @@
-import { Component } from '@core';
-import { STORE_KEY } from '@notion/constants';
-import {
-  getEmojiCategory,
-  getInfiniteEmoji,
-  storeEmoji,
-  getStoredEmoji,
-} from '@notion/services/emojiService';
-import { store, emojiData, infiniteEmojiData } from '@notion/store';
-import { EmojiData, InfiniteEmojiData } from '@notion/types';
-import { observeIntersector, categoryKR } from '@notion/utils';
+import { Component } from "@core";
+import { emojiData, infiniteEmojiData, store } from "@notion/store";
+import { emoji } from "@notion/services";
+import { EmojiData, InfiniteEmojiData } from "@notion/types";
+import { categoryKR, observeIntersector } from "@notion/utils";
+import { STORE_KEY } from "@notion/constants";
 
 interface EmojiProps {
   container: HTMLElement;
@@ -25,7 +20,7 @@ class Emoji extends Component<EmojiProps> {
   }
 
   mounted(): void {
-    getEmojiCategory();
+    emoji.getEmojiCategory();
 
     const setInfiniteEmojiData =
       store.setData<InfiniteEmojiData>(infiniteEmojiData);
@@ -35,20 +30,20 @@ class Emoji extends Component<EmojiProps> {
     }));
 
     this.addEvent(
-      'click',
+      "click",
       ({ tagName, id, innerHTML }) => {
-        if (tagName !== 'BUTTON') return;
-        if (id === 'remove') {
-          this.props?.onSelect('');
+        if (tagName !== "BUTTON") return;
+        if (id === "remove") {
+          this.props?.onSelect("");
         } else {
-          storeEmoji(innerHTML);
+          emoji.storeEmoji(innerHTML);
           this.props?.onSelect(innerHTML);
         }
       },
-      { once: true }
+      { once: true },
     );
 
-    document.addEventListener('click', (e) => {
+    document.addEventListener("click", (e) => {
       const target = e.target as HTMLElement;
       const emojiSelector = this.props?.container;
       if (emojiSelector && emojiSelector.contains(target)) {
@@ -62,12 +57,12 @@ class Emoji extends Component<EmojiProps> {
     const [{ scrollTop }, setInfiniteEmojiData] =
       store.useData<InfiniteEmojiData>(infiniteEmojiData);
 
-    const rootEl = this.findElement<HTMLElement>('.emoji');
+    const rootEl = this.findElement<HTMLElement>(".emoji");
     rootEl.scrollTo({ top: scrollTop });
 
-    const intersectorEl = this.findElement<HTMLDivElement>('.intersector');
+    const intersectorEl = this.findElement<HTMLDivElement>(".intersector");
     observeIntersector(intersectorEl, () => {
-      getInfiniteEmoji();
+      emoji.getInfiniteEmoji();
       setInfiniteEmojiData((prev) => ({
         ...prev,
         scrollTop: rootEl.scrollTop,
@@ -87,7 +82,7 @@ class Emoji extends Component<EmojiProps> {
         <button id='remove'>제거</button>
       </header>
       <div class='emoji'>
-      ${Object.entries({ ...getStoredEmoji(), ...emojiMap })
+      ${Object.entries({ ...emoji.getStoredEmoji(), ...emojiMap })
         .map(([category, emojiList]) =>
           emojiList.length
             ? `<div>
@@ -95,15 +90,15 @@ class Emoji extends Component<EmojiProps> {
                 <div class='emoji-list'>
                   ${emojiList
                     .map((emoji) => `<button>${emoji}</button>`)
-                    .join('')}
+                    .join("")}
                 </div>
               </div>`
-            : ''
+            : "",
         )
-        .join('')}
+        .join("")}
         ${
           done || !categories.length
-            ? ''
+            ? ""
             : `<div class="intersector category-name">
               ${categoryKR(categories[cursor])}</div>`
         }

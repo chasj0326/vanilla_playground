@@ -1,26 +1,26 @@
-import { Component, navigate } from '@core';
-import { notionService as notion } from '@notion/services';
-import { directoryData, store } from '@notion/store';
-import { DirectoryData } from '@notion/types';
-import { changeDocumentTitle, changeFavicon } from '@notion/utils';
+import { Component, navigate } from "@core";
+import { directoryData, store } from "@notion/store";
+import { notion } from "@notion/services";
+import { DirectoryData } from "@notion/types";
+import { changeDocumentTitle, changeFavicon } from "@notion/utils";
 
 class NavHeader extends Component {
   mounted(): void {
     const setDirectoryData = store.setData<DirectoryData>(directoryData);
 
-    this.addEvent('click', (target) => {
-      const action = target.closest('button')?.dataset.action;
+    this.addEvent("click", (target) => {
+      const action = target.closest("button")?.dataset.action;
       if (!action) return;
 
       switch (action) {
-        case 'go-home': {
-          navigate('/');
+        case "go-home": {
+          navigate("/");
           changeDocumentTitle();
           changeFavicon();
           setDirectoryData((prev) => ({ ...prev, currentId: 0 }));
           break;
         }
-        case 'create-root': {
+        case "create-root": {
           notion.createDocument(null);
           break;
         }

@@ -1,17 +1,17 @@
-import { Component } from '@core';
-import { PLACEHOLDER, STORE_KEY } from '@notion/constants';
-import { notionService as notion } from '@notion/services';
-import { editorData, store } from '@notion/store';
-import { EditorData } from '@notion/types';
+import { Component } from "@core";
+import { editorData, store } from "@notion/store";
+import { notion } from "@notion/services";
+import { EmojiInput } from "@notion/components";
+import { EditorData } from "@notion/types";
 import {
-  debounce,
-  resizeTextArea,
-  joinTitleWithEmoji,
-  splitTitleWithEmoji,
   changeDocumentTitle,
   changeFavicon,
-} from '@notion/utils';
-import EmojiInput from './EmojiInput';
+  debounce,
+  joinTitleWithEmoji,
+  resizeTextArea,
+  splitTitleWithEmoji,
+} from "@notion/utils";
+import { PLACEHOLDER, STORE_KEY } from "@notion/constants";
 
 interface EditorProps {
   documentId: number;
@@ -19,14 +19,14 @@ interface EditorProps {
 
 class Editor extends Component<EditorProps> {
   editorValue() {
-    const titleEl = this.findElement<HTMLTextAreaElement>('#title');
-    const contentEl = this.findElement<HTMLTextAreaElement>('#content');
-    const emojiEl = this.findElement<HTMLButtonElement>('#emoji');
-    const isEmojiEmpty = emojiEl.classList.contains('empty');
+    const titleEl = this.findElement<HTMLTextAreaElement>("#title");
+    const contentEl = this.findElement<HTMLTextAreaElement>("#content");
+    const emojiEl = this.findElement<HTMLButtonElement>("#emoji");
+    const isEmojiEmpty = emojiEl.classList.contains("empty");
     return {
       title: joinTitleWithEmoji(
-        isEmojiEmpty ? '' : emojiEl.innerText,
-        titleEl.value
+        isEmojiEmpty ? "" : emojiEl.innerText,
+        titleEl.value,
       ),
       content: contentEl.value,
     };
@@ -47,14 +47,14 @@ class Editor extends Component<EditorProps> {
       notion.updateDocument(documentId, target, body);
     }, 300);
 
-    this.addEvent('input', ({ id }) => {
-      resizeTextArea(['#title', '#content']);
+    this.addEvent("input", ({ id }) => {
+      resizeTextArea(["#title", "#content"]);
       updateWithDebounce(id, this.editorValue());
     });
   }
 
   rendered(): void {
-    resizeTextArea(['#title', '#content']);
+    resizeTextArea(["#title", "#content"]);
 
     const documentId = this.props?.documentId ?? 0;
     const { title } = store.getData<EditorData>(editorData);
@@ -64,10 +64,10 @@ class Editor extends Component<EditorProps> {
     changeFavicon(emojiValue);
 
     this.addComponent(EmojiInput, {
-      selector: '.select-emoji-container',
+      selector: ".select-emoji-container",
       props: {
         onInput: () =>
-          notion.updateDocument(documentId, 'emoji', this.editorValue()),
+          notion.updateDocument(documentId, "emoji", this.editorValue()),
         value: emojiValue,
       },
     });
@@ -87,7 +87,7 @@ class Editor extends Component<EditorProps> {
       </div>
       <textarea id='content' placeholder='${
         PLACEHOLDER.DOCUMENT_CONTNET
-      }' rows='1'>${content || ''}</textarea>
+      }' rows='1'>${content || ""}</textarea>
     `;
   }
 }

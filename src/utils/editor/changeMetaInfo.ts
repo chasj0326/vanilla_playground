@@ -1,12 +1,12 @@
 export const changeDocumentTitle = (
   titleValue?: string,
-  defaultValue?: string
+  defaultValue?: string,
 ) => {
   const title = titleValue || defaultValue;
   if (title) {
     document.title = title;
   } else {
-    document.title = 'Chacha Notoin';
+    document.title = "Chacha Notoin";
   }
 };
 
@@ -16,10 +16,10 @@ const faviconHref = (emoji: string) =>
 export const changeFavicon = (emoji?: string) => {
   const link: HTMLLinkElement =
     document.querySelector("link[rel*='icon']") ||
-    document.createElement('link');
+    document.createElement("link");
 
-  link.type = emoji ? 'image/svg+xml' : 'image/x-icon';
-  link.rel = 'shorcut icon';
-  link.href = emoji ? faviconHref(emoji) : '/favicon.ico';
+  link.type = emoji ? "image/svg+xml" : "image/x-icon";
+  link.rel = "shorcut icon";
+  link.href = emoji ? faviconHref(emoji) : "/favicon.ico";
   document.head.appendChild(link);
 };

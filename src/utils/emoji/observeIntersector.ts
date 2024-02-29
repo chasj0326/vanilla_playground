@@ -1,11 +1,11 @@
 export const observeIntersector = (
   intersector: HTMLElement,
-  callback: VoidFunction
+  callback: VoidFunction,
 ) => {
   if (!intersector) return;
   const onIntersect = (
     entries: IntersectionObserverEntry[],
-    observer: IntersectionObserver
+    observer: IntersectionObserver,
   ) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {

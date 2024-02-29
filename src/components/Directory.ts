@@ -1,10 +1,14 @@
-import { Component, navigate } from '@core';
-import { RootDocuments, DirectoryData } from '@notion/types';
-import { router } from '@notion/main';
-import { store, directoryData } from '@notion/store';
-import { notionService as notion } from '@notion/services';
-import { PLACEHOLDER, STORE_KEY } from '@notion/constants';
-import { splitTitleWithEmoji } from '@notion/utils';
+import { Component, navigate } from "@core";
+import { router } from "@notion/main";
+import { directoryData, store } from "@notion/store";
+import { notion } from "@notion/services";
+import { DirectoryData, RootDocuments } from "@notion/types";
+import {
+  changeDocumentTitle,
+  changeFavicon,
+  splitTitleWithEmoji,
+} from "@notion/utils";
+import { PLACEHOLDER, STORE_KEY } from "@notion/constants";
 
 class Directory extends Component {
   created(): void {
@@ -19,22 +23,22 @@ class Directory extends Component {
     notion.getRootDocuments(Number(params?.id));
     const setDirectoryData = store.setData<DirectoryData>(directoryData);
 
-    this.addEvent('click', (target) => {
-      const documentId = target.closest('li')?.id;
-      const action = target.closest('button')?.dataset.action;
+    this.addEvent("click", (target) => {
+      const documentId = target.closest("li")?.id;
+      const action = target.closest("button")?.dataset.action;
 
       if (!documentId) return;
 
       switch (action) {
-        case 'toggle': {
+        case "toggle": {
           notion.toggleDocument(Number(documentId));
           break;
         }
-        case 'create': {
+        case "create": {
           notion.createDocument(documentId ? Number(documentId) : null);
           break;
         }
-        case 'delete': {
+        case "delete": {
           notion.deleteDocument(Number(documentId));
           break;
         }
@@ -46,6 +50,21 @@ class Directory extends Component {
           navigate(`/${documentId}`);
         }
       }
+
+      window.addEventListener("popstate", () => {
+        const route = router.match();
+        const documentId = route?.params.id ?? "";
+        const setDirectoryData = store.setData<DirectoryData>(directoryData);
+        setDirectoryData((prev) => ({
+          ...prev,
+          currentId: Number(documentId),
+        }));
+
+        if (route?.path === "/") {
+          changeDocumentTitle();
+          changeFavicon();
+        }
+      });
     });
   }
 
@@ -55,24 +74,24 @@ class Directory extends Component {
 
     const renderDocument = (
       rootDocuments: RootDocuments,
-      depth: number
+      depth: number,
     ): string => {
       if (rootDocuments.length === 0) {
         return `
         <div class='document-holder' style='--depth: ${depth}'>
-          ${depth ? '하위' : ''} 페이지 없음
+          ${depth ? "하위" : ""} 페이지 없음
         </div>`;
       }
       return `
         <ul>${rootDocuments
           .map(({ id, title, documents }) => {
-            const [emojiValue, titleValue] = splitTitleWithEmoji(title || '');
+            const [emojiValue, titleValue] = splitTitleWithEmoji(title || "");
             return `
-            <li id='${id}' class='${id === currentId ? 'current' : ''}'>
+            <li id='${id}' class='${id === currentId ? "current" : ""}'>
               <div class='title-container' style='--depth: ${depth}'>
                 <button data-action='toggle'>
                   <i class="fa-solid fa-chevron-${
-                    toggleData[id] ? 'down' : 'right'
+                    toggleData[id] ? "down" : "right"
                   }"></i>
                 </button>
                 <div class='title'>
@@ -91,10 +110,10 @@ class Directory extends Component {
                 </button>
               </div>
             </li>
-            ${toggleData[id] ? renderDocument(documents, depth + 1) : ''}
+            ${toggleData[id] ? renderDocument(documents, depth + 1) : ""}
           `;
           })
-          .join('')}
+          .join("")}
         </ul>
      `;
     };

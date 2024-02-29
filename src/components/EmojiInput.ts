@@ -1,6 +1,6 @@
-import { Component } from 'core';
-import Emoji from './Emoji';
-import { getRandomEmoji } from '@notion/utils';
+import { Component } from "core";
+import { Emoji } from "@notion/components";
+import { getRandomEmoji } from "@notion/utils";
 
 interface EmojiInputProps {
   onInput: VoidFunction;
@@ -9,13 +9,13 @@ interface EmojiInputProps {
 
 class EmojiInput extends Component<EmojiInputProps> {
   mounted(): void {
-    this.addEvent('click', (target) => {
-      const $emoji = target.closest<HTMLButtonElement>('#emoji');
+    this.addEvent("click", (target) => {
+      const $emoji = target.closest<HTMLButtonElement>("#emoji");
       if (!$emoji) return;
 
-      const emojiSelector = '.select-emoji';
-      if ($emoji.classList.contains('empty')) {
-        $emoji.classList.remove('empty');
+      const emojiSelector = ".select-emoji";
+      if ($emoji.classList.contains("empty")) {
+        $emoji.classList.remove("empty");
         $emoji.innerHTML = getRandomEmoji();
         this.props?.onInput();
       }
@@ -25,7 +25,7 @@ class EmojiInput extends Component<EmojiInputProps> {
         props: {
           onSelect: (emoji: string) => {
             if (!emoji) {
-              $emoji.classList.add('empty');
+              $emoji.classList.add("empty");
             } else {
               $emoji.innerHTML = emoji;
             }
@@ -44,7 +44,7 @@ class EmojiInput extends Component<EmojiInputProps> {
   template(): string {
     const emojiValue = this.props?.value;
     return `
-      <button id='emoji' class='${emojiValue ? '' : 'empty'}'>
+      <button id='emoji' class='${emojiValue ? "" : "empty"}'>
         ${emojiValue || '<i class="fa-solid fa-face-smile"></i>아이콘 추가'}
       </button>
       <div class='select-emoji'></div>

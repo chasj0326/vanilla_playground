@@ -1,20 +1,15 @@
-import { makeRequest, navigate, storage } from '@core';
+import { notionApi } from "@notion/api";
+import { makeRequest, navigate, storage } from "@core";
+import { directoryData, editorData, store } from "@notion/store";
 import {
   CreatedDocument,
+  DetailDocument,
   DirectoryData,
   EditorData,
   RootDocuments,
-  DetailDocument,
   StoredDocument,
-} from '@notion/types';
-import { store, directoryData, editorData } from '@notion/store';
-import { notionApi } from '@notion/api';
-import { UpdateDocumentRequestBody } from '@notion/types';
-import {
-  PLACEHOLDER,
-  STORAGE_KEY,
-  defaultStoredDocument,
-} from '@notion/constants';
+} from "@notion/types";
+import { UpdateDocumentRequestBody } from "@notion/types";
 import {
   changeDocumentTitle,
   changeFavicon,
@@ -22,7 +17,12 @@ import {
   makeToggleData,
   splitTitleWithEmoji,
   updateToggleData,
-} from '@notion/utils';
+} from "@notion/utils";
+import {
+  PLACEHOLDER,
+  STORAGE_KEY,
+  defaultStoredDocument,
+} from "@notion/constants";
 
 const localStorage = storage(window.localStorage);
 
@@ -57,7 +57,7 @@ const getDetailDocument = (id: number) => {
         storedDocument.updatedAt &&
         !isFreshByTime(new Date(updatedAt), new Date(storedDocument.updatedAt))
       ) {
-        if (confirm('작성중인 글이 있습니다. 불러오시겠습니까?')) {
+        if (confirm("작성중인 글이 있습니다. 불러오시겠습니까?")) {
           setEditorData({ ...storedDocument, id, createdAt });
           localStorage.removeItem(STORAGE_KEY.EDITING);
         }
@@ -69,7 +69,7 @@ const getDetailDocument = (id: number) => {
 };
 
 const createDocument = (parent: null | number) => {
-  makeRequest<CreatedDocument>(() => notionApi.create({ parent, title: '' }), {
+  makeRequest<CreatedDocument>(() => notionApi.create({ parent, title: "" }), {
     onSuccess: (data) => {
       if (parent) {
         const { toggleData } = store.getData<DirectoryData>(directoryData);
@@ -86,8 +86,8 @@ const createDocument = (parent: null | number) => {
 
 const updateDocument = (
   id: number,
-  target: 'title' | 'content' | 'emoji',
-  body: UpdateDocumentRequestBody
+  target: "title" | "content" | "emoji",
+  body: UpdateDocumentRequestBody,
 ) => {
   localStorage.setItem<StoredDocument>({
     key: STORAGE_KEY.EDITING,
@@ -95,7 +95,7 @@ const updateDocument = (
   });
   makeRequest(() => notionApi.update(id, body), {
     onSuccess: () => {
-      if (target === 'title' || target === 'emoji') {
+      if (target === "title" || target === "emoji") {
         const [emojiValue, titleValue] = splitTitleWithEmoji(body.title);
         changeDocumentTitle(titleValue, PLACEHOLDER.DOCUMENT_TITLE);
         changeFavicon(emojiValue);
@@ -112,7 +112,7 @@ const deleteDocument = (id: number) => {
       getRootDocuments();
       if (id === currentId) {
         getRootDocuments();
-        if (id === currentId) navigate('/');
+        if (id === currentId) navigate("/");
       }
     },
   });
@@ -132,7 +132,7 @@ const toggleDocument = (id: number) => {
   }));
 };
 
-const notionService = {
+const notion = {
   getRootDocuments,
   getDetailDocument,
   createDocument,
@@ -141,4 +141,4 @@ const notionService = {
   toggleDocument,
 };
 
-export default notionService;
+export default notion;

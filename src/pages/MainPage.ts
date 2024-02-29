@@ -1,6 +1,5 @@
-import { Component, outlet } from '@core';
-import Directory from '@notion/components/Directory';
-import NavHeader from '@notion/components/NavHeader';
+import { Component, outlet } from "@core";
+import { Directory, NavHeader } from "@notion/components";
 
 class MainPage extends Component {
   template() {
@@ -9,13 +8,13 @@ class MainPage extends Component {
         <header></header>
         <div class='directory'></div>
       </nav>
-      ${outlet('main')}
+      ${outlet("main")}
     `;
   }
 
   rendered() {
-    this.addComponent(Directory, '.directory');
-    this.addComponent(NavHeader, 'header');
+    this.addComponent(Directory, ".directory");
+    this.addComponent(NavHeader, "header");
   }
 }
 

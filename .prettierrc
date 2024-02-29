@@ -1,0 +1,15 @@
+{
+  "plugins": ["@trivago/prettier-plugin-sort-imports"],
+  "importOrder": [
+    "@core(.*)$",
+    "@notion/main",
+    "@notion/store",
+    "@notion/services(.*)$",
+    "@notion/pages(.*)$",
+    "@notion/components(.*)$",
+    "@notion/types(.*)$",
+    "@notion/utils(.*)$",
+    "@notion/constants(.*)$"
+  ],
+  "importOrderSortSpecifiers": true
+}

@@ -1,20 +1,20 @@
-import { makeRequest } from '@core';
-import { emojiApi } from '@notion/api';
+import { emojiApi } from "@notion/api";
+import { makeRequest } from "@core";
+import { storage } from "@core";
+import { emojiData, infiniteEmojiData, store } from "@notion/store";
 import {
-  EmojiCategories,
-  EmojiList,
   EmojiByCategory,
+  EmojiCategories,
   EmojiData,
+  EmojiList,
   InfiniteEmojiData,
   StoredEmojiList,
-} from '@notion/types';
-import { store, emojiData, infiniteEmojiData } from '@notion/store';
-import { storage } from '@core';
-import { STORAGE_KEY } from '@notion/constants';
+} from "@notion/types";
+import { STORAGE_KEY } from "@notion/constants";
 
 const sessionStorage = storage(window.sessionStorage);
 
-export const getInfiniteEmoji = () => {
+const getInfiniteEmoji = () => {
   const [{ categories, cursor }, setInfiniteEmojiData] =
     store.useData<InfiniteEmojiData>(infiniteEmojiData);
 
@@ -36,11 +36,11 @@ export const getInfiniteEmoji = () => {
           done: cursor === categories.length - 1,
         }));
       },
-    }
+    },
   );
 };
 
-export const getEmojiCategory = () => {
+const getEmojiCategory = () => {
   const [{ cursor }, setInfiniteEmojiData] =
     store.useData<InfiniteEmojiData>(infiniteEmojiData);
   makeRequest<string[], EmojiCategories>(() => emojiApi.getCategories(), {
@@ -51,7 +51,7 @@ export const getEmojiCategory = () => {
       if (cursor === 0) {
         setInfiniteEmojiData((prev) => ({
           ...prev,
-          categories: data.filter((emoji) => emoji !== 'component'),
+          categories: data.filter((emoji) => emoji !== "component"),
         }));
         getInfiniteEmoji();
       }
@@ -59,17 +59,17 @@ export const getEmojiCategory = () => {
   });
 };
 
-export const getStoredEmoji = () => {
+const getStoredEmoji = () => {
   const storedEmojiList = sessionStorage.getItem<StoredEmojiList>({
     key: STORAGE_KEY.EMOJI,
     default: [],
   });
   return {
-    'recently-used': storedEmojiList,
+    "recently-used": storedEmojiList,
   };
 };
 
-export const storeEmoji = (emoji: string) => {
+const storeEmoji = (emoji: string) => {
   const storedEmojiList = sessionStorage.getItem<StoredEmojiList>({
     key: STORAGE_KEY.EMOJI,
     default: [],
@@ -83,3 +83,12 @@ export const storeEmoji = (emoji: string) => {
     value: newStoredEmoji,
   });
 };
+
+const emoji = {
+  getInfiniteEmoji,
+  getEmojiCategory,
+  getStoredEmoji,
+  storeEmoji,
+};
+
+export default emoji;

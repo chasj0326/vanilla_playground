@@ -1,21 +1,14 @@
-import { Route, RouteWithParams } from './routes';
+import { Route } from './routes';
 import routeWorker from './routeWorker';
-
-interface RouterOptions {
-  onNavigate?: (route: RouteWithParams | null) => void;
-  onPopState?: (route: RouteWithParams | null) => void;
-}
 
 class Router {
   routes;
   render;
   match;
   prevUrl;
-  options;
 
-  constructor(routes: Route[], routerOptions?: RouterOptions) {
+  constructor(routes: Route[]) {
     this.routes = routes;
-    this.options = routerOptions;
 
     const worker = routeWorker(this.routes);
 
@@ -35,24 +28,16 @@ class Router {
       const { url } = (event as CustomEvent).detail;
       window.history.pushState({}, '', url);
 
-      if (this.options?.onNavigate) {
-        this.options.onNavigate(this.match());
-      }
-
       this.render(url);
     });
 
     window.addEventListener('popstate', () => {
-      if (this.options?.onPopState) {
-        this.options.onPopState(this.match());
-      }
       this.render(window.location.pathname);
     });
   }
 }
 
-const createRouter = (routes: Route[], routerOptions?: RouterOptions) =>
-  new Router(routes, routerOptions);
+const createRouter = (routes: Route[]) => new Router(routes);
 
 export const navigate = (url: string) => {
   const navigateEvent = new CustomEvent('navigate', {

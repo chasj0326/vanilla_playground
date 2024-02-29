@@ -12,7 +12,7 @@ export interface DetailDocument {
   content: string | null;
   createdAt: string;
   updatedAt: string;
-  documents: Omit<DetailDocument, 'content' | 'documents'>[];
+  documents: Omit<DetailDocument, "content" | "documents">[];
 }
 
 export interface CreatedDocument {

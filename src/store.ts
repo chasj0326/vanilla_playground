@@ -1,15 +1,15 @@
-import { Store } from '@core';
+import { Store } from "@core";
 import {
   DirectoryData,
   EditorData,
   EmojiData,
   InfiniteEmojiData,
-} from '@notion/types';
+} from "@notion/types";
 
 export const store = new Store();
 
 export const directoryData = store.addData<DirectoryData>({
-  key: 'directory',
+  key: "directory",
   default: {
     currentId: 0,
     rootDocuments: [],
@@ -18,25 +18,25 @@ export const directoryData = store.addData<DirectoryData>({
 });
 
 export const editorData = store.addData<EditorData>({
-  key: 'editor',
+  key: "editor",
   default: {
     id: 0,
-    title: '',
-    content: '',
-    updatedAt: '',
-    createdAt: '',
+    title: "",
+    content: "",
+    updatedAt: "",
+    createdAt: "",
   },
 });
 
 export const emojiData = store.addData<EmojiData>({
-  key: 'emoji',
+  key: "emoji",
   default: {
     emojiMap: {},
   },
 });
 
 export const infiniteEmojiData = store.addData<InfiniteEmojiData>({
-  key: 'infinite-emoji',
+  key: "infinite-emoji",
   default: {
     categories: [],
     cursor: 0,

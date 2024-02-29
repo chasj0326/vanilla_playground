@@ -1,6 +1,6 @@
-import { Component } from '@core';
-import Editor from '@notion/components/Editor';
-import { router } from '@notion/main';
+import { Component } from "@core";
+import { router } from "@notion/main";
+import { Editor } from "@notion/components";
 
 class DocumentPage extends Component {
   template() {
@@ -14,7 +14,7 @@ class DocumentPage extends Component {
     const documentId = Number(params?.id);
 
     this.addComponent(Editor, {
-      selector: '.editor',
+      selector: ".editor",
       props: {
         documentId,
       },
