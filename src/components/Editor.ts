@@ -12,6 +12,7 @@ import {
   changeFavicon,
 } from '@notion/utils';
 import EmojiInput from './EmojiInput';
+import { router } from '@notion/main';
 
 interface EditorProps {
   documentId: number;
