@@ -1,4 +1,4 @@
-@import './variable.css';
+@import "./variable.css";
 
 * {
   box-sizing: border-box;
@@ -19,7 +19,7 @@
 nav {
   display: flex;
   flex-direction: column;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
   width: 250px;
   height: 100vh;
   border-right: 1px solid var(--directory-current);
@@ -39,7 +39,7 @@ nav header {
   margin-top: 2px;
 }
 nav header button {
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
   display: flex;
   width: 100%;
   align-items: center;
@@ -167,6 +167,7 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-width: calc(100vw - 250px);
 }
 
 .editor {
@@ -184,12 +185,13 @@ main {
   padding-top: 20px;
 }
 
-.editor textarea {
+#title,
+#content {
   padding: 2px;
   font-size: 16px;
   resize: none;
   color: var(--default-text);
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
 }
 
 #title {
