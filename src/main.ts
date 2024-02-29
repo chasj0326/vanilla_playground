@@ -3,7 +3,6 @@ import App from '@notion/App';
 import { createRouter } from '@core';
 import { MainPage, DocumentPage } from '@notion/pages';
 import Emoji from '@notion/components/Emoji';
-import { changeDocumentTitle, changeFavicon } from '@notion/utils';
 import { store, directoryData } from '@notion/store';
 import { DirectoryData } from '@notion/types';
 
@@ -30,12 +29,6 @@ export const router = createRouter(
     },
   ],
   {
-    onNavigate: (route) => {
-      if (!route?.params.id) {
-        changeDocumentTitle();
-        changeFavicon();
-      }
-    },
     onPopState: (route) => {
       const documentId = route?.params.id ?? '';
       const setDirectoryData = store.setData<DirectoryData>(directoryData);
