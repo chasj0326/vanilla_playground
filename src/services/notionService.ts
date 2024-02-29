@@ -97,7 +97,7 @@ const updateDocument = (
     onSuccess: () => {
       if (target === 'title' || target === 'emoji') {
         const [emojiValue, titleValue] = splitTitleWithEmoji(body.title);
-        changeDocumentTitle(titleValue);
+        changeDocumentTitle(titleValue, PLACEHOLDER.DOCUMENT_TITLE);
         changeFavicon(emojiValue);
         getRootDocuments();
       }
