@@ -9,6 +9,12 @@ export const STORAGE_KEY = {
   EMOJI: 'emoji-list',
 };
 
+export const STORE_KEY = {
+  DIRECTORY: 'directory',
+  EDITOR: 'editor',
+  EMOJI: 'emoji',
+};
+
 export const EMOJI_CATEGORY: {
   [key: string]: string;
 } = {

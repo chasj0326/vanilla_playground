@@ -3,12 +3,15 @@ import { RootDocuments, DirectoryData } from '@notion/types';
 import { router } from '@notion/main';
 import { store, directoryData } from '@notion/store';
 import { notionService as notion } from '@notion/services';
-import { PLACEHOLDER } from '@notion/constants';
+import { PLACEHOLDER, STORE_KEY } from '@notion/constants';
 import { splitTitleWithEmoji } from '@notion/utils';
 
 class Directory extends Component {
   created(): void {
-    store.subscribe([directoryData], () => this.render());
+    store.subscribe([directoryData], {
+      key: STORE_KEY.DIRECTORY,
+      func: () => this.render(),
+    });
   }
 
   mounted() {

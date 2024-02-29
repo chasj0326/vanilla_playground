@@ -1,5 +1,5 @@
 import { Component } from '@core';
-import { PLACEHOLDER } from '@notion/constants';
+import { PLACEHOLDER, STORE_KEY } from '@notion/constants';
 import { notionService as notion } from '@notion/services';
 import { editorData, store } from '@notion/store';
 import { EditorData } from '@notion/types';
@@ -33,7 +33,10 @@ class Editor extends Component<EditorProps> {
   }
 
   created(): void {
-    store.subscribe([editorData], () => this.render());
+    store.subscribe([editorData], {
+      key: STORE_KEY.EDITOR,
+      func: () => this.render(),
+    });
   }
 
   mounted(): void {

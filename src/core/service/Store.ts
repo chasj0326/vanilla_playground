@@ -5,8 +5,16 @@ interface Data {
   };
 }
 
+interface Listener {
+  key: string;
+  func: VoidFunction;
+  option?: {
+    'non-strict': boolean;
+  };
+}
+
 interface Channel {
-  [key: symbol]: VoidFunction[];
+  [key: symbol]: Listener[];
 }
 
 const isSameValue = <T>(oldValue: T, newValue: T) => {
@@ -29,16 +37,27 @@ class Store {
     }
   }
 
-  subscribe(keyList: (keyof Data)[], func: VoidFunction) {
+  subscribe(keyList: (keyof Data)[], listener: Listener) {
     this.validateKey(keyList);
     for (const key of keyList) {
-      this.channel[key].push(func);
+      if (
+        this.channel[key].some((subscribed) => subscribed.key === listener.key)
+      ) {
+        if (listener.option?.['non-strict']) {
+          this.channel[key].push(listener);
+        } else {
+          this.channel[key] = this.channel[key].filter(
+            (suscribed) => suscribed.key !== listener.key
+          );
+        }
+      }
+      this.channel[key].push(listener);
     }
   }
 
   #notify(key: keyof Data) {
-    this.channel[key].forEach((fn) => {
-      fn();
+    this.channel[key].forEach(({ func }) => {
+      func();
     });
   }
 

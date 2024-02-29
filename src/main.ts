@@ -5,6 +5,7 @@ import { MainPage, DocumentPage } from '@notion/pages';
 import Emoji from '@notion/components/Emoji';
 import { store, directoryData } from '@notion/store';
 import { DirectoryData } from '@notion/types';
+import { changeDocumentTitle, changeFavicon } from './utils';
 
 const $app = document.querySelector<HTMLElement>('#app');
 if ($app) {
@@ -36,6 +37,11 @@ export const router = createRouter(
         ...prev,
         currentId: Number(documentId),
       }));
+
+      if (route?.path === '/') {
+        changeDocumentTitle();
+        changeFavicon();
+      }
     },
   }
 );

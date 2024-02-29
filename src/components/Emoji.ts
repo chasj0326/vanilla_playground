@@ -1,4 +1,5 @@
 import { Component } from '@core';
+import { STORE_KEY } from '@notion/constants';
 import {
   getEmojiCategory,
   getInfiniteEmoji,
@@ -17,7 +18,10 @@ interface EmojiProps {
 
 class Emoji extends Component<EmojiProps> {
   created(): void {
-    store.subscribe([emojiData], () => this.render());
+    store.subscribe([emojiData], {
+      key: STORE_KEY.EMOJI,
+      func: () => this.render(),
+    });
   }
 
   mounted(): void {
