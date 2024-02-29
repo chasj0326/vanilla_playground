@@ -8,6 +8,7 @@ import {
   resizeTextArea,
   joinTitleWithEmoji,
   splitTitleWithEmoji,
+  changeDocumentTitle,
 } from '@notion/utils';
 import EmojiInput from './EmojiInput';
 
@@ -53,7 +54,9 @@ class Editor extends Component<EditorProps> {
 
     const documentId = this.props?.documentId ?? 0;
     const { title } = store.getData<EditorData>(editorData);
-    const [emojiValue] = splitTitleWithEmoji(title);
+    const [emojiValue, titleValue] = splitTitleWithEmoji(title);
+
+    changeDocumentTitle(titleValue, PLACEHOLDER.DOCUMENT_TITLE);
 
     this.addComponent(EmojiInput, {
       selector: '.select-emoji-container',

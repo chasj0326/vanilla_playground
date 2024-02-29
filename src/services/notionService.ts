@@ -10,8 +10,18 @@ import {
 import { store, directoryData, editorData } from '@notion/store';
 import { notionApi } from '@notion/api';
 import { UpdateDocumentRequestBody } from '@notion/types';
-import { STORAGE_KEY, defaultStoredDocument } from '@notion/constants';
-import { isFreshByTime, makeToggleData, updateToggleData } from '@notion/utils';
+import {
+  PLACEHOLDER,
+  STORAGE_KEY,
+  defaultStoredDocument,
+} from '@notion/constants';
+import {
+  changeDocumentTitle,
+  isFreshByTime,
+  makeToggleData,
+  splitTitleWithEmoji,
+  updateToggleData,
+} from '@notion/utils';
 
 const localStorage = storage(window.localStorage);
 
@@ -78,6 +88,10 @@ const updateDocument = (
   target: 'title' | 'content' | 'emoji',
   body: UpdateDocumentRequestBody
 ) => {
+  if (target === 'title') {
+    const [_, titleValue] = splitTitleWithEmoji(body.title);
+    changeDocumentTitle(titleValue, PLACEHOLDER.DOCUMENT_TITLE);
+  }
   localStorage.setItem<StoredDocument>({
     key: STORAGE_KEY.EDITING,
     value: { id, updatedAt: String(new Date()), ...body },
