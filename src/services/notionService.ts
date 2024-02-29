@@ -17,6 +17,7 @@ import {
 } from '@notion/constants';
 import {
   changeDocumentTitle,
+  changeFavicon,
   isFreshByTime,
   makeToggleData,
   splitTitleWithEmoji,
@@ -88,17 +89,18 @@ const updateDocument = (
   target: 'title' | 'content' | 'emoji',
   body: UpdateDocumentRequestBody
 ) => {
-  if (target === 'title') {
-    const [_, titleValue] = splitTitleWithEmoji(body.title);
-    changeDocumentTitle(titleValue, PLACEHOLDER.DOCUMENT_TITLE);
-  }
   localStorage.setItem<StoredDocument>({
     key: STORAGE_KEY.EDITING,
     value: { id, updatedAt: String(new Date()), ...body },
   });
   makeRequest(() => notionApi.update(id, body), {
     onSuccess: () => {
-      if (target === 'title' || target === 'emoji') getRootDocuments();
+      if (target === 'title' || target === 'emoji') {
+        const [emojiValue, titleValue] = splitTitleWithEmoji(body.title);
+        changeDocumentTitle(titleValue);
+        changeFavicon(emojiValue);
+        getRootDocuments();
+      }
     },
   });
 };

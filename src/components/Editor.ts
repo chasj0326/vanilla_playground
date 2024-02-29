@@ -9,6 +9,7 @@ import {
   joinTitleWithEmoji,
   splitTitleWithEmoji,
   changeDocumentTitle,
+  changeFavicon,
 } from '@notion/utils';
 import EmojiInput from './EmojiInput';
 
@@ -57,6 +58,7 @@ class Editor extends Component<EditorProps> {
     const [emojiValue, titleValue] = splitTitleWithEmoji(title);
 
     changeDocumentTitle(titleValue, PLACEHOLDER.DOCUMENT_TITLE);
+    changeFavicon(emojiValue);
 
     this.addComponent(EmojiInput, {
       selector: '.select-emoji-container',

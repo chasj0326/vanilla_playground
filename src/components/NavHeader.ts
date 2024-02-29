@@ -2,7 +2,7 @@ import { Component, navigate } from '@core';
 import { notionService as notion } from '@notion/services';
 import { directoryData, store } from '@notion/store';
 import { DirectoryData } from '@notion/types';
-import { changeDocumentTitle } from '@notion/utils';
+import { changeDocumentTitle, changeFavicon } from '@notion/utils';
 
 class NavHeader extends Component {
   mounted(): void {
@@ -16,6 +16,7 @@ class NavHeader extends Component {
         case 'go-home': {
           navigate('/');
           changeDocumentTitle();
+          changeFavicon();
           setDirectoryData((prev) => ({ ...prev, currentId: 0 }));
           break;
         }
