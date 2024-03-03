@@ -1,118 +1,184 @@
-// 블럭 생성 = div 안에 input 넣기
-// 엔터 누름 = 그 블럭으로 createDOMElement, 다음 블럭 생성
-// editable div 누름 => input 으로 바뀜
 import { Component, createDOMElement } from "@core";
 
-const textTagMap = ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "b", "mark"];
+const textTagMap = ["h1", "h2", "h3", "h4", "code", "q"];
+const placeholderMap: {
+  [key: string]: string;
+} = {
+  h1: "제목1",
+  h2: "제목2",
+  h3: "제목3",
+  h4: "제목4",
+  q: "인용",
+  div: "내용을 입력하세요, 명령어는 '/'",
+};
 
 class RichEditor extends Component {
-  createNewBlock() {
-    const $richEditor = this.findElement<HTMLDivElement>("#rich-editor");
-    const $input = createDOMElement({
-      tag: "input",
-      attributes: {
-        id: "block",
-        class: "p",
-        placeholder: "내용을 입력하세요",
-      },
+  addKeyEvent(key: string | null, listener: (e: KeyboardEvent) => void): void {
+    this.$target.addEventListener("keydown", (e) => {
+      if (e.key !== key || e.isComposing) return;
+      listener(e);
     });
-    $richEditor.append($input);
-    $input.focus();
-  }
-
-  changeBlockToInput($block: HTMLElement) {
-    const $input = createDOMElement({
-      tag: "input",
-      attributes: {
-        id: "block",
-        class: $block.tagName.toLowerCase(),
-        placeholder: "내용을 입력하세요",
-        value: $block.innerText,
-      },
-    });
-    $block.replaceWith($input);
-    $input.focus();
-    const length = ($input as HTMLInputElement).value.length;
-    ($input as HTMLInputElement).setSelectionRange(length, length);
   }
 
   mounted(): void {
-    // 비어있으면 기본 블럭 생성!
-    const $richEditor = this.findElement<HTMLDivElement>("#rich-editor");
-    if (!$richEditor.innerHTML) {
-      this.createNewBlock();
+    const $editor = this.findElement<HTMLDivElement>("#rich-editor");
+    if (!$editor.innerHTML) {
+      const selection = window.getSelection();
+      const $block = createNewBlock();
+      $editor.append($block);
+      selection?.setPosition($block, 0);
     }
 
-    this.$target.addEventListener("keydown", (e) => {
-      if (e.key !== "Backspace") return;
-      if (e.isComposing) return;
-      const $deleting = e.target as HTMLInputElement;
-      if ($deleting.selectionStart === 0 && $deleting.selectionEnd === 0) {
-        e.preventDefault(); // 기본 backspace 행동 막기
-        // 이전 element 찾기
-        const $previousSibling = $deleting.previousElementSibling;
-        // $deleting element 삭제
-        $deleting.remove();
-        // 이전 element가 존재하면서 포커스 가능한 경우, 포커스를 이전 element로 이동
-        if (
-          $previousSibling &&
-          $previousSibling instanceof HTMLDivElement &&
-          $previousSibling.focus
-        ) {
-          $previousSibling.focus();
-        } else {
-          this.createNewBlock();
-        }
-      }
+    this.addEvent("keyup", () => {
+      addClassToCurrentBlock();
     });
 
-    this.$target.addEventListener("keydown", (e) => {
-      if (e.key !== "Enter") return;
-      if (e.isComposing) return;
-      const $editing = e.target as HTMLElement;
+    this.addEvent("pointerup", () => {
+      addClassToCurrentBlock();
+    });
 
-      // input 에서 엔터를 쳤다.
-      if ($editing.tagName === "INPUT") {
-        const $input = $editing as HTMLInputElement;
-        const value = $input.value;
-        const newTagName = value.substring(1);
+    this.addKeyEvent("Enter", (e) => {
+      if (e.shiftKey) return;
 
-        if (textTagMap.includes(newTagName)) {
-          // 단축키를 입력했다.
-          $input.className = newTagName;
-          $input.value = "";
-        } else {
-          // 내용을 다 입력하고 엔터를 쳤다.
-          const newTagName = $editing.className;
-          const $block = createDOMElement(
+      const $editor = e.target as HTMLElement;
+      const $block = getCurrentBlock();
+      if (!$block) return;
+
+      if (textTagMap.includes($block.innerText.substring(1))) {
+        handleShortcut($block);
+      } else {
+        const { selection, range } = getCursorInfo();
+        if (!(range && selection)) return;
+
+        range.deleteContents();
+        range.insertNode(
+          createDOMElement({
+            tag: "span",
+            attributes: {
+              id: "tmpcursor",
+            },
+          }),
+        );
+
+        const [beforeCursor, afterCursor] = $block.innerHTML.split(
+          '<span id="tmpcursor"></span>',
+        );
+
+        $block.innerHTML = beforeCursor;
+        const $newBlock = createNewBlock("div", afterCursor, false);
+
+        $editor.insertBefore($newBlock, $block.nextSibling);
+        selection.setPosition($newBlock, 0);
+      }
+      e.preventDefault();
+    });
+
+    this.addKeyEvent("Backspace", (e) => {
+      const $block = getCurrentBlock();
+      if (!$block) return;
+
+      const { range, selection } = getCursorInfo();
+      if (!range || !selection) return;
+      if (
+        range.startOffset === 0 &&
+        range.endOffset === 0 &&
+        (range.startContainer.previousSibling === null ||
+          $block.innerHTML === "")
+      ) {
+        const $prevBlock = $block.previousElementSibling;
+        if ($prevBlock) {
+          const contents = $block.childNodes;
+          $block.remove();
+          const $cursor = createDOMElement(
             {
-              tag: newTagName as keyof HTMLElementTagNameMap,
+              tag: "span",
               attributes: {
-                id: "block",
-                contenteditable: "true",
+                id: "tmpcursor",
               },
             },
-            $input.value,
+            "cursor",
           );
-          $input.replaceWith($block);
-          $block.addEventListener("focus", (e) =>
-            this.changeBlockToInput(e.target as HTMLElement),
-          );
-          this.createNewBlock();
+          $prevBlock.append($cursor);
+          selection.setPosition($cursor, 1);
+          $prevBlock.append(...contents);
+          $cursor.remove();
+        } else if ($block.tagName !== "div") {
+          const $newBlock = createNewBlock("div", $block.innerHTML);
+          $block.replaceWith($newBlock);
         }
-      } else {
-        // 텍스트 블럭을 치다가 엔터를 쳤다.
+        e.preventDefault();
       }
     });
   }
-  template() {
+
+  template(): string {
     return `
-    <div class="rich-editor-container">
+    <div class='rich-editor-container'>
       <h1>RichEditor</h1>
-      <div id="rich-editor"></div>
+      <div id='rich-editor' contenteditable='true'></div>
     </div>
     `;
   }
 }
 
 export default RichEditor;
+
+const createNewBlock = (
+  tag: keyof HTMLElementTagNameMap = "div",
+  innerHTML = "",
+  isCurrent = true,
+) => {
+  const $block = createDOMElement(
+    {
+      tag,
+      attributes: {
+        id: "block",
+        placeholder: placeholderMap[tag],
+      },
+    },
+    innerHTML,
+  );
+  if (isCurrent) $block.classList.add("current");
+  return $block;
+};
+
+const handleShortcut = ($block: HTMLElement) => {
+  const newTag = $block.innerText.substring(1);
+  const $newBlock = createNewBlock(newTag as keyof HTMLElementTagNameMap);
+  $block.replaceWith($newBlock);
+};
+
+const getCursorInfo = () => {
+  const selection = window.getSelection();
+  return {
+    selection,
+    range: selection ? selection.getRangeAt(0) : null,
+  };
+};
+
+const getCurrentBlock = () => {
+  const { range } = getCursorInfo();
+  if (!range) return null;
+
+  const currentElement = (
+    range.commonAncestorContainer.nodeType === Node.ELEMENT_NODE
+      ? range.commonAncestorContainer
+      : range.commonAncestorContainer.parentElement
+  ) as HTMLElement;
+
+  const $block = currentElement.closest("#block");
+  if ($block instanceof HTMLElement) {
+    return currentElement.closest("#block") as HTMLElement;
+  }
+  return null;
+};
+
+const addClassToCurrentBlock = () => {
+  const $block = getCurrentBlock();
+  if (!$block) return;
+  document.querySelectorAll("#block").forEach(($block) => {
+    $block.classList.remove("current");
+  });
+  $block?.classList.add("current");
+  if ($block?.innerHTML === "<br>") $block.innerHTML = "";
+};

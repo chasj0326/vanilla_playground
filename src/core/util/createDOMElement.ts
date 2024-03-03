@@ -7,14 +7,14 @@ export interface ElementProps {
 
 const createDOMElement = (
   { tag, attributes }: ElementProps,
-  innerText?: string,
+  innerHTML?: string,
 ) => {
   const $element = document.createElement(tag);
   for (const name in attributes) {
     $element.setAttribute(name, attributes[name]);
   }
-  if (innerText) {
-    $element.innerText = innerText;
+  if (innerHTML) {
+    $element.innerHTML = innerHTML;
   }
   return $element;
 };

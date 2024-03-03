@@ -5,7 +5,6 @@
 .rich-editor-container * {
   display: block;
 }
-/* const textTagMap = ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "b", "mark"]; */
 #rich-editor {
   display: flex;
   flex-direction: column;
@@ -13,6 +12,56 @@
   margin-top: 40px;
 }
 
+#block {
+  height: auto;
+  min-height: 16px;
+  display: block;
+  padding: 2px;
+  position: relative;
+}
+#block:focus {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+#block.current:empty::before {
+  content: attr(placeholder);
+  color: rgba(0, 0, 0, 0.2);
+}
+#rich-editor b {
+  display: inline;
+  font-weight: 700;
+}
+#rich-editor u {
+  display: inline;
+}
+#rich-editor i {
+  display: inline;
+  font-style: italic;
+}
+#rich-editor div {
+  font-size: 16px;
+}
+#rich-editor h1 {
+  font-size: 40px;
+  font-weight: 700;
+}
+#rich-editor h2 {
+  font-size: 32px;
+  font-weight: 700;
+}
+#rich-editor h3 {
+  font-size: 24px;
+  font-weight: 700;
+}
+#rich-editor h4 {
+  font-size: 20px;
+  font-weight: 700;
+}
+#rich-editor q {
+  border-left: 2px solid black;
+  padding-left: 16px;
+}
+
+/* 
 .rich-editor-container input {
   font-size: 16px;
 }
@@ -54,4 +103,4 @@ input.b {
 .rich-editor-container mark,
 input.mark {
   background-color: yellow;
-}
+} */

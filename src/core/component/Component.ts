@@ -42,12 +42,12 @@ class Component<Props = any, State = any> {
   addComponent<T extends new (args: any) => Component>(
     ComponentClass: T,
     params:
-      | (Omit<ConstructorParameters<T>[0], 'target'> & {
+      | (Omit<ConstructorParameters<T>[0], "target"> & {
           selector: string;
         })
-      | string
+      | string,
   ) {
-    const isParamsStr = typeof params === 'string';
+    const isParamsStr = typeof params === "string";
     const selector = isParamsStr ? params : params.selector;
     const $container = this.findElement<HTMLElement>(selector);
 
@@ -60,13 +60,13 @@ class Component<Props = any, State = any> {
 
   removeComponent(selector: string) {
     const $container = this.findElement<HTMLElement>(selector);
-    $container.innerHTML = '';
+    $container.innerHTML = "";
   }
 
   addEvent(
     type: keyof HTMLElementEventMap,
     listener: (targetElement: HTMLElement) => void,
-    options?: AddEventListenerOptions
+    options?: AddEventListenerOptions,
   ) {
     const eventTarget = this.$target;
     eventTarget.addEventListener(
@@ -75,7 +75,7 @@ class Component<Props = any, State = any> {
         const targetElement = event.target as HTMLElement;
         listener(targetElement);
       },
-      options
+      options,
     );
   }
 
