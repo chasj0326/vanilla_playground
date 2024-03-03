@@ -1,15 +1,21 @@
 import { Component, createDOMElement } from "@core";
 
-const textTagMap = ["h1", "h2", "h3", "h4", "code", "q"];
-const placeholderMap: {
-  [key: string]: string;
-} = {
+const shortcupMap: Record<string, string> = {
+  "/h1": "h1",
+  "/h2": "h2",
+  "/h3": "h3",
+  "/h4": "h4",
+  "/q": "q",
+  "/mark": "mark",
+};
+const placeholderMap: Record<string, string> = {
   h1: "제목1",
   h2: "제목2",
   h3: "제목3",
   h4: "제목4",
   q: "인용",
   div: "내용을 입력하세요, 명령어는 '/'",
+  mark: "내용을 입력하세요, 명령어는 '/'",
 };
 
 class RichEditor extends Component {
@@ -22,14 +28,10 @@ class RichEditor extends Component {
 
   mounted(): void {
     const $editor = this.findElement<HTMLDivElement>("#rich-editor");
-    if (!$editor.innerHTML) {
-      const selection = window.getSelection();
-      const $block = createNewBlock();
-      $editor.append($block);
-      selection?.setPosition($block, 0);
-    }
+    initEditor($editor);
 
     this.addEvent("keyup", () => {
+      initEditor($editor);
       addClassToCurrentBlock();
     });
 
@@ -44,7 +46,7 @@ class RichEditor extends Component {
       const $block = getCurrentBlock();
       if (!$block) return;
 
-      if (textTagMap.includes($block.innerText.substring(1))) {
+      if ($block.innerText in shortcupMap) {
         handleShortcut($block);
       } else {
         const { selection, range } = getCursorInfo();
@@ -75,10 +77,11 @@ class RichEditor extends Component {
 
     this.addKeyEvent("Backspace", (e) => {
       const $block = getCurrentBlock();
-      if (!$block) return;
-
       const { range, selection } = getCursorInfo();
-      if (!range || !selection) return;
+      if (!($block && range && selection)) {
+        return;
+      }
+
       if (
         range.startOffset === 0 &&
         range.endOffset === 0 &&
@@ -143,7 +146,7 @@ const createNewBlock = (
 };
 
 const handleShortcut = ($block: HTMLElement) => {
-  const newTag = $block.innerText.substring(1);
+  const newTag = shortcupMap[$block.innerText];
   const $newBlock = createNewBlock(newTag as keyof HTMLElementTagNameMap);
   $block.replaceWith($newBlock);
 };
@@ -176,9 +179,19 @@ const getCurrentBlock = () => {
 const addClassToCurrentBlock = () => {
   const $block = getCurrentBlock();
   if (!$block) return;
+
   document.querySelectorAll("#block").forEach(($block) => {
     $block.classList.remove("current");
   });
-  $block?.classList.add("current");
-  if ($block?.innerHTML === "<br>") $block.innerHTML = "";
+  $block.classList.add("current");
+  if ($block.innerHTML === "<br>") $block.innerHTML = "";
+};
+
+const initEditor = ($editor: HTMLElement) => {
+  if (!$editor.innerHTML) {
+    const selection = window.getSelection();
+    const $block = createNewBlock();
+    $editor.append($block);
+    selection?.setPosition($block, 0);
+  }
 };
