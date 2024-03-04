@@ -317,3 +317,9 @@ main {
   height: 20px;
   background-color: white;
 }
+
+/* Guide */
+.guide-container {
+  width: 100%;
+  padding: 10%;
+}

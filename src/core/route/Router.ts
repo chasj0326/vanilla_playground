@@ -26,7 +26,7 @@ class Router {
 
     window.addEventListener("navigate", (event) => {
       const { url, option } = (event as CustomEvent).detail;
-      if (option.replace) {
+      if (option && option.replace) {
         window.history.replaceState({}, "", url);
       } else {
         window.history.pushState({}, "", url);

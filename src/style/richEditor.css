@@ -83,6 +83,11 @@
   border-radius: 16px;
   border: 1px solid lightgray;
   margin: 8px 2px;
+  line-height: 28px;
+}
+#rich-editor mark {
+  background-color: var(--directory-hover);
+  margin: 6px 2px;
 }
 #rich-editor img {
   width: 100%;

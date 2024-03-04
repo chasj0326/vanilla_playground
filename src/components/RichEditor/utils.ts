@@ -1,12 +1,19 @@
 import { createDOMElement } from "@core";
 
-export const shortcupMap: Record<string, string> = {
+export const enterShortcutMap: Record<string, string> = {
   "/h1": "h1",
   "/h2": "h2",
   "/h3": "h3",
   "/h4": "h4",
   "/q": "q",
-  "/callout": "aside",
+  "/block": "aside",
+  "/mark": "mark",
+};
+export const spaceShortcutMap: Record<string, string> = {
+  "#": "h1",
+  "##": "h2",
+  "###": "h3",
+  "####": "h4",
 };
 export const placeholderMap: Record<string, string> = {
   h1: "제목1",
@@ -15,6 +22,7 @@ export const placeholderMap: Record<string, string> = {
   h4: "제목4",
   q: "인용",
   div: "내용을 입력하세요, 명령어는 '/'",
+  mark: "내용을 입력하세요, 명령어는 '/'",
   aside: "내용을 입력하세요, 명령어는 '/'",
 };
 
@@ -38,7 +46,8 @@ export const createNewBlock = (
 };
 
 export const handleShortcut = ($block: HTMLElement) => {
-  const newTag = shortcupMap[$block.innerText];
+  const newTag =
+    enterShortcutMap[$block.innerText] ?? spaceShortcutMap[$block.innerText];
   const $newBlock = createNewBlock(newTag as keyof HTMLElementTagNameMap);
   $block.replaceWith($newBlock);
 };

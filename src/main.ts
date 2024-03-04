@@ -1,6 +1,6 @@
 import App from "@notion/App";
 import "@notion/style/style.css";
-import { createRouter, navigate } from "@core";
+import { createRouter } from "@core";
 import { DocumentPage, GuidePage, MainPage } from "@notion/pages";
 
 const $app = document.querySelector<HTMLElement>("#app");
@@ -26,4 +26,3 @@ export const router = createRouter([
 ]);
 
 router.init();
-navigate("/home", { replace: true });

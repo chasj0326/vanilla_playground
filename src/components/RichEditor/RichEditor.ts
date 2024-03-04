@@ -1,11 +1,12 @@
 import {
   addClassToCurrentBlock,
   createNewBlock,
+  enterShortcutMap,
   getCurrentBlock,
   getCursorInfo,
   handleShortcut,
   initEditor,
-  shortcupMap,
+  spaceShortcutMap,
 } from "./utils";
 import { Component, createDOMElement } from "@core";
 
@@ -43,6 +44,15 @@ class RichEditor extends Component<RichEditorProps> {
       addClassToCurrentBlock();
     });
 
+    this.addKeyEvent(" ", (e) => {
+      const $block = getCurrentBlock();
+      if (!$block) return;
+      if ($block.innerText in spaceShortcutMap) {
+        handleShortcut($block);
+        e.preventDefault();
+      }
+    });
+
     this.addKeyEvent("Enter", (e) => {
       if (e.shiftKey) return;
 
@@ -50,7 +60,7 @@ class RichEditor extends Component<RichEditorProps> {
       const $block = getCurrentBlock();
       if (!$block) return;
 
-      if ($block.innerText in shortcupMap) {
+      if ($block.innerText in enterShortcutMap) {
         handleShortcut($block);
       } else {
         const { selection, range } = getCursorInfo();
@@ -120,9 +130,8 @@ class RichEditor extends Component<RichEditorProps> {
 
   template(): string {
     return `
-    <div class='rich-editor-container'>
       <div id='rich-editor' contenteditable='true'></div>
-    </div>
+    
     `;
   }
 }
