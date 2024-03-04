@@ -59,8 +59,8 @@ const getDetailDocument = (id: number) => {
       ) {
         if (confirm("작성중인 글이 있습니다. 불러오시겠습니까?")) {
           setEditorData({ ...storedDocument, id, createdAt });
-          localStorage.removeItem(STORAGE_KEY.EDITING);
         }
+        localStorage.removeItem(STORAGE_KEY.EDITING);
       } else {
         setEditorData({ id, title, content, updatedAt, createdAt });
       }
@@ -101,6 +101,9 @@ const updateDocument = (
         changeFavicon(emojiValue);
         getRootDocuments();
       }
+    },
+    onError: (error: Error) => {
+      console.log(error, body.content);
     },
   });
 };

@@ -1,25 +1,21 @@
+import {
+  addClassToCurrentBlock,
+  createNewBlock,
+  getCurrentBlock,
+  getCursorInfo,
+  handleShortcut,
+  initEditor,
+  shortcupMap,
+} from "./utils";
 import { Component, createDOMElement } from "@core";
 
-const shortcupMap: Record<string, string> = {
-  "/h1": "h1",
-  "/h2": "h2",
-  "/h3": "h3",
-  "/h4": "h4",
-  "/q": "q",
-  "/mark": "mark",
-};
-const placeholderMap: Record<string, string> = {
-  h1: "제목1",
-  h2: "제목2",
-  h3: "제목3",
-  h4: "제목4",
-  q: "인용",
-  div: "내용을 입력하세요, 명령어는 '/'",
-  mark: "내용을 입력하세요, 명령어는 '/'",
-};
+interface RichEditorProps {
+  initial: string;
+  onInput: (innerHTML: string) => void;
+}
 
-class RichEditor extends Component {
-  addKeyEvent(key: string | null, listener: (e: KeyboardEvent) => void): void {
+class RichEditor extends Component<RichEditorProps> {
+  addKeyEvent(key: string, listener: (e: KeyboardEvent) => void): void {
     this.$target.addEventListener("keydown", (e) => {
       if (e.key !== key || e.isComposing) return;
       listener(e);
@@ -28,7 +24,15 @@ class RichEditor extends Component {
 
   mounted(): void {
     const $editor = this.findElement<HTMLDivElement>("#rich-editor");
-    initEditor($editor);
+    if (this.props?.initial) {
+      $editor.innerHTML = this.props?.initial;
+    } else {
+      initEditor($editor);
+    }
+
+    this.addEvent("keydown", () => {
+      this.props?.onInput($editor.innerHTML);
+    });
 
     this.addEvent("keyup", () => {
       initEditor($editor);
@@ -78,9 +82,7 @@ class RichEditor extends Component {
     this.addKeyEvent("Backspace", (e) => {
       const $block = getCurrentBlock();
       const { range, selection } = getCursorInfo();
-      if (!($block && range && selection)) {
-        return;
-      }
+      if (!($block && range && selection)) return;
 
       if (
         range.startOffset === 0 &&
@@ -92,6 +94,7 @@ class RichEditor extends Component {
         if ($prevBlock) {
           const contents = $block.childNodes;
           $block.remove();
+
           const $cursor = createDOMElement(
             {
               tag: "span",
@@ -102,6 +105,7 @@ class RichEditor extends Component {
             "cursor",
           );
           $prevBlock.append($cursor);
+
           selection.setPosition($cursor, 1);
           $prevBlock.append(...contents);
           $cursor.remove();
@@ -117,7 +121,6 @@ class RichEditor extends Component {
   template(): string {
     return `
     <div class='rich-editor-container'>
-      <h1>RichEditor</h1>
       <div id='rich-editor' contenteditable='true'></div>
     </div>
     `;
@@ -125,73 +128,3 @@ class RichEditor extends Component {
 }
 
 export default RichEditor;
-
-const createNewBlock = (
-  tag: keyof HTMLElementTagNameMap = "div",
-  innerHTML = "",
-  isCurrent = true,
-) => {
-  const $block = createDOMElement(
-    {
-      tag,
-      attributes: {
-        id: "block",
-        placeholder: placeholderMap[tag],
-      },
-    },
-    innerHTML,
-  );
-  if (isCurrent) $block.classList.add("current");
-  return $block;
-};
-
-const handleShortcut = ($block: HTMLElement) => {
-  const newTag = shortcupMap[$block.innerText];
-  const $newBlock = createNewBlock(newTag as keyof HTMLElementTagNameMap);
-  $block.replaceWith($newBlock);
-};
-
-const getCursorInfo = () => {
-  const selection = window.getSelection();
-  return {
-    selection,
-    range: selection ? selection.getRangeAt(0) : null,
-  };
-};
-
-const getCurrentBlock = () => {
-  const { range } = getCursorInfo();
-  if (!range) return null;
-
-  const currentElement = (
-    range.commonAncestorContainer.nodeType === Node.ELEMENT_NODE
-      ? range.commonAncestorContainer
-      : range.commonAncestorContainer.parentElement
-  ) as HTMLElement;
-
-  const $block = currentElement.closest("#block");
-  if ($block instanceof HTMLElement) {
-    return currentElement.closest("#block") as HTMLElement;
-  }
-  return null;
-};
-
-const addClassToCurrentBlock = () => {
-  const $block = getCurrentBlock();
-  if (!$block) return;
-
-  document.querySelectorAll("#block").forEach(($block) => {
-    $block.classList.remove("current");
-  });
-  $block.classList.add("current");
-  if ($block.innerHTML === "<br>") $block.innerHTML = "";
-};
-
-const initEditor = ($editor: HTMLElement) => {
-  if (!$editor.innerHTML) {
-    const selection = window.getSelection();
-    const $block = createNewBlock();
-    $editor.append($block);
-    selection?.setPosition($block, 0);
-  }
-};

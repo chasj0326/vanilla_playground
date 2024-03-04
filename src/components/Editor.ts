@@ -1,7 +1,7 @@
 import { Component } from "@core";
 import { editorData, store } from "@notion/store";
 import { notion } from "@notion/services";
-import { EmojiInput } from "@notion/components";
+import { EmojiInput, RichEditor } from "@notion/components";
 import { EditorData } from "@notion/types";
 import {
   changeDocumentTitle,
@@ -20,7 +20,7 @@ interface EditorProps {
 class Editor extends Component<EditorProps> {
   editorValue() {
     const titleEl = this.findElement<HTMLTextAreaElement>("#title");
-    const contentEl = this.findElement<HTMLTextAreaElement>("#content");
+    const contentEl = this.findElement<HTMLDivElement>("#rich-editor");
     const emojiEl = this.findElement<HTMLButtonElement>("#emoji");
     const isEmojiEmpty = emojiEl.classList.contains("empty");
     return {
@@ -28,7 +28,7 @@ class Editor extends Component<EditorProps> {
         isEmojiEmpty ? "" : emojiEl.innerText,
         titleEl.value,
       ),
-      content: contentEl.value,
+      content: contentEl.innerHTML || "",
     };
   }
 
@@ -57,7 +57,7 @@ class Editor extends Component<EditorProps> {
     resizeTextArea(["#title", "#content"]);
 
     const documentId = this.props?.documentId ?? 0;
-    const { title } = store.getData<EditorData>(editorData);
+    const { title, content } = store.getData<EditorData>(editorData);
     const [emojiValue, titleValue] = splitTitleWithEmoji(title);
 
     changeDocumentTitle(titleValue, PLACEHOLDER.DOCUMENT_TITLE);
@@ -71,23 +71,31 @@ class Editor extends Component<EditorProps> {
         value: emojiValue,
       },
     });
+
+    const updateWithDebounce = debounce((target, body) => {
+      notion.updateDocument(documentId, target, body);
+    }, 300);
+
+    this.addComponent(RichEditor, {
+      selector: ".rich-editor-container",
+      props: {
+        initial: content || "",
+        onInput: () => updateWithDebounce("content", this.editorValue()),
+      },
+    });
   }
 
   template(): string {
-    const { title, content } = store.getData<EditorData>(editorData);
+    const { title } = store.getData<EditorData>(editorData);
     const [_, titleValue] = splitTitleWithEmoji(title);
 
     return `
       <div class='title-container'>
         <div class='select-emoji-container'>
         </div>
-        <textarea id='title' placeholder='${
-          PLACEHOLDER.DOCUMENT_TITLE
-        }' rows='1'>${titleValue}</textarea>
+        <textarea id='title' placeholder='${PLACEHOLDER.DOCUMENT_TITLE}' rows='1'>${titleValue}</textarea>
       </div>
-      <textarea id='content' placeholder='${
-        PLACEHOLDER.DOCUMENT_CONTNET
-      }' rows='1'>${content || ""}</textarea>
+      <div class='rich-editor-container'></div>
     `;
   }
 }

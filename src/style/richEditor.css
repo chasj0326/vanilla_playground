@@ -1,5 +1,6 @@
+@import "./variable.css";
+
 .rich-editor-container {
-  padding: 20px;
   width: 100%;
 }
 .rich-editor-container * {
@@ -8,8 +9,9 @@
 #rich-editor {
   display: flex;
   flex-direction: column;
-  margin-top: 40px;
   gap: 2px;
+  font-family: "Noto Sans KR", sans-serif;
+  color: var(--default-text);
 }
 
 #block {
@@ -25,14 +27,16 @@
 }
 #block.current:empty::before {
   content: attr(placeholder);
-  color: rgba(0, 0, 0, 0.2);
+  color: var(--default-text);
+  opacity: 0.2;
 }
 #rich-editor b {
   display: inline;
-  font-weight: 700;
+  font-weight: 600;
 }
 #rich-editor u {
   display: inline;
+  text-underline-offset: 5%;
 }
 #rich-editor i {
   display: inline;
@@ -70,10 +74,16 @@
   margin: 6px 0;
 }
 #rich-editor q {
-  border-left: 2px solid black;
+  border-left: 3px solid var(--default-text);
   padding-left: 16px;
-  margin: 4px;
+  padding-top: 2px;
+  margin: 8px;
 }
-#rich-editor mark {
-  background-color: rgba(255, 207, 207, 0.501);
+#rich-editor aside {
+  background-color: white;
+  width: 80%;
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid lightgray;
+  margin: 8px 2px;
 }
