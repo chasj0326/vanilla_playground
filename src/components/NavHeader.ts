@@ -14,7 +14,7 @@ class NavHeader extends Component {
 
       switch (action) {
         case "go-home": {
-          navigate("/");
+          navigate("/home");
           changeDocumentTitle();
           changeFavicon();
           setDirectoryData((prev) => ({ ...prev, currentId: 0 }));

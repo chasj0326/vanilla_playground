@@ -1,8 +1,7 @@
 import App from "@notion/App";
 import "@notion/style/style.css";
-import { createRouter } from "@core";
-import { DocumentPage, MainPage } from "@notion/pages";
-import { RichEditor } from "@notion/components/RichEditor";
+import { createRouter, navigate } from "@core";
+import { DocumentPage, GuidePage, MainPage } from "@notion/pages";
 
 const $app = document.querySelector<HTMLElement>("#app");
 if ($app) {
@@ -15,8 +14,8 @@ export const router = createRouter([
     component: MainPage,
     children: [
       {
-        path: "/rich",
-        component: RichEditor,
+        path: "/home",
+        component: GuidePage,
       },
       {
         path: "/:id",
@@ -27,3 +26,4 @@ export const router = createRouter([
 ]);
 
 router.init();
+navigate("/home", { replace: true });

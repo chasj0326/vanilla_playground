@@ -6,7 +6,7 @@ export const changeDocumentTitle = (
   if (title) {
     document.title = title;
   } else {
-    document.title = "Chacha Notoin";
+    document.title = "Chacha Notion";
   }
 };
 

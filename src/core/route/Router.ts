@@ -1,5 +1,5 @@
-import { Route } from './routes';
-import routeWorker from './routeWorker';
+import routeWorker from "./routeWorker";
+import { Route } from "./routes";
 
 class Router {
   routes;
@@ -12,7 +12,7 @@ class Router {
 
     const worker = routeWorker(this.routes);
 
-    this.prevUrl = '';
+    this.prevUrl = "";
 
     this.render = (url: string) => {
       worker.render(url, this.prevUrl);
@@ -24,14 +24,17 @@ class Router {
   init() {
     this.render(window.location.pathname);
 
-    window.addEventListener('navigate', (event) => {
-      const { url } = (event as CustomEvent).detail;
-      window.history.pushState({}, '', url);
-
+    window.addEventListener("navigate", (event) => {
+      const { url, option } = (event as CustomEvent).detail;
+      if (option.replace) {
+        window.history.replaceState({}, "", url);
+      } else {
+        window.history.pushState({}, "", url);
+      }
       this.render(url);
     });
 
-    window.addEventListener('popstate', () => {
+    window.addEventListener("popstate", () => {
       this.render(window.location.pathname);
     });
   }
@@ -39,9 +42,13 @@ class Router {
 
 const createRouter = (routes: Route[]) => new Router(routes);
 
-export const navigate = (url: string) => {
-  const navigateEvent = new CustomEvent('navigate', {
-    detail: { url },
+interface NavigateOption {
+  replace: boolean;
+}
+
+export const navigate = (url: string, option?: NavigateOption) => {
+  const navigateEvent = new CustomEvent("navigate", {
+    detail: { url, option },
   });
   window.dispatchEvent(navigateEvent);
 };

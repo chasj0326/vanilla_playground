@@ -22,9 +22,6 @@
   min-height: 28px;
   padding: 4px;
 }
-#block:focus {
-  background-color: rgba(0, 0, 0, 0.2);
-}
 #block.current:empty::before {
   content: attr(placeholder);
   color: var(--default-text);
@@ -81,9 +78,12 @@
 }
 #rich-editor aside {
   background-color: white;
-  width: 80%;
+  width: 100%;
   padding: 16px;
   border-radius: 16px;
   border: 1px solid lightgray;
   margin: 8px 2px;
+}
+#rich-editor img {
+  width: 100%;
 }
