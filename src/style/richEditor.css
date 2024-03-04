@@ -39,6 +39,10 @@
   display: inline;
   font-style: italic;
 }
+#rich-editor a {
+  display: inline;
+  color: var(--directory-text);
+}
 #rich-editor div {
   font-size: 16px;
 }
@@ -84,6 +88,7 @@
   border: 1px solid lightgray;
   margin: 8px 2px;
   line-height: 28px;
+  min-height: 62px;
 }
 #rich-editor mark {
   background-color: var(--directory-hover);

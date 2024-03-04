@@ -126,12 +126,37 @@ class RichEditor extends Component<RichEditorProps> {
         e.preventDefault();
       }
     });
+
+    this.$target.addEventListener("paste", (e) => {
+      const { selection, range } = getCursorInfo();
+      if (!(range && selection)) return;
+      if (range.startContainer === range.endContainer) {
+        const pastedText = e.clipboardData?.getData("text") ?? "";
+        const urlRegex = /(http(s)?:\/\/[^\s]+)/g;
+        if (urlRegex.test(pastedText)) {
+          e.preventDefault();
+          const $link = createDOMElement(
+            {
+              tag: "a",
+              attributes: {
+                href: pastedText,
+                contenteditable: "false",
+                title: pastedText,
+                target: "_blank",
+              },
+            },
+            selection.toString(),
+          );
+          range.deleteContents();
+          range.insertNode($link);
+        }
+      }
+    });
   }
 
   template(): string {
     return `
       <div id='rich-editor' contenteditable='true'></div>
-    
     `;
   }
 }
