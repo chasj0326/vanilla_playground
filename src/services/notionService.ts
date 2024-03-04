@@ -19,6 +19,7 @@ import {
   updateToggleData,
 } from "@notion/utils";
 import {
+  NON_DELETE_DOCUMENT,
   PLACEHOLDER,
   STORAGE_KEY,
   defaultStoredDocument,
@@ -109,6 +110,10 @@ const updateDocument = (
 };
 
 const deleteDocument = (id: number) => {
+  if (NON_DELETE_DOCUMENT.includes(id)) {
+    alert("해당 문서는 삭제할 수 없는 문서입니다!");
+    return;
+  }
   const { currentId } = store.getData<DirectoryData>(directoryData);
   makeRequest(() => notionApi.delete(id), {
     onSuccess: () => {
