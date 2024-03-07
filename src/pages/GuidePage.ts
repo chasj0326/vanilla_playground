@@ -6,12 +6,14 @@ class GuidePage extends Component {
       <div class="guide-container" id="rich-editor">
         <div id="rich-editor">
           <h2 id="block" placeholder="제목2">Notion with <u>TypeScript</u></h2>
-          <q id="block" placeholder="인용"
-            ><b>노션의 간단한 기능들을 구현한 클론 프로젝트</b>입니다 ✨<br />사용
-            가능한 기능은 아래와 같습니다.<br /><i></i></q
-          ><mark id="block"
-            ><i>이 페이지는 구현한 에디터로 작성되었습니다!</i></mark
-          >
+          <q id="block" placeholder="인용">
+            <b>노션의 간단한 기능들을 구현한 클론 프로젝트</b>입니다 ✨
+            <a href="https://github.com/chasj0326/vanilla_playground" target="_blank">깃허브 바로가기</a> 
+            <br />사용가능한 기능은 아래와 같습니다.<br />
+          </q>
+          <mark id="block">
+            <i>이 페이지는 구현한 에디터로 작성되었습니다!</i>
+          </mark>
           <div id="block"></div>
           <h3 id="block" placeholder="제목3">기본 기능</h3>
           <h4 id="block" placeholder="제목4">✏️ 문서 추가 및 삭제</h4>
