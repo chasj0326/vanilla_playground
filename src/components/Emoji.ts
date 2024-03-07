@@ -71,8 +71,8 @@ class Emoji extends Component<EmojiProps> {
   }
 
   template(): string {
-    const { emojiMap } = store.getData<EmojiData>(emojiData);
-    const { done, cursor, categories } =
+    const { emojiMap, categories } = store.getData<EmojiData>(emojiData);
+    const { done, cursor } =
       store.getData<InfiniteEmojiData>(infiniteEmojiData);
 
     return `

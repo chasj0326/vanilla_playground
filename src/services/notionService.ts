@@ -119,8 +119,7 @@ const deleteDocument = (id: number) => {
     onSuccess: () => {
       getRootDocuments();
       if (id === currentId) {
-        getRootDocuments();
-        if (id === currentId) navigate("/");
+        navigate("/home");
       }
     },
   });

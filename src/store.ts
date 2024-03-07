@@ -31,6 +31,7 @@ export const editorData = store.addData<EditorData>({
 export const emojiData = store.addData<EmojiData>({
   key: "emoji",
   default: {
+    categories: [],
     emojiMap: {},
   },
 });
@@ -38,7 +39,6 @@ export const emojiData = store.addData<EmojiData>({
 export const infiniteEmojiData = store.addData<InfiniteEmojiData>({
   key: "infinite-emoji",
   default: {
-    categories: [],
     cursor: 0,
     done: false,
     scrollTop: 0,

@@ -15,10 +15,10 @@ import { STORAGE_KEY } from "@notion/constants";
 const sessionStorage = storage(window.sessionStorage);
 
 const getInfiniteEmoji = () => {
-  const [{ categories, cursor }, setInfiniteEmojiData] =
+  const [{ cursor }, setInfiniteEmojiData] =
     store.useData<InfiniteEmojiData>(infiniteEmojiData);
+  const [{ categories }, setEmojiData] = store.useData<EmojiData>(emojiData);
 
-  const setEmojiData = store.setData<EmojiData>(emojiData);
   makeRequest<EmojiByCategory, EmojiList>(
     () => emojiApi.getEmojiByCategory(categories[cursor]),
     {
@@ -41,19 +41,18 @@ const getInfiniteEmoji = () => {
 };
 
 const getEmojiCategory = () => {
-  const [{ cursor }, setInfiniteEmojiData] =
-    store.useData<InfiniteEmojiData>(infiniteEmojiData);
+  const { cursor } = store.getData<InfiniteEmojiData>(infiniteEmojiData);
+  const setEmojiData = store.setData<EmojiData>(emojiData);
   makeRequest<string[], EmojiCategories>(() => emojiApi.getCategories(), {
     select: (data) => {
       return data.map(({ slug }) => slug);
     },
     onSuccess: (data) => {
       if (cursor === 0) {
-        setInfiniteEmojiData((prev) => ({
+        setEmojiData((prev) => ({
           ...prev,
-          categories: data.filter((emoji) => emoji !== "component"),
+          categories: data.filter((category) => category !== "component"),
         }));
-        getInfiniteEmoji();
       }
     },
   });
