@@ -1,5 +1,5 @@
-import { notionApi } from "@notion/api";
 import { makeRequest, navigate, storage } from "@core";
+import { notionApi } from "@notion/api";
 import { directoryData, editorData, store } from "@notion/store";
 import {
   CreatedDocument,
@@ -8,8 +8,8 @@ import {
   EditorData,
   RootDocuments,
   StoredDocument,
+  UpdateDocumentRequestBody,
 } from "@notion/types";
-import { UpdateDocumentRequestBody } from "@notion/types";
 import {
   changeDocumentTitle,
   changeFavicon,
@@ -20,6 +20,7 @@ import {
 } from "@notion/utils";
 import {
   NON_DELETE_DOCUMENT,
+  NON_EDIT_DOCUMENT,
   PLACEHOLDER,
   STORAGE_KEY,
   defaultStoredDocument,
@@ -90,6 +91,11 @@ const updateDocument = (
   target: "title" | "content" | "emoji",
   body: UpdateDocumentRequestBody,
 ) => {
+  if (NON_EDIT_DOCUMENT.includes(id)) {
+    alert("해당 문서는 수정할 수 없는 문서입니다!");
+    location.reload();
+    return;
+  }
   localStorage.setItem<StoredDocument>({
     key: STORAGE_KEY.EDITING,
     value: { id, updatedAt: String(new Date()), ...body },

@@ -10,15 +10,6 @@ export const notionApiClient = createApiClient(
   },
 );
 
-export const notionApiClientWithoutJSON = createApiClient(
-  import.meta.env.VITE_NOTION_BASE_URL,
-  {
-    headers: {
-      "x-username": import.meta.env.VITE_USERNAME,
-    },
-  },
-);
-
 export const emojiApiClient = createApiClient(
   import.meta.env.VITE_EMOJI_BASE_URL,
   {

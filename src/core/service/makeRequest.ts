@@ -14,7 +14,7 @@ interface Result<ReturnType> {
 
 const makeRequest = async <ReturnType = any, DataType = any>(
   fetchFn: () => Promise<Response>,
-  requestOptions?: RequestOptions<ReturnType, DataType>
+  requestOptions?: RequestOptions<ReturnType, DataType>,
 ): Promise<Result<ReturnType>> => {
   const { onSuccess, onError, onStart, onEnd, select } = requestOptions ?? {};
   if (onStart) onStart();

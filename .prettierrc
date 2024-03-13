@@ -2,6 +2,7 @@
   "plugins": ["@trivago/prettier-plugin-sort-imports"],
   "importOrder": [
     "@core(.*)$",
+    "@notion/api",
     "@notion/main",
     "@notion/store",
     "@notion/services(.*)$",

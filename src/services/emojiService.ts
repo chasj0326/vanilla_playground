@@ -1,6 +1,6 @@
-import { emojiApi } from "@notion/api";
 import { makeRequest } from "@core";
 import { storage } from "@core";
+import { emojiApi } from "@notion/api";
 import { emojiData, infiniteEmojiData, store } from "@notion/store";
 import {
   EmojiByCategory,
@@ -22,9 +22,9 @@ const getInfiniteEmoji = () => {
   makeRequest<EmojiByCategory, EmojiList>(
     () => emojiApi.getEmojiByCategory(categories[cursor]),
     {
-      select: (data) => {
-        return { [categories[cursor]]: data.map(({ character }) => character) };
-      },
+      select: (data) => ({
+        [categories[cursor]]: data.map(({ character }) => character),
+      }),
       onSuccess: (data) => {
         setEmojiData((prev) => ({
           ...prev,
