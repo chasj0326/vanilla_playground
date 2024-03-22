@@ -21,3 +21,4 @@
 
 - [Notion_서버 요청 로직 개선](https://velog.io/@cszzi1006/Notion-%EC%84%9C%EB%B2%84-%EC%9A%94%EC%B2%AD-%EB%A1%9C%EC%A7%81-%EA%B0%9C%EC%84%A0%ED%95%98%EA%B8%B0)
 - [Notion_이모지 기능 따라하기](https://velog.io/@cszzi1006/Notion-%EC%9D%B4%EB%AA%A8%EC%A7%80-%EA%B8%B0%EB%8A%A5-%EB%94%B0%EB%9D%BC%ED%95%98%EA%B8%B0)
+- [Notion_리치 에디터 구현하기](https://velog.io/@cszzi1006/Notion-%EC%97%90%EB%94%94%ED%84%B0-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0)
