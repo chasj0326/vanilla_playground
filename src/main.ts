@@ -1,7 +1,7 @@
 import App from "@notion/App";
 import "@notion/style/style.css";
 import { createRouter } from "@core";
-import { DocumentPage, GuidePage, MainPage } from "@notion/pages";
+import { DocumentPage, GuestPage, GuidePage, MainPage } from "@notion/pages";
 
 const $app = document.querySelector<HTMLElement>("#app");
 if ($app) {
@@ -16,6 +16,10 @@ export const router = createRouter([
       {
         path: "/home",
         component: GuidePage,
+      },
+      {
+        path: "/guest",
+        component: GuestPage,
       },
       {
         path: "/:id",

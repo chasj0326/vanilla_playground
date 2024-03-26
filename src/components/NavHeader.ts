@@ -20,6 +20,13 @@ class NavHeader extends Component {
           setDirectoryData((prev) => ({ ...prev, currentId: 0 }));
           break;
         }
+        case "go-guest": {
+          navigate("/guest");
+          changeDocumentTitle();
+          changeFavicon();
+          setDirectoryData((prev) => ({ ...prev, currentId: 0 }));
+          break;
+        }
         case "create-root": {
           notion.createDocument(null);
           break;
@@ -32,6 +39,10 @@ class NavHeader extends Component {
     return `
       <button data-action='go-home' class='btn-home'>
         차차의 Notion
+      </button>
+      <button data-action='go-guest'>
+        <i class="fa-solid fa-square-pen"></i>
+        <div>방명록 쓰러가기</div>
       </button>
       <button data-action='create-root'>
         <i class="fa-solid fa-circle-plus"></i>
