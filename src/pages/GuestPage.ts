@@ -4,7 +4,6 @@ import GuestBook from "@notion/components/GuestBook/GuestBook";
 class GuestPage extends Component {
   template(): string {
     return `
-      <h1>방명록!</h1>
       <div class='guest-book'></div>
     `;
   }

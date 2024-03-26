@@ -3,6 +3,7 @@
 .guest-book {
   font-family: "Noto Sans KR", sans-serif;
   color: var(--default-text);
+  margin-top: 36px;
   font-size: 12px;
   width: 80%;
   min-width: 400px;
