@@ -3,6 +3,7 @@ import {
   DirectoryData,
   EditorData,
   EmojiData,
+  GuestBookData,
   InfiniteEmojiData,
 } from "@notion/types";
 
@@ -43,4 +44,9 @@ export const infiniteEmojiData = store.addData<InfiniteEmojiData>({
     done: false,
     scrollTop: 0,
   },
+});
+
+export const guestBookData = store.addData<GuestBookData>({
+  key: "guest-book",
+  default: {},
 });

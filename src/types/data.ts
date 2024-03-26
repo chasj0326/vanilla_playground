@@ -26,3 +26,18 @@ export interface InfiniteEmojiData {
   done: boolean;
   scrollTop: number;
 }
+
+export interface GuestContent {
+  username: string;
+  content: string;
+  password: string;
+  updateAt: string;
+  profile: {
+    charactor: string;
+    background: string;
+  };
+}
+
+export interface GuestBookData {
+  [id: string]: GuestContent;
+}

@@ -42,3 +42,5 @@ const transformAPI = <From extends Default, To extends Default>(
 
   return { reduceRequest, expandResponse };
 };
+
+export default transformAPI;

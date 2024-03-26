@@ -73,7 +73,7 @@ nav header button > i {
   flex-grow: 1;
   overflow-y: auto;
 }
-li {
+.directory li {
   position: relative;
   list-style: none;
   display: flex;
@@ -84,16 +84,16 @@ li {
   padding: 4px;
   border-radius: 4px;
 }
-li.current {
+.directory li.current {
   background-color: var(--directory-current);
 }
-li:hover {
+.directory li:hover {
   background-color: var(--directory-hover);
 }
-li.current:hover {
+.directory li.current:hover {
   background-color: var(--directory-current-hover);
 }
-li:active {
+.directory li:active {
   background-color: var(--directory-active);
 }
 
@@ -102,10 +102,10 @@ li:active {
   right: 4px;
   display: none;
 }
-li:hover .button-container {
+.directory li:hover .button-container {
   display: flex;
 }
-li button {
+.directory li button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -113,10 +113,10 @@ li button {
   height: 24px;
   width: 24px;
 }
-li button:hover {
+.directory li button:hover {
   background-color: var(--directory-hover);
 }
-li button > i {
+.directory li button > i {
   font-size: 12px;
   color: var(--directory-btn);
 }

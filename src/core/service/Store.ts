@@ -9,7 +9,7 @@ interface Listener {
   key: string;
   func: VoidFunction;
   option?: {
-    'non-strict': boolean;
+    "non-strict": boolean;
   };
 }
 
@@ -33,7 +33,7 @@ class Store {
 
   validateKey(keyList: (keyof Data)[]) {
     if (!keyList.every((key) => key in this.channel && key in this.data)) {
-      throw new Error('Invalid Key in Data');
+      throw new Error("Invalid Key in Data");
     }
   }
 
@@ -43,11 +43,11 @@ class Store {
       if (
         this.channel[key].some((subscribed) => subscribed.key === listener.key)
       ) {
-        if (listener.option?.['non-strict']) {
+        if (listener.option?.["non-strict"]) {
           this.channel[key].push(listener);
         } else {
           this.channel[key] = this.channel[key].filter(
-            (suscribed) => suscribed.key !== listener.key
+            (suscribed) => suscribed.key !== listener.key,
           );
         }
       }
@@ -83,17 +83,14 @@ class Store {
   setData<T = any>(key: keyof Data) {
     this.validateKey([key]);
     return (value: T | ((x: T) => T)) => {
-      const oldValue = this.data[key].value;
-      if (typeof value === 'function') {
+      if (typeof value === "function") {
         this.data[key].value = (value as (x: T) => void)(this.data[key].value);
       } else {
         this.data[key].value = value;
       }
 
-      if (!isSameValue(oldValue, value)) {
-        this.updateQueue.add(key);
-        Promise.resolve().then(() => this.flushUpdateQueue());
-      }
+      this.updateQueue.add(key);
+      Promise.resolve().then(() => this.flushUpdateQueue());
     };
   }
 

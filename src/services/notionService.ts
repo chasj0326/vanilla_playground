@@ -31,6 +31,8 @@ const localStorage = storage(window.localStorage);
 const getRootDocuments = (newId?: number) => {
   const setDirectoryData = store.setData<DirectoryData>(directoryData);
   makeRequest<RootDocuments>(() => notionApi.getAll(), {
+    select: (data: RootDocuments) =>
+      data.filter(({ id }) => id !== Number(import.meta.env.VITE_GUESTBOOK_ID)),
     onSuccess: (data) => {
       const toggleData = makeToggleData(data);
       const storedToggleData = localStorage.getItem({

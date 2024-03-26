@@ -13,6 +13,7 @@ export const STORE_KEY = {
   DIRECTORY: "directory",
   EDITOR: "editor",
   EMOJI: "emoji",
+  GUESTBOOK: "guestBook",
 };
 
 export const EMOJI_CATEGORY: {
