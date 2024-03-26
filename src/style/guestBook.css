@@ -1,0 +1,93 @@
+@import "./variable.css";
+
+.guest-book {
+  font-family: "Noto Sans KR", sans-serif;
+  color: var(--default-text);
+  font-size: 12px;
+  width: 80%;
+  min-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.guest-book input,
+.guest-book textarea {
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 12px;
+  border-radius: 4px;
+  padding: 6px 6px 8px 6px;
+  background-color: var(--directory-current);
+  box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.05) inset;
+}
+
+.guest-book-list {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.guest-book-item,
+.add-item {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.add-item button {
+  cursor: pointer;
+  background-color: var(--directory-btn);
+  color: white;
+  border-radius: 4px;
+  width: 48px;
+}
+
+.guest-book-item {
+  gap: 18px;
+}
+
+.guest-book-item button {
+  cursor: pointer;
+  color: var(--directory-text);
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.info-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.username {
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.date {
+  color: var(--directory-text);
+  font-size: 10px;
+}
+
+.item-footer {
+  display: flex;
+  gap: 12px;
+  padding-left: 2px;
+}
+
+.item-footer textarea {
+  flex: 1;
+}
+
+.profile {
+  background-color: lightgray;
+  height: 40px;
+  width: 40px;
+  border-radius: 100%;
+}

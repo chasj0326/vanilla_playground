@@ -51,16 +51,21 @@ const mutateGuestBooks = (newGuestBooks: Record<string, GuestContent>) => {
 };
 
 const createGuestBook = (newBook: GuestContent) => {
-  const updateAt = `${new Date()}`;
+  const updated = new Date();
+  const dateInfo = [
+    updated.getFullYear(),
+    `${updated.getMonth() + 1}`.padStart(2, "0"),
+    updated.getDate(),
+  ];
+  const updateAt = `${dateInfo.join("-")}`;
   const newId = `${new Date().getTime()}`;
   const guestBooks = store.getData<GuestBookData>(guestBookData);
   mutateGuestBooks({ ...guestBooks, [newId]: { ...newBook, updateAt } });
 };
 
 const updateGuestBook = (id: string, newBook: GuestContent) => {
-  const updateAt = `${new Date()}`;
   const guestBooks = store.getData<GuestBookData>(guestBookData);
-  mutateGuestBooks({ ...guestBooks, [id]: { ...newBook, updateAt } });
+  mutateGuestBooks({ ...guestBooks, [id]: { ...newBook } });
 };
 
 const deleteGuestBook = (id: string) => {

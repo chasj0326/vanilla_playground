@@ -1,5 +1,6 @@
 @import "./variable.css";
 @import "./richEditor.css";
+@import "./guestBook.css";
 
 * {
   box-sizing: border-box;

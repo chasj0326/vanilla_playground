@@ -23,35 +23,34 @@ class GuestBook extends Component {
 
     this.addEvent("click", (target) => {
       const id = (target.closest("li")?.id ?? "").substring(1);
-      const action = target.closest("button")?.dataset.action;
 
-      if (!id) return;
-      const guestContent = store.getData<GuestBookData>(guestBookData)[id];
-
-      switch (action) {
-        case "update": {
-          this.addComponent(WriteForm, {
-            selector: `#_${id}`,
-            props: {
-              onSubmit: (newContent: GuestContent) =>
-                this.handleSubmit(newContent, id),
-              onCancel: () => this.render(),
-              onDelete: () => guestBook.deleteGuestBook(id),
-              initial: { ...guestContent, password: "" },
-            },
-          });
-          break;
-        }
-        default: {
-        }
+      if (!(id && target.tagName === "BUTTON")) {
+        return;
       }
+
+      const guestContent = store.getData<GuestBookData>(guestBookData)[id];
+      this.addComponent(WriteForm, {
+        selector: `#_${id}`,
+        props: {
+          forNew: false,
+          onSubmit: (newContent: GuestContent) =>
+            this.handleSubmit(newContent, id),
+          onCancel: () => {
+            this.removeComponent(`#_${id}`);
+            this.render();
+          },
+          initial: { ...guestContent, password: "" },
+        },
+      });
     });
   }
 
   rendered() {
+    this.removeComponent(".add-item");
     this.addComponent(WriteForm, {
       selector: ".add-item",
       props: {
+        forNew: true,
         onSubmit: (newContent: GuestContent) => this.handleSubmit(newContent),
         onCancel: () => this.render(),
       },
@@ -64,11 +63,21 @@ class GuestBook extends Component {
       <div class="add-item"></div>
       <ul class='guest-book-list'>${Object.entries(guestBooks)
         .map(
-          ([id, { username, content }]) => `
+          ([id, { username, content, updateAt }]) => `
           <li id='_${id}' class='guest-book-item'>
-            <span>${username}</span>:
-            <span>${content}</span>
-            <button data-action="update">삭제/수정</button>
+            <div class='item-header'>
+              <div class='info-block'>
+                <div class='profile'></div>
+                <div class='info'>
+                  <div class='username'>${username}</div>
+                  <div class='date'>${updateAt}</div>
+                </div>
+              </div>
+              <button class='update'>삭제/수정</button>
+            </div>
+            <div class='item-footer'>
+              <div class='content'>${content}</div>
+            </div>
           </li>
         `,
         )
