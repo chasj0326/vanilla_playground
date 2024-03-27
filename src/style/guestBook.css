@@ -114,3 +114,42 @@
   padding-left: 2px;
   color: var(--directory-btn);
 }
+
+.profile-picker {
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid var(--directory-hover);
+  padding: 10px;
+}
+
+.color-picker {
+  display: flex;
+  gap: 4px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--directory-hover);
+  cursor: pointer;
+}
+
+.color-picker .color {
+  height: 32px;
+  width: 32px;
+  border-radius: 6px;
+  border: 1px solid var(--directory-hover);
+}
+
+.charactor-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+}
+
+.charactor-picker img {
+  height: 40px;
+  width: 40px;
+  border-radius: 100%;
+  cursor: pointer;
+}

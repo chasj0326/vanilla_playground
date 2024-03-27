@@ -1,3 +1,4 @@
+import ProfileForm from "./components/GuestBook/ProfileForm";
 import App from "@notion/App";
 import "@notion/style/style.css";
 import { createRouter } from "@core";
@@ -20,6 +21,10 @@ export const router = createRouter([
       {
         path: "/guest",
         component: GuestPage,
+      },
+      {
+        path: "/profile",
+        component: ProfileForm,
       },
       {
         path: "/:id",
