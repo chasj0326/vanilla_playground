@@ -1,66 +1,49 @@
+import { backgrounds, charactors, makeImageSrc } from "./utils";
 import { Component } from "@notion/core";
 
-const charactors = [
-  "Trigger",
-  "Oreo",
-  "Trouble",
-  "Sasha",
-  "Whiskers",
-  "Milo",
-  "Missy",
-  "Abby",
-  "Toby",
-  "Snikers",
-  "Jack",
-  "Spooky",
-  "Samantha",
-  "Cali",
-  "Harley",
-  "Coco",
-  "Lucy",
-  "Felix",
-  "Sam",
-  "Pumpkin",
-];
-
-const backgrounds = [
-  "b6e3f4",
-  "c0aede",
-  "d1d4f9",
-  "ffd5dc",
-  "ffdfbf",
-  "ffffff",
-];
-
-const makeImageSrc = (charactor: string, background: string) => {
-  return `https://api.dicebear.com/8.x/notionists-neutral/svg?seed=${charactor}&backgroundColor=${background}`;
-};
+interface ProfileFormProps {
+  onSelect: (profile: { charactor: string; background: string }) => void;
+}
 
 interface ProfileFormState {
   background: string;
   charactor: string;
 }
 
-class ProfileForm extends Component<{}, ProfileFormState> {
+class ProfileForm extends Component<ProfileFormProps, ProfileFormState> {
   mounted(): void {
-    this.addEvent("click", (target) => {
-      if (target.className === "color") {
-        const background = target.id;
-        const charactor = this.state?.charactor ?? "";
-        this.setState({ charactor, background });
+    this.addEvent("click", ({ className, id }) => {
+      const value = id;
+      if (!(this.state && this.props)) return;
+
+      const { charactor, background } = this.state;
+      const { onSelect } = this.props;
+
+      switch (className) {
+        case "color": {
+          this.setState({ charactor, background: value });
+          break;
+        }
+        case "charactor": {
+          if (onSelect) onSelect({ background, charactor: value });
+        }
       }
     });
   }
 
   template(): string {
-    const currentBackground = this.state?.background ?? backgrounds[0];
+    const { background = backgrounds[0] } = this.state ?? {};
     return `
       <div class="profile-picker">
+        <header>
+          <div>프로필 선택</div>
+          <button>랜덤</button>
+        </header>
         <div class="color-picker">
         ${backgrounds.map((color) => `<div class="color" id="${color}" style="background: #${color}"></div>`).join("")}
         </div>
         <div class="charactor-picker">
-        ${charactors.map((charactor) => `<img src="${makeImageSrc(charactor, currentBackground)}">`).join("")}
+        ${charactors.map((charactor) => `<img class="charactor" id="${charactor}" src="${makeImageSrc(charactor, background)}">`).join("")}
         </div>
       </div>
       `;

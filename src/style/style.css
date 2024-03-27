@@ -255,14 +255,15 @@ main {
   height: 280px;
   border-radius: 8px;
   background-color: white;
-  box-shadow: 1px 1px 4px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 1px 1px 4px 2px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
 .emoji-container header {
-  height: 40px;
+  height: 36px;
   padding: 10px;
   padding-top: 12px;
+  font-size: 14px;
   display: flex;
   justify-content: space-between;
   align-items: center;

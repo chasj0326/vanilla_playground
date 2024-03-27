@@ -1,4 +1,5 @@
 import WriteForm from "./WriteForm";
+import { makeImageSrc } from "./utils";
 import { Component } from "@notion/core";
 import { guestBookData, store } from "@notion/store";
 import { guestBook } from "@notion/services";
@@ -67,7 +68,10 @@ class GuestBook extends Component<{}, GuestBookState> {
           onDelete: () => {
             guestBook.deleteGuestBook(editingId);
           },
-          initial: { ...guestBooks[editingId], password: "" },
+        },
+        state: {
+          warning: "",
+          formContent: { ...guestBooks[editingId], password: "" },
         },
       });
     });
@@ -90,14 +94,15 @@ class GuestBook extends Component<{}, GuestBookState> {
     const { editingId } = this.state ?? {};
 
     return `
-      
       <ul class='guest-book-list'>${Object.entries(guestBooks)
         .map(
-          ([id, { username, content, updateAt }]) => `
+          ([id, { username, content, updateAt, profile }]) => `
           <li id='_${id}' class='guest-book-item'>
             <div class='item-header'>
               <div class='info-block'>
-                <div class='profile'></div>
+                <div class='profile'>
+                  <img src="${makeImageSrc(profile.charactor, profile.background)}"/>
+                </div>
                 <div class='info'>
                   <div class='username'>${username}</div>
                   <div class='date'>${updateAt}</div>

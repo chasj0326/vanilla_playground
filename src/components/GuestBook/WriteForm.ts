@@ -1,10 +1,11 @@
+import ProfileForm from "./ProfileForm";
+import { backgrounds, charactors, makeImageSrc } from "./utils";
 import { Component } from "@notion/core";
-import { GuestContent } from "@notion/types";
+import { GuestContent, Profile } from "@notion/types";
 import { PLACEHOLDER } from "@notion/constants";
 
 interface WriteFormProps {
   forNew: Boolean;
-  initial?: GuestContent;
   onSubmit: (guestContent: GuestContent) => void;
   onCancel?: VoidFunction;
   onDelete?: VoidFunction;
@@ -12,11 +13,7 @@ interface WriteFormProps {
 
 interface WriteFormState {
   warning: string;
-  writing: {
-    username: string;
-    password: string;
-    content: string;
-  };
+  formContent: GuestContent;
 }
 
 class WriteForm extends Component<WriteFormProps, WriteFormState> {
@@ -32,9 +29,9 @@ class WriteForm extends Component<WriteFormProps, WriteFormState> {
     const baseContent = {
       username: this.getInput("username").trim(),
       content: this.getInput("content").trim(),
-      profile: {
-        background: "",
-        charactor: "",
+      profile: this.state?.formContent.profile ?? {
+        background: backgrounds[0],
+        charactor: charactors[0],
       },
     };
 
@@ -47,7 +44,7 @@ class WriteForm extends Component<WriteFormProps, WriteFormState> {
     }
     return {
       ...baseContent,
-      updateAt: this.props?.initial?.updateAt ?? "",
+      updateAt: this.state?.formContent?.updateAt ?? "",
       password: "",
     };
   }
@@ -55,12 +52,11 @@ class WriteForm extends Component<WriteFormProps, WriteFormState> {
   checkForm(formContent: GuestContent) {
     const { username, password, content } = formContent;
     const forNew = this.props?.forNew;
-    const writing = { username, password, content };
 
     if (username.length > 15 || username.length < 1) {
       this.setState({
-        writing: {
-          ...writing,
+        formContent: {
+          ...formContent,
           username: "",
         },
         warning: "닉네임은 1자 이상, 최대 15자 입니다.",
@@ -69,8 +65,8 @@ class WriteForm extends Component<WriteFormProps, WriteFormState> {
     }
     if (!/^\d{6}$/.test(password) && forNew) {
       this.setState({
-        writing: {
-          ...writing,
+        formContent: {
+          ...formContent,
           password: "",
         },
         warning: "비밀번호는 6자리 숫자여야 합니다.",
@@ -79,7 +75,7 @@ class WriteForm extends Component<WriteFormProps, WriteFormState> {
     }
     if (content.length === 0) {
       this.setState({
-        writing: { ...writing },
+        formContent: { ...formContent },
         warning: "내용을 입력해 주세요.",
       });
       return false;
@@ -93,10 +89,10 @@ class WriteForm extends Component<WriteFormProps, WriteFormState> {
       const { onSubmit, onCancel, onDelete } = this.props ?? {};
 
       if (!onSubmit) return;
+      const formContent = this.makeForm();
 
       switch (action) {
         case "submit": {
-          const formContent = this.makeForm();
           if (this.checkForm(formContent)) onSubmit(formContent);
           break;
         }
@@ -109,6 +105,29 @@ class WriteForm extends Component<WriteFormProps, WriteFormState> {
           break;
         }
       }
+
+      if (
+        target.classList.contains("profile") ||
+        target.parentElement?.classList.contains("profile")
+      ) {
+        const initialProfile = this.state?.formContent.profile ?? {
+          charactor: charactors[0],
+          background: backgrounds[0],
+        };
+
+        this.addComponent(ProfileForm, {
+          selector: ".profile-form-container",
+          props: {
+            onSelect: (profile: Profile) => {
+              this.setState({
+                formContent: { ...formContent, profile },
+                warning: "",
+              });
+            },
+          },
+          state: initialProfile,
+        });
+      }
     });
   }
 
@@ -117,14 +136,23 @@ class WriteForm extends Component<WriteFormProps, WriteFormState> {
       username = "",
       content = "",
       password = "",
-    } = this.state?.writing ?? this.props?.initial ?? {};
+      profile = {
+        background: backgrounds[0],
+        charactor: charactors[0],
+      },
+    } = this.state?.formContent ?? {};
     const forNew = this.props?.forNew;
     const { warning } = this.state ?? {};
 
     return `
       <div class='item-header'>
         <div class='info-block'>
-          <div class='profile'></div>
+          <div class='profile-block'>
+            <div class='profile editing'>
+              <img src="${makeImageSrc(profile.charactor, profile.background)}"/>
+            </div>
+            <div class="profile-form-container"></div>
+          </div>
           <input name="username" value="${username}" placeholder="${PLACEHOLDER.GUEST_NAME}"/>
         </div>
         ${

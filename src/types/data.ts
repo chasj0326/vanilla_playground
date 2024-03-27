@@ -27,15 +27,17 @@ export interface InfiniteEmojiData {
   scrollTop: number;
 }
 
+export interface Profile {
+  charactor: string;
+  background: string;
+}
+
 export interface GuestContent {
   username: string;
   content: string;
   password: string;
   updateAt: string;
-  profile: {
-    charactor: string;
-    background: string;
-  };
+  profile: Profile;
 }
 
 export interface GuestBookData {
