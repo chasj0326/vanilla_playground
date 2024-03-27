@@ -42,7 +42,10 @@ class GuestBook extends Component<{}, GuestBookState> {
       const { editingId = "" } = this.state ?? {};
 
       const passwordValue = target.querySelector("input")?.value;
-      if (guestBooks[editingId].password !== passwordValue) {
+      if (
+        guestBooks[editingId].password !== passwordValue &&
+        import.meta.env.VITE_MASTER_PASSWORD !== passwordValue
+      ) {
         alert("비밀번호가 일치하지 않습니다.");
         return;
       }
