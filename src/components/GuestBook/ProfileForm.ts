@@ -1,4 +1,4 @@
-import { backgrounds, charactors, makeImageSrc } from "./utils";
+import { backgrounds, charactors, makeImageSrc, randomProfile } from "./utils";
 import { Component } from "@notion/core";
 
 interface ProfileFormProps {
@@ -26,6 +26,10 @@ class ProfileForm extends Component<ProfileFormProps, ProfileFormState> {
         }
         case "charactor": {
           if (onSelect) onSelect({ background, charactor: value });
+          break;
+        }
+        case "random": {
+          if (onSelect) onSelect(randomProfile());
         }
       }
     });
@@ -37,7 +41,7 @@ class ProfileForm extends Component<ProfileFormProps, ProfileFormState> {
       <div class="profile-picker">
         <header>
           <div>프로필 선택</div>
-          <button>랜덤</button>
+          <button class="random">랜덤</button>
         </header>
         <div class="color-picker">
         ${backgrounds.map((color) => `<div class="color" id="${color}" style="background: #${color}"></div>`).join("")}

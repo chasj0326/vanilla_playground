@@ -33,3 +33,12 @@ export const backgrounds = [
 export const makeImageSrc = (charactor: string, background: string) => {
   return `https://api.dicebear.com/8.x/notionists-neutral/svg?seed=${charactor}&backgroundColor=${background}`;
 };
+
+const getRandomNumber = (n: number): number => Math.floor(Math.random() * n);
+
+export const randomProfile = () => {
+  return {
+    charactor: charactors[getRandomNumber(charactors.length)],
+    background: backgrounds[getRandomNumber(backgrounds.length)],
+  };
+};
