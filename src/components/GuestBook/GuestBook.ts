@@ -4,6 +4,7 @@ import { guestBookData, store } from "@notion/store";
 import { guestBook } from "@notion/services";
 import { GuestBookData, GuestContent } from "@notion/types";
 import { STORE_KEY } from "@notion/constants";
+import { PLACEHOLDER } from "@notion/constants";
 
 interface GuestBookState {
   editingId: string;
@@ -62,6 +63,9 @@ class GuestBook extends Component<{}, GuestBookState> {
             this.removeComponent(`#_${editingId}`);
             this.setState({ editingId: "" });
           },
+          onDelete: () => {
+            guestBook.deleteGuestBook(editingId);
+          },
           initial: { ...guestBooks[editingId], password: "" },
         },
       });
@@ -102,7 +106,7 @@ class GuestBook extends Component<{}, GuestBookState> {
                 id === editingId
                   ? `
                     <form class='password-container'>
-                      <input name="password" value="" placeholder="비밀번호"/>
+                      <input type="password" name="password" value="" placeholder="${PLACEHOLDER.GUEST_PW}"/>
                       <button data-action="submit" type="submit">완료</button>
                       <button data-action="cancel" type="button">취소</button>
                     </form>`

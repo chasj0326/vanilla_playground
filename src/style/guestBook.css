@@ -53,6 +53,10 @@
   width: 48px;
 }
 
+.guest-book .delete-btn:hover {
+  color: rgb(255, 134, 134);
+}
+
 .item-header {
   display: flex;
   justify-content: space-between;

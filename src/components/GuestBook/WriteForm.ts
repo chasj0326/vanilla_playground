@@ -1,11 +1,13 @@
 import { Component } from "@notion/core";
 import { GuestContent } from "@notion/types";
+import { PLACEHOLDER } from "@notion/constants";
 
 interface WriteFormProps {
   forNew: Boolean;
   initial?: GuestContent;
   onSubmit: (guestContent: GuestContent) => void;
   onCancel?: VoidFunction;
+  onDelete?: VoidFunction;
 }
 
 class WriteForm extends Component<WriteFormProps> {
@@ -44,8 +46,7 @@ class WriteForm extends Component<WriteFormProps> {
   mounted(): void {
     this.addEvent("click", (target) => {
       const action = target.closest("button")?.dataset.action;
-      const onSubmit = this.props?.onSubmit;
-      const onCancel = this.props?.onCancel;
+      const { onSubmit, onCancel, onDelete } = this.props ?? {};
 
       if (!onSubmit) return;
 
@@ -56,6 +57,10 @@ class WriteForm extends Component<WriteFormProps> {
         }
         case "cancel": {
           if (onCancel) onCancel();
+          break;
+        }
+        case "delete": {
+          if (onDelete) onDelete();
           break;
         }
       }
@@ -74,16 +79,20 @@ class WriteForm extends Component<WriteFormProps> {
       <div class='item-header'>
         <div class='info-block'>
           <div class='profile'></div>
-          <input name="username" value="${username}" placeholder="닉네임"/>
+          <input name="username" value="${username}" placeholder="${PLACEHOLDER.GUEST_NAME}"/>
         </div>
         ${
           forNew
-            ? `<input name="password" value="${password}" placeholder="비밀번호"/>`
-            : `<button type="button" data-action="cancel">취소</button>`
+            ? `<input type="password" name="password" value="${password}" placeholder="${PLACEHOLDER.GUEST_PW}" autocomplete="new-password"/>`
+            : `
+            <div class="btn-container">
+              <button type="button" data-action="cancel">취소</button>
+              <button type="button" data-action="delete" class="delete-btn">삭제</button>
+            </div>`
         }
       </div>
       <div class="item-footer">
-        <textarea name="content" placeholder="내용">${content}</textarea>
+        <textarea name="content" placeholder="${PLACEHOLDER.GUEST_CONTENT}">${content}</textarea>
         <button type="button" data-action="submit" class="submit-btn">완료</button>
       </div>
     `;
