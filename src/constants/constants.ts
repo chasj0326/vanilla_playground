@@ -1,7 +1,7 @@
 export const PLACEHOLDER = {
   DOCUMENT_TITLE: "제목 없음",
   DOCUMENT_CONTNET: "빈 페이지",
-  GUEST_NAME: "닉네임 (최대12자)",
+  GUEST_NAME: "닉네임 (최대15자)",
   GUEST_PW: "비밀번호 (숫자6자)",
   GUEST_CONTENT: "내용을 입력해 주세요.",
 };
