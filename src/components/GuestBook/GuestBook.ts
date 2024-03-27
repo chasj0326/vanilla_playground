@@ -42,9 +42,10 @@ class GuestBook extends Component<{}, GuestBookState> {
       const guestBooks = store.getData<GuestBookData>(guestBookData);
       const { editingId = "" } = this.state ?? {};
 
+      const { password } = guestBooks[editingId];
       const passwordValue = target.querySelector("input")?.value;
       if (
-        guestBooks[editingId].password !== passwordValue &&
+        password !== passwordValue &&
         import.meta.env.VITE_MASTER_PASSWORD !== passwordValue
       ) {
         alert("비밀번호가 일치하지 않습니다.");
@@ -56,7 +57,7 @@ class GuestBook extends Component<{}, GuestBookState> {
         props: {
           forNew: false,
           onSubmit: (newContent: GuestContent) => {
-            this.handleSubmit(newContent, editingId);
+            this.handleSubmit({ ...newContent, password }, editingId);
             this.setState({ editingId: "" });
           },
           onCancel: () => {

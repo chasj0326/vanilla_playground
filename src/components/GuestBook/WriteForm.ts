@@ -48,7 +48,7 @@ class WriteForm extends Component<WriteFormProps, WriteFormState> {
     return {
       ...baseContent,
       updateAt: this.props?.initial?.updateAt ?? "",
-      password: this.props?.initial?.password ?? "",
+      password: "",
     };
   }
 
