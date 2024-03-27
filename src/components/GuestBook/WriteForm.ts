@@ -57,13 +57,13 @@ class WriteForm extends Component<WriteFormProps, WriteFormState> {
     const forNew = this.props?.forNew;
     const writing = { username, password, content };
 
-    if (username.length > 6 || username.length < 1) {
+    if (username.length > 12 || username.length < 1) {
       this.setState({
         writing: {
           ...writing,
           username: "",
         },
-        warning: "닉네임은 1자 이상, 최대 6자 입니다.",
+        warning: "닉네임은 1자 이상, 최대 12자 입니다.",
       });
       return false;
     }
