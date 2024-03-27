@@ -90,7 +90,7 @@ class GuestBook extends Component<{}, GuestBookState> {
     const { editingId } = this.state ?? {};
 
     return `
-      <div class="add-item"></div>
+      
       <ul class='guest-book-list'>${Object.entries(guestBooks)
         .map(
           ([id, { username, content, updateAt }]) => `
@@ -122,6 +122,7 @@ class GuestBook extends Component<{}, GuestBookState> {
         )
         .join("")}
       </ul>
+      <div class="add-item"></div>
     `;
   }
 }
