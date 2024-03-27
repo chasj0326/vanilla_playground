@@ -36,14 +36,6 @@
   gap: 10px;
 }
 
-.add-item button {
-  cursor: pointer;
-  background-color: var(--directory-btn);
-  color: white;
-  border-radius: 4px;
-  width: 48px;
-}
-
 .guest-book-item {
   gap: 18px;
 }
@@ -51,6 +43,14 @@
 .guest-book-item button {
   cursor: pointer;
   color: var(--directory-text);
+}
+
+.guest-book .submit-btn {
+  cursor: pointer;
+  background-color: var(--directory-btn);
+  color: white;
+  border-radius: 4px;
+  width: 48px;
 }
 
 .item-header {

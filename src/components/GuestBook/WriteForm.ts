@@ -84,7 +84,7 @@ class WriteForm extends Component<WriteFormProps> {
       </div>
       <div class="item-footer">
         <textarea name="content" placeholder="내용">${content}</textarea>
-        <button type="button" data-action="submit">완료</button>
+        <button type="button" data-action="submit" class="submit-btn">완료</button>
       </div>
     `;
   }
