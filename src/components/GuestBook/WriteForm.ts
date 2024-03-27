@@ -10,7 +10,16 @@ interface WriteFormProps {
   onDelete?: VoidFunction;
 }
 
-class WriteForm extends Component<WriteFormProps> {
+interface WriteFormState {
+  warning: string;
+  writing: {
+    username: string;
+    password: string;
+    content: string;
+  };
+}
+
+class WriteForm extends Component<WriteFormProps, WriteFormState> {
   getInput(name: string) {
     return this.findElement<HTMLTextAreaElement | HTMLInputElement>(
       `[name='${name}']`,
@@ -21,8 +30,8 @@ class WriteForm extends Component<WriteFormProps> {
     const forNew = this.props?.forNew;
 
     const baseContent = {
-      username: this.getInput("username"),
-      content: this.getInput("content"),
+      username: this.getInput("username").trim(),
+      content: this.getInput("content").trim(),
       profile: {
         background: "",
         charactor: "",
@@ -43,6 +52,41 @@ class WriteForm extends Component<WriteFormProps> {
     };
   }
 
+  checkForm(formContent: GuestContent) {
+    const { username, password, content } = formContent;
+    const forNew = this.props?.forNew;
+    const writing = { username, password, content };
+
+    if (username.length > 6 || username.length < 1) {
+      this.setState({
+        writing: {
+          ...writing,
+          username: "",
+        },
+        warning: "닉네임은 1자 이상, 최대 6자 입니다.",
+      });
+      return false;
+    }
+    if (!/^\d{6}$/.test(password) && forNew) {
+      this.setState({
+        writing: {
+          ...writing,
+          password: "",
+        },
+        warning: "비밀번호는 6자리 숫자여야 합니다.",
+      });
+      return false;
+    }
+    if (content.length === 0) {
+      this.setState({
+        writing: { ...writing },
+        warning: "내용을 입력해 주세요.",
+      });
+      return false;
+    }
+    return true;
+  }
+
   mounted(): void {
     this.addEvent("click", (target) => {
       const action = target.closest("button")?.dataset.action;
@@ -52,7 +96,8 @@ class WriteForm extends Component<WriteFormProps> {
 
       switch (action) {
         case "submit": {
-          onSubmit(this.makeForm());
+          const formContent = this.makeForm();
+          if (this.checkForm(formContent)) onSubmit(formContent);
           break;
         }
         case "cancel": {
@@ -72,8 +117,9 @@ class WriteForm extends Component<WriteFormProps> {
       username = "",
       content = "",
       password = "",
-    } = this.props?.initial ?? {};
+    } = this.state?.writing ?? this.props?.initial ?? {};
     const forNew = this.props?.forNew;
+    const { warning } = this.state ?? {};
 
     return `
       <div class='item-header'>
@@ -83,7 +129,13 @@ class WriteForm extends Component<WriteFormProps> {
         </div>
         ${
           forNew
-            ? `<input type="password" name="password" value="${password}" placeholder="${PLACEHOLDER.GUEST_PW}" autocomplete="new-password"/>`
+            ? `<input 
+                type="password" 
+                name="password" 
+                value="${password}" 
+                placeholder="${PLACEHOLDER.GUEST_PW}" 
+                autocomplete="new-password"
+              />`
             : `
             <div class="btn-container">
               <button type="button" data-action="cancel">취소</button>
@@ -95,6 +147,7 @@ class WriteForm extends Component<WriteFormProps> {
         <textarea name="content" placeholder="${PLACEHOLDER.GUEST_CONTENT}">${content}</textarea>
         <button type="button" data-action="submit" class="submit-btn">완료</button>
       </div>
+      ${warning ? `<div class='warning'>${warning}</div>` : ``}
     `;
   }
 }

@@ -96,3 +96,9 @@
   width: 40px;
   border-radius: 100%;
 }
+
+.warning {
+  font-size: 10px;
+  padding-left: 2px;
+  color: var(--directory-btn);
+}
