@@ -34,5 +34,5 @@ export const EMOJI_CATEGORY: {
   flags: "국기",
 };
 
-export const NON_DELETE_DOCUMENT = [133154, 133156];
+export const NON_DELETE_DOCUMENT = [133154];
 export const NON_EDIT_DOCUMENT = [133154];
