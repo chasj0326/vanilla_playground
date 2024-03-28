@@ -2,7 +2,6 @@ import SortSelector from "./SortSelector";
 import WriteForm from "./WriteForm";
 import { makeImageSrc } from "./utils";
 import { Component } from "@notion/core";
-import { router } from "@notion/main";
 import { guestBookData, store } from "@notion/store";
 import { guestBook } from "@notion/services";
 import { GuestBookData, GuestContent } from "@notion/types";

@@ -52,15 +52,15 @@ class Directory extends Component {
       }
 
       window.addEventListener("popstate", () => {
-        const route = router.match();
-        const documentId = route?.params.id ?? "";
+        const route = router.match() ?? {};
+        const documentId = route.params?.id ?? "";
         const setDirectoryData = store.setData<DirectoryData>(directoryData);
         setDirectoryData((prev) => ({
           ...prev,
           currentId: Number(documentId),
         }));
 
-        if (route?.path === "/") {
+        if (route.path === "/") {
           changeDocumentTitle();
           changeFavicon();
         }
