@@ -3,6 +3,7 @@ import { Component } from "@notion/core";
 
 interface ProfileFormProps {
   onSelect: (profile: { charactor: string; background: string }) => void;
+  onBlur: VoidFunction;
 }
 
 interface ProfileFormState {
@@ -17,7 +18,7 @@ class ProfileForm extends Component<ProfileFormProps, ProfileFormState> {
       if (!(this.state && this.props)) return;
 
       const { charactor, background } = this.state;
-      const { onSelect } = this.props;
+      const { onSelect, onBlur } = this.props;
 
       switch (className) {
         case "color": {
@@ -30,6 +31,11 @@ class ProfileForm extends Component<ProfileFormProps, ProfileFormState> {
         }
         case "random": {
           if (onSelect) onSelect(randomProfile());
+          break;
+        }
+        case "close": {
+          if (onBlur) onBlur();
+          break;
         }
       }
     });
@@ -47,7 +53,10 @@ class ProfileForm extends Component<ProfileFormProps, ProfileFormState> {
       <div class="profile-picker">
         <header>
           <div>프로필 선택</div>
-          <button class="random">랜덤</button>
+          <div>
+            <button class="random">랜덤</button>
+            <button class="close">닫기</button>
+          </div>
         </header>
         <div class="color-picker">
         ${backgrounds.map(backgroundEl).join("")}

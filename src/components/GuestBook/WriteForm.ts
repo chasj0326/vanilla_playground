@@ -119,6 +119,9 @@ class WriteForm extends Component<WriteFormProps, WriteFormState> {
                 warning: "",
               });
             },
+            onBlur: () => {
+              this.removeComponent(".profile-form-container");
+            },
           },
           state: initialProfile,
         });
