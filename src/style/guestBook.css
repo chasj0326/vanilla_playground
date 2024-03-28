@@ -188,3 +188,17 @@
 .charactor-picker img:hover {
   transform: scale(1.1);
 }
+
+.sort-selector button:hover {
+  background-color: var(--directory-hover);
+}
+
+.sort-selector button {
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.sort-selector .active {
+  font-weight: 700;
+}

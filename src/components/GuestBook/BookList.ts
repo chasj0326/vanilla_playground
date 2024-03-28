@@ -1,12 +1,15 @@
+import SortSelector from "./SortSelector";
 import WriteForm from "./WriteForm";
 import { makeImageSrc } from "./utils";
 import { Component } from "@notion/core";
+import { router } from "@notion/main";
 import { guestBookData, store } from "@notion/store";
 import { guestBook } from "@notion/services";
 import { GuestBookData, GuestContent } from "@notion/types";
 import { PLACEHOLDER, STORE_KEY } from "@notion/constants";
 
 interface BookListState {
+  sort?: "latest" | "oldest";
   editingId: string;
 }
 
@@ -32,7 +35,11 @@ class BookList extends Component<{}, BookListState> {
 
       const { action = "" } = target.dataset;
       if (action === "submit") return;
-      this.setState({ editingId: action === "update" ? id : "" });
+
+      this.setState({
+        ...this.state,
+        editingId: action === "update" ? id : "",
+      });
     });
 
     // 비밀번호 입력 후 제출 시
@@ -63,11 +70,11 @@ class BookList extends Component<{}, BookListState> {
           forNew: false,
           onSubmit: (newContent: GuestContent) => {
             guestBook.updateGuestBook(editingId, { ...newContent, password });
-            this.setState({ editingId: "" });
+            this.setState({ ...this.state, editingId: "" });
           },
           onCancel: () => {
             this.removeComponent(`#_${editingId}`);
-            this.setState({ editingId: "" });
+            this.setState({ ...this.state, editingId: "" });
           },
           onDelete: () => {
             guestBook.deleteGuestBook(editingId);
@@ -81,12 +88,33 @@ class BookList extends Component<{}, BookListState> {
     });
   }
 
+  rendered(): void {
+    const { sort } = this.state ?? {};
+
+    this.addComponent(SortSelector, {
+      selector: ".sort-selector",
+      props: {
+        onSelect: (sort: "latest" | "oldest") => {
+          if (this.state) this.setState({ ...this.state, sort });
+        },
+        sort: sort ?? "latest",
+      },
+      state: { sort },
+    });
+  }
+
   template(): string {
     const guestBooks = store.getData<GuestBookData>(guestBookData);
-    const { editingId } = this.state ?? {};
+    const { editingId, sort } = this.state ?? {};
+
+    const bookList =
+      sort === "oldest"
+        ? Object.entries(guestBooks)
+        : Object.entries(guestBooks).reverse();
 
     return `
-    ${Object.entries(guestBooks)
+    <div class="sort-selector"></div>
+    ${bookList
       .map(
         ([id, { username, content, updateAt, profile }]) => `
         <li id='_${id}' class='guest-book-item'>

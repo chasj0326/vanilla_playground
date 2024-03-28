@@ -1,17 +1,34 @@
-import { Params, RouteWithParams, Route } from './routes';
+import { Params, Route, RouteWithParams } from "./routes";
+
+export const parseQueryString = (queryString: string) => {
+  const result: Record<string, string> = {};
+  const keyValueList = queryString.substring(1).split("&");
+
+  keyValueList.forEach((keyValue) => {
+    const [key, value] = keyValue.split("=");
+    result[key] = value;
+  });
+  return result;
+};
 
 const matchPathToUrl = (path: string, url: string) => {
   const params: Params = {};
   if (path === url) return { isMatched: true, params };
 
-  const pathSegment = path.split('/');
-  const urlSegment = url.split('/');
+  const pathSegment = path.split("/");
+  const urlSegment = url.split("/");
 
   const isMatched =
     pathSegment.length === urlSegment.length &&
     pathSegment.every((seg, i) => {
       if (seg === urlSegment[i]) return true;
-      else if (seg.startsWith(':')) {
+
+      if (urlSegment[i].includes("?")) {
+        const [realUrlSegment] = urlSegment[i].split("?");
+        if (realUrlSegment === seg) return true;
+      }
+
+      if (seg.startsWith(":")) {
         params[seg.slice(1)] = urlSegment[i];
         return true;
       }
@@ -25,10 +42,10 @@ export const findMatchingRoutes = (routes: Route[], url: string) => {
 
   const findRoute = (
     routes: Route[],
-    currentPath: string
+    currentPath: string,
   ): RouteWithParams | null => {
     for (const route of routes) {
-      const path = (currentPath + route.path).replace('//', '/');
+      const path = (currentPath + route.path).replace("//", "/");
       const { isMatched, params } = matchPathToUrl(path, url);
 
       if (isMatched) {
@@ -46,7 +63,7 @@ export const findMatchingRoutes = (routes: Route[], url: string) => {
     return null;
   };
 
-  const matchedRoute = findRoute(routes, '/');
+  const matchedRoute = findRoute(routes, "/");
   if (matchedRoute) routeFromRoot.unshift(matchedRoute);
   return { match: matchedRoute, routes: routeFromRoot };
 };

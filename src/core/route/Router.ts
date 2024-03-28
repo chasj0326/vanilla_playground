@@ -18,7 +18,7 @@ class Router {
       worker.render(url, this.prevUrl);
       this.prevUrl = url;
     };
-    this.match = () => worker.match(window.location.pathname);
+    this.match = () => worker.match(window.location);
   }
 
   init() {
