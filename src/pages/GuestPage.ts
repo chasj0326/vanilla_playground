@@ -9,12 +9,7 @@ class GuestPage extends Component {
   }
 
   mounted(): void {
-    this.addComponent(GuestBook, {
-      selector: ".guest-book",
-      state: {
-        editingId: "",
-      },
-    });
+    this.addComponent(GuestBook, ".guest-book");
   }
 }
 

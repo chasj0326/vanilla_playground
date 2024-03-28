@@ -89,10 +89,10 @@ class WriteForm extends Component<WriteFormProps, WriteFormState> {
       const { onSubmit, onCancel, onDelete } = this.props ?? {};
 
       if (!onSubmit) return;
-      const formContent = this.makeForm();
 
       switch (action) {
         case "submit": {
+          const formContent = this.makeForm();
           if (this.checkForm(formContent)) onSubmit(formContent);
           break;
         }
@@ -119,6 +119,7 @@ class WriteForm extends Component<WriteFormProps, WriteFormState> {
           selector: ".profile-form-container",
           props: {
             onSelect: (profile: Profile) => {
+              const formContent = this.makeForm();
               this.setState({
                 formContent: { ...formContent, profile },
                 warning: "",
