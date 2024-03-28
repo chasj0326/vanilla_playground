@@ -14,7 +14,6 @@ class GuestBook extends Component {
         onSubmit: (newContent: GuestContent) => {
           guestBook.createGuestBook(newContent);
         },
-        onCancel: () => this.render(),
       },
     });
 
@@ -24,9 +23,9 @@ class GuestBook extends Component {
 
   template(): string {
     return `
+      <div class="add-item"></div>
       <ul class='guest-book-list'>
       </ul>
-      <div class="add-item"></div>
     `;
   }
 }

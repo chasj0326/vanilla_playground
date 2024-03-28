@@ -3,14 +3,13 @@
 .guest-book {
   font-family: "Noto Sans KR", sans-serif;
   color: var(--default-text);
-  margin-top: 30px;
   font-size: 12px;
   width: 80%;
   min-width: 400px;
   display: flex;
   flex-direction: column;
-  gap: 40px;
   position: relative;
+  margin-bottom: 40px;
 }
 
 .guest-book input,
@@ -27,8 +26,6 @@
   display: flex;
   flex-direction: column;
   gap: 36px;
-  /* height: (100% - 500px); */
-  /* overflow-y: auto; */
   padding: 20px;
 }
 
@@ -42,10 +39,11 @@
 
 .add-item {
   position: sticky;
+  top: 0;
   background-color: white;
-  bottom: 32px;
   padding: 20px;
-  border-top: 1px solid var(--directory-hover);
+  padding-top: 32px;
+  border-bottom: 1px solid var(--directory-hover);
 }
 
 .guest-book-item {

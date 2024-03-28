@@ -16,6 +16,17 @@ interface WriteFormState {
   formContent: GuestContent;
 }
 
+const initialFormContent = {
+  username: "",
+  content: "",
+  password: "",
+  updateAt: "",
+  profile: {
+    background: backgrounds[0],
+    charactor: charactors[0],
+  },
+};
+
 class WriteForm extends Component<WriteFormProps, WriteFormState> {
   getInput(name: string) {
     return this.findElement<HTMLTextAreaElement | HTMLInputElement>(
@@ -74,6 +85,10 @@ class WriteForm extends Component<WriteFormProps, WriteFormState> {
       });
       return false;
     }
+    this.setState({
+      formContent: initialFormContent,
+      warning: "",
+    });
     return true;
   }
 
@@ -180,9 +195,7 @@ class WriteForm extends Component<WriteFormProps, WriteFormState> {
       <div class="item-footer">
         <textarea 
           name="content" 
-          placeholder="${PLACEHOLDER.GUEST_CONTENT}">
-          ${content}
-        </textarea>
+          placeholder="${PLACEHOLDER.GUEST_CONTENT}">${content}</textarea>
         <button type="button" data-action="submit" class="submit-btn">
           완료
         </button>
