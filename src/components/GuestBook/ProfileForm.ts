@@ -37,6 +37,12 @@ class ProfileForm extends Component<ProfileFormProps, ProfileFormState> {
 
   template(): string {
     const { background = backgrounds[0] } = this.state ?? {};
+
+    const backgroundEl = (color: string) =>
+      `<div class="color" id="${color}" style="background: #${color}"></div>`;
+    const charactorEl = (charactor: string) =>
+      `<img class="charactor" id="${charactor}" src="${makeImageSrc(charactor, background)}">`;
+
     return `
       <div class="profile-picker">
         <header>
@@ -44,10 +50,10 @@ class ProfileForm extends Component<ProfileFormProps, ProfileFormState> {
           <button class="random">랜덤</button>
         </header>
         <div class="color-picker">
-        ${backgrounds.map((color) => `<div class="color" id="${color}" style="background: #${color}"></div>`).join("")}
+        ${backgrounds.map(backgroundEl).join("")}
         </div>
         <div class="charactor-picker">
-        ${charactors.map((charactor) => `<img class="charactor" id="${charactor}" src="${makeImageSrc(charactor, background)}">`).join("")}
+        ${charactors.map(charactorEl).join("")}
         </div>
       </div>
       `;

@@ -55,20 +55,14 @@ class WriteForm extends Component<WriteFormProps, WriteFormState> {
 
     if (username.length > 15 || username.length < 1) {
       this.setState({
-        formContent: {
-          ...formContent,
-          username: "",
-        },
+        formContent: { ...formContent, username: "" },
         warning: "닉네임은 1자 이상, 최대 15자 입니다.",
       });
       return false;
     }
     if (!/^\d{6}$/.test(password) && forNew) {
       this.setState({
-        formContent: {
-          ...formContent,
-          password: "",
-        },
+        formContent: { ...formContent, password: "" },
         warning: "비밀번호는 6자리 숫자여야 합니다.",
       });
       return false;
@@ -154,7 +148,11 @@ class WriteForm extends Component<WriteFormProps, WriteFormState> {
             </div>
             <div class="profile-form-container"></div>
           </div>
-          <input name="username" value="${username}" placeholder="${PLACEHOLDER.GUEST_NAME}"/>
+          <input 
+            name="username" 
+            value="${username}" 
+            placeholder="${PLACEHOLDER.GUEST_NAME}"
+          />
         </div>
         ${
           forNew
@@ -167,14 +165,24 @@ class WriteForm extends Component<WriteFormProps, WriteFormState> {
               />`
             : `
             <div class="btn-container">
-              <button type="button" data-action="cancel">취소</button>
-              <button type="button" data-action="delete" class="delete-btn">삭제</button>
+              <button type="button" data-action="cancel">
+                취소
+              </button>
+              <button type="button" data-action="delete" class="delete-btn">
+                삭제
+              </button>
             </div>`
         }
       </div>
       <div class="item-footer">
-        <textarea name="content" placeholder="${PLACEHOLDER.GUEST_CONTENT}">${content}</textarea>
-        <button type="button" data-action="submit" class="submit-btn">완료</button>
+        <textarea 
+          name="content" 
+          placeholder="${PLACEHOLDER.GUEST_CONTENT}">
+          ${content}
+        </textarea>
+        <button type="button" data-action="submit" class="submit-btn">
+          완료
+        </button>
       </div>
       ${warning ? `<div class='warning'>${warning}</div>` : ``}
     `;
