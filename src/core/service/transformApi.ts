@@ -12,8 +12,11 @@ const transformAPI = <From extends Default, To extends Default>(
 
   // 받을때 객체로 바꾸기
   const expandValue = (initial: any, target: string) => {
-    if (target === "") return initial;
-    return JSON.parse(target);
+    try {
+      return JSON.parse(target);
+    } catch (error) {
+      return initial;
+    }
   };
 
   const reduceRequest = (expandedBody: To): From => {
